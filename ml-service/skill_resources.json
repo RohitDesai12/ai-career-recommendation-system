@@ -1,0 +1,310 @@
+{
+  "Python": [
+    {
+      "name": "Python for Everybody \u2014 Coursera",
+      "url": "https://coursera.org/specializations/python",
+      "free": true,
+      "weeks": 4
+    },
+    {
+      "name": "Automate the Boring Stuff",
+      "url": "https://automatetheboringstuff.com",
+      "free": true,
+      "weeks": 3
+    }
+  ],
+  "TensorFlow": [
+    {
+      "name": "TensorFlow Developer Certificate \u2014 Coursera",
+      "url": "https://coursera.org",
+      "free": false,
+      "weeks": 6
+    },
+    {
+      "name": "TensorFlow Official Tutorials",
+      "url": "https://tensorflow.org/tutorials",
+      "free": true,
+      "weeks": 3
+    }
+  ],
+  "PyTorch": [
+    {
+      "name": "Deep Learning with PyTorch \u2014 fast.ai",
+      "url": "https://fast.ai",
+      "free": true,
+      "weeks": 7
+    },
+    {
+      "name": "PyTorch Official Docs",
+      "url": "https://pytorch.org/tutorials",
+      "free": true,
+      "weeks": 3
+    }
+  ],
+  "SQL": [
+    {
+      "name": "SQL for Data Science \u2014 Coursera",
+      "url": "https://coursera.org",
+      "free": false,
+      "weeks": 4
+    },
+    {
+      "name": "SQLZoo Interactive",
+      "url": "https://sqlzoo.net",
+      "free": true,
+      "weeks": 2
+    }
+  ],
+  "Docker": [
+    {
+      "name": "Docker & Kubernetes \u2014 Udemy",
+      "url": "https://udemy.com",
+      "free": false,
+      "weeks": 4
+    },
+    {
+      "name": "Docker Official Docs",
+      "url": "https://docs.docker.com",
+      "free": true,
+      "weeks": 2
+    }
+  ],
+  "AWS": [
+    {
+      "name": "AWS Cloud Practitioner \u2014 AWS Training",
+      "url": "https://aws.amazon.com/training",
+      "free": false,
+      "weeks": 6
+    },
+    {
+      "name": "AWS Free Tier Hands-on",
+      "url": "https://aws.amazon.com/free",
+      "free": true,
+      "weeks": 4
+    }
+  ],
+  "React": [
+    {
+      "name": "React \u2014 The Complete Guide \u2014 Udemy",
+      "url": "https://udemy.com",
+      "free": false,
+      "weeks": 6
+    },
+    {
+      "name": "React Official Docs",
+      "url": "https://react.dev",
+      "free": true,
+      "weeks": 3
+    }
+  ],
+  "Verilog": [
+    {
+      "name": "VLSI CAD: Logic to Layout \u2014 Coursera",
+      "url": "https://coursera.org",
+      "free": false,
+      "weeks": 5
+    },
+    {
+      "name": "HDLBits Practice",
+      "url": "https://hdlbits.01xz.net",
+      "free": true,
+      "weeks": 3
+    }
+  ],
+  "MATLAB": [
+    {
+      "name": "MATLAB Onramp \u2014 MathWorks",
+      "url": "https://mathworks.com/learn/tutorials/matlab-onramp.html",
+      "free": true,
+      "weeks": 2
+    },
+    {
+      "name": "MATLAB for Engineers \u2014 Coursera",
+      "url": "https://coursera.org",
+      "free": false,
+      "weeks": 4
+    }
+  ],
+  "ANSYS": [
+    {
+      "name": "ANSYS Innovation Courses",
+      "url": "https://courses.ansys.com",
+      "free": true,
+      "weeks": 4
+    },
+    {
+      "name": "FEA with ANSYS \u2014 Udemy",
+      "url": "https://udemy.com",
+      "free": false,
+      "weeks": 5
+    }
+  ],
+  "STAAD Pro": [
+    {
+      "name": "STAAD Pro Training \u2014 NPTEL",
+      "url": "https://nptel.ac.in",
+      "free": true,
+      "weeks": 6
+    },
+    {
+      "name": "STAAD Pro Bentley Learning",
+      "url": "https://learn.bentley.com",
+      "free": false,
+      "weeks": 4
+    }
+  ],
+  "AutoCAD": [
+    {
+      "name": "AutoCAD Essential Training \u2014 LinkedIn Learning",
+      "url": "https://linkedin.com/learning",
+      "free": false,
+      "weeks": 3
+    },
+    {
+      "name": "AutoCAD Official Tutorials",
+      "url": "https://autodesk.com/learning",
+      "free": true,
+      "weeks": 2
+    }
+  ],
+  "ROS": [
+    {
+      "name": "ROS for Beginners \u2014 Udemy",
+      "url": "https://udemy.com",
+      "free": false,
+      "weeks": 5
+    },
+    {
+      "name": "ROS Official Tutorials",
+      "url": "https://wiki.ros.org/ROS/Tutorials",
+      "free": true,
+      "weeks": 4
+    }
+  ],
+  "Statistics": [
+    {
+      "name": "Statistics for Data Science \u2014 Coursera",
+      "url": "https://coursera.org",
+      "free": false,
+      "weeks": 5
+    },
+    {
+      "name": "Khan Academy Statistics",
+      "url": "https://khanacademy.org",
+      "free": true,
+      "weeks": 4
+    }
+  ],
+  "Kubernetes": [
+    {
+      "name": "Kubernetes for Beginners \u2014 Udemy",
+      "url": "https://udemy.com",
+      "free": false,
+      "weeks": 5
+    },
+    {
+      "name": "Kubernetes Official Docs",
+      "url": "https://kubernetes.io/docs",
+      "free": true,
+      "weeks": 3
+    }
+  ],
+  "Aspen Plus": [
+    {
+      "name": "Aspen Plus Training \u2014 AspenTech",
+      "url": "https://aspentech.com/training",
+      "free": false,
+      "weeks": 5
+    },
+    {
+      "name": "Aspen HYSYS NPTEL",
+      "url": "https://nptel.ac.in",
+      "free": true,
+      "weeks": 4
+    }
+  ],
+  "CATIA": [
+    {
+      "name": "CATIA V5 \u2014 Udemy",
+      "url": "https://udemy.com",
+      "free": false,
+      "weeks": 6
+    },
+    {
+      "name": "Dassault Systemes Learning",
+      "url": "https://edu.3ds.com",
+      "free": false,
+      "weeks": 4
+    }
+  ],
+  "Primavera": [
+    {
+      "name": "Primavera P6 \u2014 Udemy",
+      "url": "https://udemy.com",
+      "free": false,
+      "weeks": 4
+    },
+    {
+      "name": "Oracle Primavera Tutorials",
+      "url": "https://oracle.com",
+      "free": true,
+      "weeks": 2
+    }
+  ],
+  "ArcGIS": [
+    {
+      "name": "ArcGIS Basics \u2014 Esri Training",
+      "url": "https://esri.com/training",
+      "free": true,
+      "weeks": 3
+    },
+    {
+      "name": "GIS Specialization \u2014 Coursera",
+      "url": "https://coursera.org",
+      "free": false,
+      "weeks": 5
+    }
+  ],
+  "Machine Learning": [
+    {
+      "name": "ML Specialization \u2014 Andrew Ng Coursera",
+      "url": "https://coursera.org/specializations/machine-learning-introduction",
+      "free": false,
+      "weeks": 11
+    },
+    {
+      "name": "Kaggle ML Micro-courses",
+      "url": "https://kaggle.com/learn",
+      "free": true,
+      "weeks": 3
+    }
+  ],
+  "Deep Learning": [
+    {
+      "name": "Deep Learning Specialization \u2014 Coursera",
+      "url": "https://coursera.org/specializations/deep-learning",
+      "free": false,
+      "weeks": 16
+    },
+    {
+      "name": "fast.ai Practical Deep Learning",
+      "url": "https://fast.ai",
+      "free": true,
+      "weeks": 7
+    }
+  ],
+  "Data Structures": [
+    {
+      "name": "DSA \u2014 NPTEL",
+      "url": "https://nptel.ac.in",
+      "free": true,
+      "weeks": 8
+    },
+    {
+      "name": "Striver DSA Sheet",
+      "url": "https://takeuforward.org/strivers-a2z-dsa-course",
+      "free": true,
+      "weeks": 12
+    }
+  ]
+}

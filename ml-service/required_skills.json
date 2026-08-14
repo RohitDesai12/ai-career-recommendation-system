@@ -1,0 +1,2270 @@
+{
+  "ML Engineer / AI Researcher": {
+    "Python": {
+      "required": 90,
+      "category": "Programming"
+    },
+    "Statistics": {
+      "required": 85,
+      "category": "Mathematics"
+    },
+    "TensorFlow": {
+      "required": 80,
+      "category": "Framework"
+    },
+    "PyTorch": {
+      "required": 75,
+      "category": "Framework"
+    },
+    "Scikit-learn": {
+      "required": 80,
+      "category": "Framework"
+    },
+    "SQL": {
+      "required": 70,
+      "category": "Database"
+    },
+    "Docker": {
+      "required": 65,
+      "category": "DevOps"
+    },
+    "MLOps": {
+      "required": 60,
+      "category": "Deployment"
+    },
+    "Git": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "Deep Learning": {
+      "required": 80,
+      "category": "Concept"
+    },
+    "NumPy": {
+      "required": 80,
+      "category": "Library"
+    },
+    "Pandas": {
+      "required": 80,
+      "category": "Library"
+    }
+  },
+  "Data Scientist": {
+    "Python": {
+      "required": 85,
+      "category": "Programming"
+    },
+    "R": {
+      "required": 70,
+      "category": "Programming"
+    },
+    "SQL": {
+      "required": 85,
+      "category": "Database"
+    },
+    "Statistics": {
+      "required": 90,
+      "category": "Mathematics"
+    },
+    "Tableau": {
+      "required": 70,
+      "category": "Visualization"
+    },
+    "Power BI": {
+      "required": 65,
+      "category": "Visualization"
+    },
+    "Machine Learning": {
+      "required": 75,
+      "category": "Concept"
+    },
+    "Feature Engineering": {
+      "required": 75,
+      "category": "Concept"
+    },
+    "A/B Testing": {
+      "required": 70,
+      "category": "Concept"
+    },
+    "Excel": {
+      "required": 65,
+      "category": "Tool"
+    },
+    "Pandas": {
+      "required": 85,
+      "category": "Library"
+    }
+  },
+  "Full Stack Web Developer": {
+    "HTML": {
+      "required": 90,
+      "category": "Frontend"
+    },
+    "CSS": {
+      "required": 85,
+      "category": "Frontend"
+    },
+    "JavaScript": {
+      "required": 90,
+      "category": "Frontend"
+    },
+    "React": {
+      "required": 85,
+      "category": "Framework"
+    },
+    "Node.js": {
+      "required": 80,
+      "category": "Backend"
+    },
+    "MongoDB": {
+      "required": 75,
+      "category": "Database"
+    },
+    "SQL": {
+      "required": 70,
+      "category": "Database"
+    },
+    "REST API": {
+      "required": 80,
+      "category": "Concept"
+    },
+    "Git": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Docker": {
+      "required": 65,
+      "category": "DevOps"
+    },
+    "TypeScript": {
+      "required": 70,
+      "category": "Programming"
+    }
+  },
+  "Cloud Architect / DevOps Engineer": {
+    "AWS": {
+      "required": 90,
+      "category": "Cloud"
+    },
+    "Docker": {
+      "required": 90,
+      "category": "DevOps"
+    },
+    "Kubernetes": {
+      "required": 85,
+      "category": "DevOps"
+    },
+    "Terraform": {
+      "required": 80,
+      "category": "IaC"
+    },
+    "Linux": {
+      "required": 85,
+      "category": "OS"
+    },
+    "CI/CD": {
+      "required": 80,
+      "category": "DevOps"
+    },
+    "Jenkins": {
+      "required": 70,
+      "category": "Tool"
+    },
+    "Python": {
+      "required": 70,
+      "category": "Programming"
+    },
+    "Shell Script": {
+      "required": 75,
+      "category": "Programming"
+    },
+    "Git": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "Monitoring": {
+      "required": 70,
+      "category": "Concept"
+    },
+    "Ansible": {
+      "required": 65,
+      "category": "Automation"
+    }
+  },
+  "Cybersecurity Analyst": {
+    "Network Security": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Penetration Testing": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Linux": {
+      "required": 85,
+      "category": "OS"
+    },
+    "Python": {
+      "required": 75,
+      "category": "Programming"
+    },
+    "Wireshark": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Metasploit": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "SIEM": {
+      "required": 70,
+      "category": "Tool"
+    },
+    "Firewalls": {
+      "required": 80,
+      "category": "Core"
+    },
+    "ISO 27001": {
+      "required": 65,
+      "category": "Standard"
+    },
+    "Ethical Hacking": {
+      "required": 85,
+      "category": "Core"
+    },
+    "SOC": {
+      "required": 70,
+      "category": "Concept"
+    },
+    "Vulnerability Assessment": {
+      "required": 80,
+      "category": "Core"
+    }
+  },
+  "Software Development Engineer": {
+    "Data Structures": {
+      "required": 95,
+      "category": "Core"
+    },
+    "Algorithms": {
+      "required": 95,
+      "category": "Core"
+    },
+    "System Design": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Java": {
+      "required": 80,
+      "category": "Programming"
+    },
+    "Python": {
+      "required": 75,
+      "category": "Programming"
+    },
+    "C++": {
+      "required": 70,
+      "category": "Programming"
+    },
+    "Git": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "OOP": {
+      "required": 85,
+      "category": "Concept"
+    },
+    "Design Patterns": {
+      "required": 75,
+      "category": "Concept"
+    },
+    "SQL": {
+      "required": 75,
+      "category": "Database"
+    },
+    "Microservices": {
+      "required": 70,
+      "category": "Architecture"
+    },
+    "Unit Testing": {
+      "required": 70,
+      "category": "Practice"
+    }
+  },
+  "NLP / Conversational AI Engineer": {
+    "Python": {
+      "required": 90,
+      "category": "Programming"
+    },
+    "NLP": {
+      "required": 90,
+      "category": "Core"
+    },
+    "BERT": {
+      "required": 85,
+      "category": "Model"
+    },
+    "Transformers": {
+      "required": 85,
+      "category": "Framework"
+    },
+    "PyTorch": {
+      "required": 80,
+      "category": "Framework"
+    },
+    "spaCy": {
+      "required": 75,
+      "category": "Library"
+    },
+    "LLMs": {
+      "required": 80,
+      "category": "Concept"
+    },
+    "TensorFlow": {
+      "required": 70,
+      "category": "Framework"
+    },
+    "Text Classification": {
+      "required": 80,
+      "category": "Concept"
+    },
+    "Git": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "SQL": {
+      "required": 65,
+      "category": "Database"
+    }
+  },
+  "Computer Vision Engineer": {
+    "Python": {
+      "required": 90,
+      "category": "Programming"
+    },
+    "OpenCV": {
+      "required": 90,
+      "category": "Library"
+    },
+    "PyTorch": {
+      "required": 85,
+      "category": "Framework"
+    },
+    "TensorFlow": {
+      "required": 80,
+      "category": "Framework"
+    },
+    "CNNs": {
+      "required": 85,
+      "category": "Model"
+    },
+    "YOLO": {
+      "required": 80,
+      "category": "Model"
+    },
+    "Deep Learning": {
+      "required": 85,
+      "category": "Concept"
+    },
+    "Image Processing": {
+      "required": 85,
+      "category": "Core"
+    },
+    "CUDA": {
+      "required": 70,
+      "category": "Tool"
+    },
+    "Git": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "NumPy": {
+      "required": 80,
+      "category": "Library"
+    }
+  },
+  "Blockchain Developer": {
+    "Solidity": {
+      "required": 90,
+      "category": "Programming"
+    },
+    "Web3.js": {
+      "required": 85,
+      "category": "Library"
+    },
+    "JavaScript": {
+      "required": 80,
+      "category": "Programming"
+    },
+    "Python": {
+      "required": 70,
+      "category": "Programming"
+    },
+    "Smart Contracts": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Ethereum": {
+      "required": 85,
+      "category": "Platform"
+    },
+    "Cryptography": {
+      "required": 75,
+      "category": "Core"
+    },
+    "Git": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "REST API": {
+      "required": 70,
+      "category": "Concept"
+    },
+    "Node.js": {
+      "required": 70,
+      "category": "Backend"
+    }
+  },
+  "Mobile App Developer": {
+    "Flutter": {
+      "required": 85,
+      "category": "Framework"
+    },
+    "React Native": {
+      "required": 80,
+      "category": "Framework"
+    },
+    "Dart": {
+      "required": 80,
+      "category": "Programming"
+    },
+    "JavaScript": {
+      "required": 75,
+      "category": "Programming"
+    },
+    "Firebase": {
+      "required": 80,
+      "category": "Backend"
+    },
+    "REST API": {
+      "required": 80,
+      "category": "Concept"
+    },
+    "Git": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "UI/UX Design": {
+      "required": 75,
+      "category": "Design"
+    },
+    "Android": {
+      "required": 70,
+      "category": "Platform"
+    },
+    "iOS": {
+      "required": 70,
+      "category": "Platform"
+    }
+  },
+  "Network Engineer": {
+    "Cisco Networking": {
+      "required": 90,
+      "category": "Core"
+    },
+    "TCP/IP": {
+      "required": 90,
+      "category": "Protocol"
+    },
+    "Firewalls": {
+      "required": 85,
+      "category": "Security"
+    },
+    "Linux": {
+      "required": 80,
+      "category": "OS"
+    },
+    "Routing & Switching": {
+      "required": 90,
+      "category": "Core"
+    },
+    "VPN": {
+      "required": 75,
+      "category": "Security"
+    },
+    "Python": {
+      "required": 65,
+      "category": "Programming"
+    },
+    "Network Monitoring": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "CCNA": {
+      "required": 85,
+      "category": "Certification"
+    },
+    "Wireshark": {
+      "required": 75,
+      "category": "Tool"
+    }
+  },
+  "Database Administrator": {
+    "SQL": {
+      "required": 95,
+      "category": "Core"
+    },
+    "Oracle": {
+      "required": 80,
+      "category": "Database"
+    },
+    "MySQL": {
+      "required": 85,
+      "category": "Database"
+    },
+    "MongoDB": {
+      "required": 75,
+      "category": "Database"
+    },
+    "PostgreSQL": {
+      "required": 80,
+      "category": "Database"
+    },
+    "Database Design": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Performance Tuning": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Backup & Recovery": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Linux": {
+      "required": 75,
+      "category": "OS"
+    },
+    "Python": {
+      "required": 65,
+      "category": "Programming"
+    }
+  },
+  "IT Security Analyst": {
+    "Network Security": {
+      "required": 85,
+      "category": "Core"
+    },
+    "SIEM": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Linux": {
+      "required": 80,
+      "category": "OS"
+    },
+    "Incident Response": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Vulnerability Assessment": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Python": {
+      "required": 70,
+      "category": "Programming"
+    },
+    "Firewalls": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "ISO 27001": {
+      "required": 70,
+      "category": "Standard"
+    },
+    "SOC": {
+      "required": 75,
+      "category": "Concept"
+    },
+    "Wireshark": {
+      "required": 70,
+      "category": "Tool"
+    }
+  },
+  "QA / Automation Test Engineer": {
+    "Selenium": {
+      "required": 90,
+      "category": "Tool"
+    },
+    "Python": {
+      "required": 80,
+      "category": "Programming"
+    },
+    "Java": {
+      "required": 75,
+      "category": "Programming"
+    },
+    "JIRA": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "TestNG": {
+      "required": 75,
+      "category": "Framework"
+    },
+    "API Testing": {
+      "required": 80,
+      "category": "Core"
+    },
+    "SQL": {
+      "required": 70,
+      "category": "Database"
+    },
+    "Git": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "CI/CD": {
+      "required": 70,
+      "category": "DevOps"
+    },
+    "Postman": {
+      "required": 75,
+      "category": "Tool"
+    }
+  },
+  "SAP / ERP Consultant": {
+    "SAP": {
+      "required": 90,
+      "category": "Platform"
+    },
+    "Business Processes": {
+      "required": 85,
+      "category": "Domain"
+    },
+    "SQL": {
+      "required": 75,
+      "category": "Database"
+    },
+    "ABAP": {
+      "required": 70,
+      "category": "Programming"
+    },
+    "SAP FICO": {
+      "required": 80,
+      "category": "Module"
+    },
+    "SAP MM": {
+      "required": 75,
+      "category": "Module"
+    },
+    "Excel": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Project Management": {
+      "required": 70,
+      "category": "Skill"
+    },
+    "Communication": {
+      "required": 80,
+      "category": "Soft Skill"
+    }
+  },
+  "Quantitative / Risk Analyst": {
+    "Python": {
+      "required": 85,
+      "category": "Programming"
+    },
+    "R": {
+      "required": 80,
+      "category": "Programming"
+    },
+    "Statistics": {
+      "required": 90,
+      "category": "Mathematics"
+    },
+    "Financial Modeling": {
+      "required": 85,
+      "category": "Domain"
+    },
+    "Excel": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "VBA": {
+      "required": 70,
+      "category": "Programming"
+    },
+    "Risk Management": {
+      "required": 85,
+      "category": "Domain"
+    },
+    "Monte Carlo": {
+      "required": 80,
+      "category": "Method"
+    },
+    "SQL": {
+      "required": 75,
+      "category": "Database"
+    },
+    "Bloomberg": {
+      "required": 70,
+      "category": "Tool"
+    },
+    "Derivatives": {
+      "required": 75,
+      "category": "Domain"
+    }
+  },
+  "Business / Data Analyst": {
+    "SQL": {
+      "required": 90,
+      "category": "Database"
+    },
+    "Excel": {
+      "required": 90,
+      "category": "Tool"
+    },
+    "Tableau": {
+      "required": 80,
+      "category": "Visualization"
+    },
+    "Power BI": {
+      "required": 80,
+      "category": "Visualization"
+    },
+    "Python": {
+      "required": 70,
+      "category": "Programming"
+    },
+    "Statistics": {
+      "required": 75,
+      "category": "Mathematics"
+    },
+    "Data Visualization": {
+      "required": 85,
+      "category": "Skill"
+    },
+    "Business Intelligence": {
+      "required": 80,
+      "category": "Domain"
+    },
+    "R": {
+      "required": 65,
+      "category": "Programming"
+    },
+    "Reporting": {
+      "required": 80,
+      "category": "Skill"
+    }
+  },
+  "VLSI Design Engineer": {
+    "Verilog": {
+      "required": 90,
+      "category": "HDL"
+    },
+    "VHDL": {
+      "required": 85,
+      "category": "HDL"
+    },
+    "Cadence": {
+      "required": 85,
+      "category": "EDA Tool"
+    },
+    "Synopsys": {
+      "required": 80,
+      "category": "EDA Tool"
+    },
+    "Digital Design": {
+      "required": 90,
+      "category": "Core"
+    },
+    "FPGA": {
+      "required": 80,
+      "category": "Hardware"
+    },
+    "RTL Design": {
+      "required": 85,
+      "category": "Core"
+    },
+    "STA": {
+      "required": 75,
+      "category": "Analysis"
+    },
+    "DFT": {
+      "required": 70,
+      "category": "Technique"
+    },
+    "Physical Design": {
+      "required": 75,
+      "category": "Core"
+    },
+    "MATLAB": {
+      "required": 70,
+      "category": "Tool"
+    },
+    "CMOS": {
+      "required": 85,
+      "category": "Core"
+    }
+  },
+  "Embedded Systems Engineer": {
+    "C": {
+      "required": 90,
+      "category": "Programming"
+    },
+    "C++": {
+      "required": 85,
+      "category": "Programming"
+    },
+    "RTOS": {
+      "required": 85,
+      "category": "OS"
+    },
+    "Microcontrollers": {
+      "required": 90,
+      "category": "Hardware"
+    },
+    "ARM": {
+      "required": 80,
+      "category": "Architecture"
+    },
+    "CAN Bus": {
+      "required": 75,
+      "category": "Protocol"
+    },
+    "SPI": {
+      "required": 75,
+      "category": "Protocol"
+    },
+    "I2C": {
+      "required": 75,
+      "category": "Protocol"
+    },
+    "UART": {
+      "required": 75,
+      "category": "Protocol"
+    },
+    "Embedded Linux": {
+      "required": 70,
+      "category": "OS"
+    },
+    "MATLAB": {
+      "required": 70,
+      "category": "Tool"
+    },
+    "PCB Design": {
+      "required": 65,
+      "category": "Hardware"
+    },
+    "Debugging": {
+      "required": 85,
+      "category": "Skill"
+    }
+  },
+  "Robotics Engineer": {
+    "ROS": {
+      "required": 90,
+      "category": "Framework"
+    },
+    "C++": {
+      "required": 85,
+      "category": "Programming"
+    },
+    "Python": {
+      "required": 80,
+      "category": "Programming"
+    },
+    "Computer Vision": {
+      "required": 80,
+      "category": "Core"
+    },
+    "SLAM": {
+      "required": 75,
+      "category": "Algorithm"
+    },
+    "Motion Planning": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Sensors": {
+      "required": 80,
+      "category": "Hardware"
+    },
+    "Control Systems": {
+      "required": 80,
+      "category": "Core"
+    },
+    "MATLAB": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "Simulink": {
+      "required": 70,
+      "category": "Tool"
+    },
+    "OpenCV": {
+      "required": 75,
+      "category": "Library"
+    },
+    "Linux": {
+      "required": 75,
+      "category": "OS"
+    }
+  },
+  "IoT Solutions Developer": {
+    "C/C++": {
+      "required": 85,
+      "category": "Programming"
+    },
+    "Python": {
+      "required": 80,
+      "category": "Programming"
+    },
+    "MQTT": {
+      "required": 85,
+      "category": "Protocol"
+    },
+    "Arduino": {
+      "required": 80,
+      "category": "Hardware"
+    },
+    "Raspberry Pi": {
+      "required": 75,
+      "category": "Hardware"
+    },
+    "AWS IoT": {
+      "required": 75,
+      "category": "Cloud"
+    },
+    "Embedded Linux": {
+      "required": 70,
+      "category": "OS"
+    },
+    "REST API": {
+      "required": 75,
+      "category": "Concept"
+    },
+    "SQL": {
+      "required": 65,
+      "category": "Database"
+    },
+    "Networking": {
+      "required": 75,
+      "category": "Core"
+    },
+    "PCB Design": {
+      "required": 65,
+      "category": "Hardware"
+    }
+  },
+  "RF / Telecom Engineer": {
+    "RF Design": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Antenna Design": {
+      "required": 85,
+      "category": "Core"
+    },
+    "HFSS": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "CST Studio": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "LTE/5G": {
+      "required": 80,
+      "category": "Protocol"
+    },
+    "MATLAB": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Signal Processing": {
+      "required": 85,
+      "category": "Core"
+    },
+    "PCB Design": {
+      "required": 70,
+      "category": "Hardware"
+    },
+    "Python": {
+      "required": 65,
+      "category": "Programming"
+    },
+    "Network Analysis": {
+      "required": 75,
+      "category": "Core"
+    }
+  },
+  "Power Systems Engineer": {
+    "MATLAB": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "ETAP": {
+      "required": 85,
+      "category": "Software"
+    },
+    "PSCAD": {
+      "required": 80,
+      "category": "Software"
+    },
+    "Power Electronics": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Transformers": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Protection Relays": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Load Flow": {
+      "required": 85,
+      "category": "Analysis"
+    },
+    "AutoCAD Electrical": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "Python": {
+      "required": 65,
+      "category": "Programming"
+    },
+    "HV Systems": {
+      "required": 75,
+      "category": "Core"
+    }
+  },
+  "EV Powertrain Engineer": {
+    "Battery Management System": {
+      "required": 90,
+      "category": "Core"
+    },
+    "CAN Bus": {
+      "required": 85,
+      "category": "Protocol"
+    },
+    "Motor Control": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Power Electronics": {
+      "required": 85,
+      "category": "Core"
+    },
+    "MATLAB": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "Simulink": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Electric Drives": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Thermal Management": {
+      "required": 75,
+      "category": "Core"
+    },
+    "C/C++": {
+      "required": 75,
+      "category": "Programming"
+    },
+    "Vehicle Dynamics": {
+      "required": 70,
+      "category": "Domain"
+    },
+    "CANalyzer": {
+      "required": 70,
+      "category": "Tool"
+    }
+  },
+  "Renewable Energy Engineer": {
+    "MATLAB": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "PVsyst": {
+      "required": 85,
+      "category": "Software"
+    },
+    "AutoCAD": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Solar Design": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Wind Energy": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Power Electronics": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Grid Integration": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Energy Storage": {
+      "required": 75,
+      "category": "Core"
+    },
+    "Python": {
+      "required": 65,
+      "category": "Programming"
+    },
+    "Load Flow": {
+      "required": 75,
+      "category": "Analysis"
+    }
+  },
+  "PLC / SCADA Automation Engineer": {
+    "PLC Programming": {
+      "required": 90,
+      "category": "Core"
+    },
+    "SCADA": {
+      "required": 90,
+      "category": "Core"
+    },
+    "HMI": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Ladder Logic": {
+      "required": 85,
+      "category": "Programming"
+    },
+    "Industrial Protocols": {
+      "required": 80,
+      "category": "Protocol"
+    },
+    "AutoCAD Electrical": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "Python": {
+      "required": 65,
+      "category": "Programming"
+    },
+    "Control Systems": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Fieldbus": {
+      "required": 70,
+      "category": "Protocol"
+    },
+    "Safety Systems": {
+      "required": 75,
+      "category": "Core"
+    }
+  },
+  "Automotive Design Engineer": {
+    "CATIA": {
+      "required": 90,
+      "category": "CAD"
+    },
+    "SolidWorks": {
+      "required": 85,
+      "category": "CAD"
+    },
+    "ANSYS": {
+      "required": 85,
+      "category": "FEA"
+    },
+    "FEA": {
+      "required": 85,
+      "category": "Analysis"
+    },
+    "NVH Analysis": {
+      "required": 75,
+      "category": "Analysis"
+    },
+    "AutoCAD": {
+      "required": 80,
+      "category": "CAD"
+    },
+    "GD&T": {
+      "required": 80,
+      "category": "Standard"
+    },
+    "Vehicle Dynamics": {
+      "required": 75,
+      "category": "Domain"
+    },
+    "Material Science": {
+      "required": 75,
+      "category": "Domain"
+    },
+    "MATLAB": {
+      "required": 70,
+      "category": "Tool"
+    }
+  },
+  "Manufacturing / Production Engineer": {
+    "AutoCAD": {
+      "required": 85,
+      "category": "CAD"
+    },
+    "SolidWorks": {
+      "required": 80,
+      "category": "CAD"
+    },
+    "CNC Programming": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Lean Manufacturing": {
+      "required": 85,
+      "category": "Method"
+    },
+    "GD&T": {
+      "required": 80,
+      "category": "Standard"
+    },
+    "CAM": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Quality Control": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Six Sigma": {
+      "required": 75,
+      "category": "Method"
+    },
+    "ERP Systems": {
+      "required": 70,
+      "category": "Tool"
+    },
+    "MATLAB": {
+      "required": 65,
+      "category": "Tool"
+    }
+  },
+  "Industrial Robotics Engineer": {
+    "ROS": {
+      "required": 85,
+      "category": "Framework"
+    },
+    "Python": {
+      "required": 80,
+      "category": "Programming"
+    },
+    "C++": {
+      "required": 80,
+      "category": "Programming"
+    },
+    "PLC Programming": {
+      "required": 80,
+      "category": "Core"
+    },
+    "SolidWorks": {
+      "required": 75,
+      "category": "CAD"
+    },
+    "Computer Vision": {
+      "required": 75,
+      "category": "Core"
+    },
+    "Servo Control": {
+      "required": 80,
+      "category": "Core"
+    },
+    "MATLAB": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "Simulink": {
+      "required": 70,
+      "category": "Tool"
+    },
+    "Safety Standards": {
+      "required": 75,
+      "category": "Standard"
+    }
+  },
+  "CAD/CAM Design Engineer": {
+    "SolidWorks": {
+      "required": 90,
+      "category": "CAD"
+    },
+    "CATIA": {
+      "required": 85,
+      "category": "CAD"
+    },
+    "Creo": {
+      "required": 80,
+      "category": "CAD"
+    },
+    "AutoCAD": {
+      "required": 85,
+      "category": "CAD"
+    },
+    "Fusion 360": {
+      "required": 75,
+      "category": "CAD"
+    },
+    "GD&T": {
+      "required": 80,
+      "category": "Standard"
+    },
+    "CAM": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "Material Science": {
+      "required": 75,
+      "category": "Domain"
+    },
+    "FEA": {
+      "required": 70,
+      "category": "Analysis"
+    },
+    "3D Printing": {
+      "required": 65,
+      "category": "Technology"
+    }
+  },
+  "Thermal / HVAC Engineer": {
+    "ANSYS Fluent": {
+      "required": 85,
+      "category": "CFD"
+    },
+    "MATLAB": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "AutoCAD": {
+      "required": 80,
+      "category": "CAD"
+    },
+    "Heat Transfer": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Thermodynamics": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Fluid Mechanics": {
+      "required": 85,
+      "category": "Core"
+    },
+    "HVAC Design": {
+      "required": 85,
+      "category": "Domain"
+    },
+    "Energy Audit": {
+      "required": 75,
+      "category": "Skill"
+    },
+    "Python": {
+      "required": 60,
+      "category": "Programming"
+    },
+    "HAP Software": {
+      "required": 70,
+      "category": "Tool"
+    }
+  },
+  "Aerodynamics / CFD Engineer": {
+    "ANSYS Fluent": {
+      "required": 90,
+      "category": "CFD"
+    },
+    "OpenFOAM": {
+      "required": 85,
+      "category": "CFD"
+    },
+    "MATLAB": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "Python": {
+      "required": 75,
+      "category": "Programming"
+    },
+    "Aerodynamics": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Mesh Generation": {
+      "required": 80,
+      "category": "Skill"
+    },
+    "Turbulence Modeling": {
+      "required": 80,
+      "category": "Core"
+    },
+    "SolidWorks": {
+      "required": 75,
+      "category": "CAD"
+    },
+    "Structural Analysis": {
+      "required": 70,
+      "category": "Analysis"
+    },
+    "XFLR5": {
+      "required": 70,
+      "category": "Tool"
+    }
+  },
+  "Propulsion / Rocket Engineer": {
+    "MATLAB": {
+      "required": 90,
+      "category": "Tool"
+    },
+    "Simulink": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "Thermodynamics": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Fluid Mechanics": {
+      "required": 85,
+      "category": "Core"
+    },
+    "ANSYS": {
+      "required": 80,
+      "category": "FEA"
+    },
+    "CATIA": {
+      "required": 80,
+      "category": "CAD"
+    },
+    "Combustion": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Python": {
+      "required": 70,
+      "category": "Programming"
+    },
+    "Structural Analysis": {
+      "required": 75,
+      "category": "Analysis"
+    },
+    "Propellant Chemistry": {
+      "required": 75,
+      "category": "Domain"
+    }
+  },
+  "Spacecraft / Satellite Engineer": {
+    "MATLAB": {
+      "required": 90,
+      "category": "Tool"
+    },
+    "Simulink": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "Orbital Mechanics": {
+      "required": 90,
+      "category": "Core"
+    },
+    "CATIA": {
+      "required": 80,
+      "category": "CAD"
+    },
+    "Systems Engineering": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Satellite Communication": {
+      "required": 80,
+      "category": "Domain"
+    },
+    "Python": {
+      "required": 75,
+      "category": "Programming"
+    },
+    "Thermal Analysis": {
+      "required": 75,
+      "category": "Analysis"
+    },
+    "ANSYS": {
+      "required": 75,
+      "category": "FEA"
+    },
+    "C/C++": {
+      "required": 70,
+      "category": "Programming"
+    }
+  },
+  "Avionics Engineer": {
+    "C/C++": {
+      "required": 90,
+      "category": "Programming"
+    },
+    "RTOS": {
+      "required": 85,
+      "category": "OS"
+    },
+    "ARINC 429": {
+      "required": 80,
+      "category": "Protocol"
+    },
+    "MIL-STD-1553": {
+      "required": 75,
+      "category": "Protocol"
+    },
+    "MATLAB": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Simulink": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "DO-178C": {
+      "required": 80,
+      "category": "Standard"
+    },
+    "Embedded Linux": {
+      "required": 70,
+      "category": "OS"
+    },
+    "FPGA": {
+      "required": 75,
+      "category": "Hardware"
+    },
+    "Systems Engineering": {
+      "required": 75,
+      "category": "Core"
+    }
+  },
+  "Structural Design Engineer": {
+    "STAAD Pro": {
+      "required": 90,
+      "category": "Software"
+    },
+    "ETABS": {
+      "required": 85,
+      "category": "Software"
+    },
+    "SAP2000": {
+      "required": 80,
+      "category": "Software"
+    },
+    "AutoCAD": {
+      "required": 85,
+      "category": "CAD"
+    },
+    "Revit": {
+      "required": 75,
+      "category": "BIM"
+    },
+    "RCC Design": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Steel Design": {
+      "required": 85,
+      "category": "Core"
+    },
+    "IS Codes": {
+      "required": 85,
+      "category": "Standard"
+    },
+    "Foundation Design": {
+      "required": 80,
+      "category": "Core"
+    },
+    "BIM": {
+      "required": 70,
+      "category": "Technology"
+    }
+  },
+  "Construction Project Manager": {
+    "Primavera": {
+      "required": 90,
+      "category": "Software"
+    },
+    "MS Project": {
+      "required": 85,
+      "category": "Software"
+    },
+    "AutoCAD": {
+      "required": 80,
+      "category": "CAD"
+    },
+    "BIM": {
+      "required": 75,
+      "category": "Technology"
+    },
+    "Contract Management": {
+      "required": 85,
+      "category": "Domain"
+    },
+    "Cost Estimation": {
+      "required": 85,
+      "category": "Skill"
+    },
+    "Risk Management": {
+      "required": 80,
+      "category": "Skill"
+    },
+    "Stakeholder Management": {
+      "required": 80,
+      "category": "Soft Skill"
+    },
+    "Revit": {
+      "required": 70,
+      "category": "BIM"
+    },
+    "Site Management": {
+      "required": 85,
+      "category": "Core"
+    }
+  },
+  "Geotechnical Engineer": {
+    "PLAXIS": {
+      "required": 85,
+      "category": "Software"
+    },
+    "GeoStudio": {
+      "required": 80,
+      "category": "Software"
+    },
+    "AutoCAD": {
+      "required": 80,
+      "category": "CAD"
+    },
+    "Soil Mechanics": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Foundation Design": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Slope Stability": {
+      "required": 80,
+      "category": "Analysis"
+    },
+    "Ground Improvement": {
+      "required": 75,
+      "category": "Core"
+    },
+    "IS Codes": {
+      "required": 80,
+      "category": "Standard"
+    },
+    "Lab Testing": {
+      "required": 80,
+      "category": "Skill"
+    },
+    "Field Investigation": {
+      "required": 80,
+      "category": "Skill"
+    }
+  },
+  "Urban / City Planner": {
+    "ArcGIS": {
+      "required": 90,
+      "category": "GIS"
+    },
+    "AutoCAD": {
+      "required": 85,
+      "category": "CAD"
+    },
+    "Revit": {
+      "required": 70,
+      "category": "BIM"
+    },
+    "Urban Design": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Zoning Regulations": {
+      "required": 85,
+      "category": "Domain"
+    },
+    "Master Planning": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Transport Planning": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Stakeholder Engagement": {
+      "required": 80,
+      "category": "Soft Skill"
+    },
+    "GIS": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "Data Analysis": {
+      "required": 70,
+      "category": "Skill"
+    }
+  },
+  "Process / Chemical Engineer": {
+    "Aspen Plus": {
+      "required": 90,
+      "category": "Software"
+    },
+    "HYSYS": {
+      "required": 85,
+      "category": "Software"
+    },
+    "Process Simulation": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Mass Balance": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Heat Transfer": {
+      "required": 85,
+      "category": "Core"
+    },
+    "AutoCAD": {
+      "required": 75,
+      "category": "CAD"
+    },
+    "P&ID": {
+      "required": 85,
+      "category": "Core"
+    },
+    "HAZOP": {
+      "required": 80,
+      "category": "Safety"
+    },
+    "MATLAB": {
+      "required": 70,
+      "category": "Tool"
+    },
+    "Safety Regulations": {
+      "required": 80,
+      "category": "Domain"
+    }
+  },
+  "Petroleum / Reservoir Engineer": {
+    "Reservoir Simulation": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Petrel": {
+      "required": 85,
+      "category": "Software"
+    },
+    "Eclipse": {
+      "required": 80,
+      "category": "Software"
+    },
+    "Well Logging": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Drilling Engineering": {
+      "required": 80,
+      "category": "Core"
+    },
+    "HYSYS": {
+      "required": 75,
+      "category": "Software"
+    },
+    "PVT Analysis": {
+      "required": 80,
+      "category": "Analysis"
+    },
+    "Production Optimization": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Geology": {
+      "required": 75,
+      "category": "Domain"
+    },
+    "Python": {
+      "required": 65,
+      "category": "Programming"
+    }
+  },
+  "Pharma Process Engineer": {
+    "GMP": {
+      "required": 90,
+      "category": "Standard"
+    },
+    "Process Chemistry": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Regulatory Affairs": {
+      "required": 80,
+      "category": "Domain"
+    },
+    "cGMP": {
+      "required": 85,
+      "category": "Standard"
+    },
+    "Analytical Chemistry": {
+      "required": 80,
+      "category": "Core"
+    },
+    "HPLC": {
+      "required": 80,
+      "category": "Equipment"
+    },
+    "Validation": {
+      "required": 80,
+      "category": "Core"
+    },
+    "AutoCAD": {
+      "required": 65,
+      "category": "CAD"
+    },
+    "Quality Control": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Documentation": {
+      "required": 80,
+      "category": "Skill"
+    }
+  },
+  "Bioinformatics / Computational Biologist": {
+    "Python": {
+      "required": 85,
+      "category": "Programming"
+    },
+    "R": {
+      "required": 85,
+      "category": "Programming"
+    },
+    "BLAST": {
+      "required": 85,
+      "category": "Tool"
+    },
+    "Genomics": {
+      "required": 85,
+      "category": "Domain"
+    },
+    "Sequence Analysis": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Bioconductor": {
+      "required": 80,
+      "category": "Library"
+    },
+    "Machine Learning": {
+      "required": 75,
+      "category": "Concept"
+    },
+    "Linux": {
+      "required": 80,
+      "category": "OS"
+    },
+    "NGS": {
+      "required": 80,
+      "category": "Technology"
+    },
+    "Statistics": {
+      "required": 80,
+      "category": "Mathematics"
+    },
+    "SQL": {
+      "required": 65,
+      "category": "Database"
+    }
+  },
+  "Molecular Biologist / Genetic Engineer": {
+    "PCR": {
+      "required": 90,
+      "category": "Technique"
+    },
+    "CRISPR": {
+      "required": 85,
+      "category": "Technology"
+    },
+    "Cell Culture": {
+      "required": 85,
+      "category": "Technique"
+    },
+    "Sequencing": {
+      "required": 80,
+      "category": "Technology"
+    },
+    "Cloning": {
+      "required": 80,
+      "category": "Technique"
+    },
+    "Western Blot": {
+      "required": 80,
+      "category": "Technique"
+    },
+    "ELISA": {
+      "required": 80,
+      "category": "Technique"
+    },
+    "Microscopy": {
+      "required": 75,
+      "category": "Equipment"
+    },
+    "R": {
+      "required": 70,
+      "category": "Programming"
+    },
+    "Biosafety": {
+      "required": 85,
+      "category": "Standard"
+    }
+  },
+  "Medical Device Engineer": {
+    "Biocompatibility": {
+      "required": 85,
+      "category": "Standard"
+    },
+    "FDA Regulations": {
+      "required": 85,
+      "category": "Regulatory"
+    },
+    "ISO 13485": {
+      "required": 80,
+      "category": "Standard"
+    },
+    "CAD": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Biomechanics": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Verification & Validation": {
+      "required": 80,
+      "category": "Process"
+    },
+    "Risk Management": {
+      "required": 80,
+      "category": "Process"
+    },
+    "Sterilization": {
+      "required": 75,
+      "category": "Domain"
+    },
+    "MATLAB": {
+      "required": 70,
+      "category": "Tool"
+    },
+    "Python": {
+      "required": 65,
+      "category": "Programming"
+    }
+  },
+  "Materials / Metallurgical Engineer": {
+    "MATLAB": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "ANSYS": {
+      "required": 80,
+      "category": "FEA"
+    },
+    "Thermo-Calc": {
+      "required": 80,
+      "category": "Software"
+    },
+    "SEM": {
+      "required": 80,
+      "category": "Equipment"
+    },
+    "XRD": {
+      "required": 75,
+      "category": "Equipment"
+    },
+    "Heat Treatment": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Failure Analysis": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Corrosion": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Materials Testing": {
+      "required": 85,
+      "category": "Skill"
+    },
+    "Python": {
+      "required": 60,
+      "category": "Programming"
+    }
+  },
+  "Mining Engineer": {
+    "Surpac": {
+      "required": 85,
+      "category": "Software"
+    },
+    "Vulcan": {
+      "required": 80,
+      "category": "Software"
+    },
+    "Mine Planning": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Blast Design": {
+      "required": 85,
+      "category": "Core"
+    },
+    "AutoCAD": {
+      "required": 80,
+      "category": "CAD"
+    },
+    "Rock Mechanics": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Mine Safety": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Ventilation Design": {
+      "required": 75,
+      "category": "Core"
+    },
+    "ArcGIS": {
+      "required": 70,
+      "category": "GIS"
+    },
+    "Geotechnical": {
+      "required": 75,
+      "category": "Domain"
+    }
+  },
+  "Naval Architect": {
+    "MAXSURF": {
+      "required": 90,
+      "category": "Software"
+    },
+    "AutoCAD": {
+      "required": 85,
+      "category": "CAD"
+    },
+    "Ship Stability": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Structural Analysis": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Marine Propulsion": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Offshore Engineering": {
+      "required": 75,
+      "category": "Domain"
+    },
+    "MATLAB": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "Hydrostatics": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Resistance & Powering": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Classification Rules": {
+      "required": 80,
+      "category": "Standard"
+    }
+  },
+  "Soil / Agricultural Engineer": {
+    "ArcGIS": {
+      "required": 85,
+      "category": "GIS"
+    },
+    "AutoCAD": {
+      "required": 80,
+      "category": "CAD"
+    },
+    "MATLAB": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "Soil Science": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Irrigation Design": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Remote Sensing": {
+      "required": 75,
+      "category": "Technology"
+    },
+    "CROPWAT": {
+      "required": 80,
+      "category": "Software"
+    },
+    "Python": {
+      "required": 60,
+      "category": "Programming"
+    },
+    "GIS": {
+      "required": 80,
+      "category": "Tool"
+    },
+    "Farm Machinery": {
+      "required": 75,
+      "category": "Domain"
+    }
+  },
+  "MS / PhD - Higher Studies": {
+    "Research Methodology": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Academic Writing": {
+      "required": 85,
+      "category": "Skill"
+    },
+    "GATE / GRE": {
+      "required": 90,
+      "category": "Exam"
+    },
+    "Subject Expertise": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Literature Review": {
+      "required": 80,
+      "category": "Skill"
+    },
+    "Data Analysis": {
+      "required": 80,
+      "category": "Skill"
+    },
+    "Python / MATLAB": {
+      "required": 75,
+      "category": "Tool"
+    },
+    "Publications": {
+      "required": 70,
+      "category": "Achievement"
+    },
+    "Presentations": {
+      "required": 75,
+      "category": "Soft Skill"
+    }
+  },
+  "Entrepreneur / Startup Founder": {
+    "Business Planning": {
+      "required": 85,
+      "category": "Domain"
+    },
+    "Product Development": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Marketing": {
+      "required": 75,
+      "category": "Domain"
+    },
+    "Financial Management": {
+      "required": 80,
+      "category": "Domain"
+    },
+    "Leadership": {
+      "required": 85,
+      "category": "Soft Skill"
+    },
+    "Communication": {
+      "required": 85,
+      "category": "Soft Skill"
+    },
+    "Networking": {
+      "required": 80,
+      "category": "Soft Skill"
+    },
+    "Tech Stack": {
+      "required": 75,
+      "category": "Technical"
+    },
+    "Customer Research": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Fundraising": {
+      "required": 70,
+      "category": "Domain"
+    }
+  },
+  "IAS / IPS / Civil Services (UPSC)": {
+    "General Studies": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Current Affairs": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Essay Writing": {
+      "required": 85,
+      "category": "Skill"
+    },
+    "Optional Subject": {
+      "required": 85,
+      "category": "Core"
+    },
+    "CSAT": {
+      "required": 80,
+      "category": "Aptitude"
+    },
+    "Ethics & Integrity": {
+      "required": 85,
+      "category": "Core"
+    },
+    "Indian Polity": {
+      "required": 90,
+      "category": "Core"
+    },
+    "Economy": {
+      "required": 85,
+      "category": "Core"
+    },
+    "History & Geography": {
+      "required": 80,
+      "category": "Core"
+    },
+    "Answer Writing": {
+      "required": 85,
+      "category": "Skill"
+    }
+  }
+}
