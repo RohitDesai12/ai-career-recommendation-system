@@ -3,51 +3,53 @@
 :root {
   --font-size: 16px;
   
-  /* CareerCompass Redesigned Premium Dark Theme Colors */
-  --background: #0b1326;
-  --surface-1: #171f33;
-  --surface-2: #131b2e;
-  --border-color: #464554;
+  /* CareerCompass Warm Editorial Palette */
+  /* Background: #F7F3EA Warm Cream | Cards: #FFFDF8 | Primary: #1F5C45 Forest Green */
+  /* Secondary: #D6A85F Muted Gold | Accent: #C8754D Terracotta | Text: #202820 Deep Charcoal */
+  --background: #F7F3EA;
+  --surface-1: #FFFDF8;
+  --surface-2: #EFEAE0;
+  --border-color: #E5DDCF;
   
-  --primary: #6366f1;
-  --secondary: #0ea5e9;
-  --success: #10B981;
-  --danger: #ffafd3;
+  --primary: #1F5C45;
+  --secondary: #D6A85F;
+  --accent: #C8754D;
+  --success: #287556;
+  --danger: #B84A39;
   
-  --text-primary: #dae2fd;
-  --text-muted: #c7c4d7;
+  --text-primary: #202820;
+  --text-muted: #5E6860;
   
-  /* Standard Tailwind variables mapped to redesigned palette */
+  /* Standard Tailwind variables */
   --foreground: var(--text-primary);
   --card: var(--surface-1);
   --card-foreground: var(--text-primary);
   --popover: var(--surface-1);
   --popover-foreground: var(--text-primary);
   --primary-foreground: #ffffff;
-  --secondary-foreground: #ffffff;
+  --secondary-foreground: #202820;
   --success-foreground: #ffffff;
   --muted: var(--surface-2);
   --muted-foreground: var(--text-muted);
-  --accent: var(--surface-2);
-  --accent-foreground: var(--text-primary);
+  --accent-foreground: #ffffff;
   --destructive: var(--danger);
   --destructive-foreground: #ffffff;
   --border: var(--border-color);
   --input: transparent;
-  --input-background: var(--surface-2);
-  --switch-background: #cbced4;
+  --input-background: #EFEAE0;
+  --switch-background: #D5CCBE;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --ring: var(--primary);
-  --chart-1: var(--primary);
-  --chart-2: var(--success);
-  --chart-3: var(--secondary);
-  --chart-4: var(--danger);
-  --chart-5: #6366F1;
-  --radius: 0.5rem;
+  --chart-1: #1F5C45;
+  --chart-2: #D6A85F;
+  --chart-3: #C8754D;
+  --chart-4: #3D7A64;
+  --chart-5: #E2B970;
+  --radius: 0.75rem;
   
   /* Sidebar */
-  --sidebar: var(--surface-2);
+  --sidebar: #F4EFE6;
   --sidebar-foreground: var(--text-primary);
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: #ffffff;
@@ -56,26 +58,26 @@
   --sidebar-border: var(--border-color);
   --sidebar-ring: var(--primary);
 
-  /* Redesign custom variables */
-  --surface-dim: #0b1326;
-  --surface-bright: #31394d;
-  --surface-container: #171f33;
-  --surface-container-lowest: #060e20;
-  --surface-container-low: #131b2e;
-  --surface-container-high: #222a3d;
-  --surface-container-highest: #2d3449;
-  --on-surface: #dae2fd;
-  --on-surface-variant: #c7c4d7;
-  --outline: #908fa0;
-  --outline-variant: #464554;
-  --primary-container: #8083ff;
-  --on-primary-container: #0d0096;
-  --secondary-container: #00a2e6;
-  --tertiary: #ffafd3;
-  --tertiary-container: #e364a7;
-  --error: #ffb4ab;
-  --on-error: #690005;
-  --error-container: #93000a;
+  /* Surface and container tokens */
+  --surface-dim: #EAE4D7;
+  --surface-bright: #FFFDF8;
+  --surface-container: #FFFDF8;
+  --surface-container-lowest: #FFFFFF;
+  --surface-container-low: #F4EFE6;
+  --surface-container-high: #EBE4D6;
+  --surface-container-highest: #E2D9C8;
+  --on-surface: #202820;
+  --on-surface-variant: #5E6860;
+  --outline: #7A756B;
+  --outline-variant: #E5DDCF;
+  --primary-container: #E2EFE9;
+  --on-primary-container: #103B2B;
+  --secondary-container: #FBF4E4;
+  --tertiary: #C8754D;
+  --tertiary-container: #FAECE5;
+  --error: #B84A39;
+  --on-error: #ffffff;
+  --error-container: #FBE9E6;
 }
 
 @theme inline {
@@ -107,7 +109,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent: var(--sidebar-accent);
 
-  /* Redesign custom variables mapped to Tailwind colors */
+  /* Custom variables mapped to Tailwind colors */
   --color-surface-dim: var(--surface-dim);
   --color-surface-bright: var(--surface-bright);
   --color-surface-container: var(--surface-container);
@@ -129,46 +131,47 @@
   --color-error-container: var(--error-container);
 }
 
-html.light, :root.light, .light {
-  /* CareerCompass Redesigned Premium Light Theme Colors */
-  --background: #f8fafc;
-  --surface-1: #ffffff;
-  --surface-2: #f1f5f9;
-  --border-color: #e2e8f0;
+html.dark, :root.dark, .dark {
+  /* CareerCompass Deep Forest Charcoal Dark Palette */
+  --background: #131915;
+  --surface-1: #1B251F;
+  --surface-2: #16201A;
+  --border-color: #29382E;
   
-  --primary: #4f46e5;
-  --secondary: #0284c7;
-  --success: #10b981;
-  --danger: #ef4444;
+  --primary: #3EA07A;
+  --secondary: #D6A85F;
+  --accent: #C8754D;
+  --success: #34A853;
+  --danger: #E05D4A;
   
-  --text-primary: #0f172a;
-  --text-muted: #64748b;
+  --text-primary: #F7F3EA;
+  --text-muted: #9EADA2;
   
-  /* Standard Tailwind variables mapped to redesigned light palette */
+  /* Standard Tailwind variables mapped to dark palette */
   --foreground: var(--text-primary);
   --card: var(--surface-1);
   --card-foreground: var(--text-primary);
   --popover: var(--surface-1);
   --popover-foreground: var(--text-primary);
   --primary-foreground: #ffffff;
-  --secondary-foreground: #ffffff;
+  --secondary-foreground: #202820;
   --success-foreground: #ffffff;
   --muted: var(--surface-2);
   --muted-foreground: var(--text-muted);
-  --accent: var(--surface-2);
-  --accent-foreground: var(--text-primary);
+  --accent: var(--accent);
+  --accent-foreground: #ffffff;
   --destructive: var(--danger);
   --destructive-foreground: #ffffff;
   --border: var(--border-color);
   --input: transparent;
   --input-background: var(--surface-2);
-  --switch-background: #cbced4;
+  --switch-background: #36483E;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --ring: var(--primary);
   
   /* Sidebar */
-  --sidebar: var(--surface-2);
+  --sidebar: #141D17;
   --sidebar-foreground: var(--text-primary);
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: #ffffff;
@@ -178,25 +181,25 @@ html.light, :root.light, .light {
   --sidebar-ring: var(--primary);
 
   /* Redesign custom variables */
-  --surface-dim: #f8fafc;
-  --surface-bright: #ffffff;
-  --surface-container: #ffffff;
-  --surface-container-lowest: #ffffff;
-  --surface-container-low: #f1f5f9;
-  --surface-container-high: #e2e8f0;
-  --surface-container-highest: #cbd5e1;
-  --on-surface: #0f172a;
-  --on-surface-variant: #475569;
-  --outline: #94a3b8;
-  --outline-variant: #cbd5e1;
-  --primary-container: #e0e7ff;
-  --on-primary-container: #312e81;
-  --secondary-container: #e0f2fe;
-  --tertiary: #db2777;
-  --tertiary-container: #fce7f3;
-  --error: #b91c1c;
+  --surface-dim: #0E1410;
+  --surface-bright: #243329;
+  --surface-container: #1B251F;
+  --surface-container-lowest: #0E1410;
+  --surface-container-low: #141D17;
+  --surface-container-high: #223027;
+  --surface-container-highest: #2C3D32;
+  --on-surface: #F7F3EA;
+  --on-surface-variant: #9EADA2;
+  --outline: #839589;
+  --outline-variant: #29382E;
+  --primary-container: #163E2D;
+  --on-primary-container: #BEE4D3;
+  --secondary-container: #3B2E15;
+  --tertiary: #C8754D;
+  --tertiary-container: #422013;
+  --error: #E05D4A;
   --on-error: #ffffff;
-  --error-container: #fee2e2;
+  --error-container: #4A1A14;
 }
 
 @layer base {

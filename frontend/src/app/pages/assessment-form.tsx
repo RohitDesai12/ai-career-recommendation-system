@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight, Check, Loader2 } from "lucide-react";
 import { DndProvider } from "react-dnd";
@@ -42,7 +42,19 @@ export function AssessmentForm() {
 
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
+
+  // If the user already has saved test results and did not explicitly click "Retake", redirect to their results!
+  useEffect(() => {
+    if (!location.state?.retake) {
+      const savedFormData = localStorage.getItem("saved_career_assessment_formData");
+      const savedResults = localStorage.getItem("saved_career_results");
+      if (savedFormData || savedResults) {
+        navigate("/results", { replace: true });
+      }
+    }
+  }, [location.state, navigate]);
 
   const updateFormData = (data: Partial<typeof formData>) => {
     setFormData({ ...formData, ...data });
@@ -52,19 +64,23 @@ export function AssessmentForm() {
     if (currentStep < STEPS.length) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Navigate to results
+      // Complete & save assessment
       setSaving(true);
       try {
+        // Save to localStorage for persistence across navigation
+        localStorage.setItem("saved_career_assessment_formData", JSON.stringify(formData));
+        localStorage.removeItem("saved_career_results"); // Force recalculation with new inputs
+
         if (user) {
-           await axios.put("http://localhost:5000/api/profile", {
-             education: `${formData.branch} - ${formData.year}`,
-             skills: formData.skills,
-             interests: formData.interestAreas,
-             skill_ratings: formData.skillRatings || {}
-           });
+          await axios.put("http://localhost:5000/api/profile", {
+            education: `${formData.branch} - ${formData.year}`,
+            skills: formData.skills,
+            interests: formData.interestAreas,
+            skill_ratings: formData.skillRatings || {}
+          });
         }
       } catch (err) {
-        console.error("Failed to save profile on completion");
+        console.error("Failed to save profile on completion", err);
       } finally {
         setSaving(false);
         navigate("/results", { state: { formData } });
@@ -97,7 +113,7 @@ export function AssessmentForm() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="w-full py-12 px-6">
+      <div className="w-full py-12 px-6 bg-background text-foreground">
         <div className="max-w-4xl mx-auto">
           {/* Progress Bar */}
           <div className="mb-12">
@@ -108,101 +124,85 @@ export function AssessmentForm() {
                     <div
                       className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${
                         currentStep > step.id
-                          ? "bg-primary border-primary"
+                          ? "bg-primary border-primary text-white"
                           : currentStep === step.id
-                          ? "border-primary bg-card"
-                          : "border-border bg-card"
+                          ? "border-primary bg-card text-primary font-bold"
+                          : "border-border bg-card text-muted-foreground"
                       }`}
                     >
                       {currentStep > step.id ? (
                         <Check className="w-5 h-5 text-white" />
                       ) : (
-                        <span
-                          className={`${
-                            currentStep === step.id ? "text-primary" : "text-muted-foreground"
-                          }`}
-                        >
-                          {step.id}
-                        </span>
+                        <span className="text-sm font-semibold">{step.id}</span>
                       )}
                     </div>
-                    <span
-                      className={`mt-2 text-xs text-center hidden sm:block ${
-                        currentStep === step.id ? "text-foreground" : "text-muted-foreground"
-                      }`}
-                    >
+                    <span className="text-xs text-muted-foreground mt-2 hidden sm:block font-medium">
                       {step.label}
                     </span>
                   </div>
                   {index < STEPS.length - 1 && (
-                    <div className="flex-1 h-0.5 bg-slate-200 mx-2">
-                      <div
-                        className="h-full bg-primary transition-all"
-                        style={{
-                          width: currentStep > step.id ? "100%" : "0%",
-                        }}
-                      />
-                    </div>
+                    <div
+                      className={`h-0.5 flex-1 transition-all ${
+                        currentStep > step.id ? "bg-primary" : "bg-border"
+                      }`}
+                    />
                   )}
                 </div>
               ))}
             </div>
+            <div className="text-center sm:hidden">
+              <span className="text-sm font-medium text-foreground">
+                Step {currentStep} of {STEPS.length}: {STEPS[currentStep - 1].label}
+              </span>
+            </div>
           </div>
 
-          {/* Form Card */}
+          {/* Form Content */}
           <motion.div
-            className="relative p-8 rounded-2xl bg-card border border-border backdrop-blur-xl"
-            style={{
-              backgroundImage:
-                "linear-gradient(135deg, rgba(79, 142, 247, 0.05) 0%, transparent 50%)",
-            }}
+            key={currentStep}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="p-8 rounded-3xl bg-card border border-border shadow-xl mb-8"
           >
-            {/* Accent Line */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-indigo-500 rounded-t-2xl" />
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentStep}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                {renderStep()}
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Navigation Buttons */}
-            <div className="flex items-center justify-between mt-8 pt-6 border-t border-border">
-              <button
-                onClick={handleBack}
-                disabled={currentStep === 1}
-                className="flex items-center gap-2 px-6 py-3 rounded-lg border border-border text-foreground hover:border-primary hover:bg-primary/5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-border disabled:hover:bg-transparent"
-              >
-                <ChevronLeft className="w-5 h-5" />
-                Back
-              </button>
-
-              <div className="text-muted-foreground text-sm">
-                Step {currentStep} of {STEPS.length}
-              </div>
-
-              <button
-                onClick={handleNext}
-                disabled={saving}
-                className="flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white hover:bg-primary/90 transition-all disabled:opacity-70"
-              >
-                {saving ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <>
-                    {currentStep === STEPS.length ? "Get Results" : "Next"}
-                    <ChevronRight className="w-5 h-5" />
-                  </>
-                )}
-              </button>
-            </div>
+            {renderStep()}
           </motion.div>
+
+          {/* Navigation Buttons */}
+          <div className="flex items-center justify-between">
+            <button
+              onClick={handleBack}
+              disabled={currentStep === 1}
+              className="px-6 py-3 rounded-xl border border-border hover:bg-surface-container transition-all flex items-center gap-2 text-foreground font-semibold disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+            >
+              <ChevronLeft className="w-5 h-5" />
+              <span>Back</span>
+            </button>
+
+            <button
+              onClick={handleNext}
+              disabled={saving}
+              className="px-8 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-wider flex items-center gap-2 shadow-md shadow-primary/25 transition-all cursor-pointer disabled:opacity-50"
+            >
+              {saving ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>Analyzing Profile...</span>
+                </>
+              ) : currentStep === STEPS.length ? (
+                <>
+                  <span>Complete Assessment</span>
+                  <Check className="w-5 h-5" />
+                </>
+              ) : (
+                <>
+                  <span>Next Step</span>
+                  <ChevronRight className="w-5 h-5" />
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </DndProvider>

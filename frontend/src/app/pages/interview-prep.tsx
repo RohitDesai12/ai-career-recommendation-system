@@ -292,8 +292,8 @@ export function InterviewPrepPage() {
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" id="prep-glow" r="50%">
-              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.25"></stop>
-              <stop offset="100%" stopColor="#0b1326" stopOpacity="0"></stop>
+              <stop offset="0%" stopColor="#1F5C45" stopOpacity="0.2"></stop>
+              <stop offset="100%" stopColor="#F7F3EA" stopOpacity="0"></stop>
             </radialGradient>
           </defs>
           <circle className="animate-pulse" cx="15%" cy="20%" fill="url(#prep-glow)" r="35%"></circle>
@@ -765,7 +765,7 @@ export function InterviewPrepPage() {
                     <div className="w-1.5 bg-secondary/80 rounded-full animate-[bounce_1.2s_infinite_100ms] h-[20%]" />
                     <div className="w-1.5 bg-secondary/80 rounded-full animate-[bounce_1.2s_infinite_300ms] h-[55%]" />
                     <div className="w-1.5 bg-primary/80 rounded-full animate-[bounce_1.2s_infinite_200ms] h-[85%]" />
-                    <div className="w-1.5 bg-primary rounded-full animate-[bounce_1.2s_infinite_400ms] h-[100%] shadow-[0_0_12px_#6366f1]" />
+                    <div className="w-1.5 bg-primary rounded-full animate-[bounce_1.2s_infinite_400ms] h-[100%] shadow-[0_0_12px_#1F5C45]" />
                     <div className="w-1.5 bg-primary/80 rounded-full animate-[bounce_1.2s_infinite_200ms] h-[65%]" />
                     <div className="w-1.5 bg-secondary/80 rounded-full animate-[bounce_1.2s_infinite_500ms] h-[35%]" />
                     <div className="w-1.5 bg-secondary/80 rounded-full animate-[bounce_1.2s_infinite_150ms] h-[15%]" />

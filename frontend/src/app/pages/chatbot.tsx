@@ -871,7 +871,7 @@ export function ChatBot() {
                     <div className="w-1.5 bg-secondary/80 rounded-full animate-[bounce_1.2s_infinite_100ms] h-[20%]" />
                     <div className="w-1.5 bg-secondary/80 rounded-full animate-[bounce_1.2s_infinite_300ms] h-[55%]" />
                     <div className="w-1.5 bg-primary/80 rounded-full animate-[bounce_1.2s_infinite_200ms] h-[85%]" />
-                    <div className="w-1.5 bg-primary rounded-full animate-[bounce_1.2s_infinite_400ms] h-[100%] shadow-[0_0_12px_#6366f1]" />
+                    <div className="w-1.5 bg-primary rounded-full animate-[bounce_1.2s_infinite_400ms] h-[100%] shadow-[0_0_12px_#1F5C45]" />
                     <div className="w-1.5 bg-primary/80 rounded-full animate-[bounce_1.2s_infinite_200ms] h-[65%]" />
                     <div className="w-1.5 bg-secondary/80 rounded-full animate-[bounce_1.2s_infinite_500ms] h-[35%]" />
                     <div className="w-1.5 bg-secondary/80 rounded-full animate-[bounce_1.2s_infinite_150ms] h-[15%]" />

@@ -53,11 +53,11 @@ export function Step1Academic({ data, updateData }: Step1Props) {
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-indigo-500 flex items-center justify-center">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-sm">
           <GraduationCap className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h2 className="text-2xl text-foreground">Academic Background</h2>
+          <h2 className="text-2xl text-foreground font-bold">Academic Background</h2>
           <p className="text-muted-foreground">Tell us about your engineering education</p>
         </div>
       </div>
@@ -69,7 +69,7 @@ export function Step1Academic({ data, updateData }: Step1Props) {
           <select
             value={data.branch}
             onChange={(e) => handleBranchChange(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-[#4F8EF7]/20 transition-all"
+            className="w-full px-4 py-3 rounded-xl bg-muted border border-border text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
           >
             <option value="">Select your branch</option>
             {Object.entries(BRANCHES).map(([category, branches]) => (

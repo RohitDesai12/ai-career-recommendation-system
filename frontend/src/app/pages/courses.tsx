@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
+import axios from "axios";
+import { useAuth } from "../context/auth-context";
 
 import { COURSES } from "./coursesData";
 import type { Course } from "./coursesData";
@@ -151,9 +153,34 @@ const DEPARTMENTS = [
 ];
 
 export function Courses() {
+  const { user } = useAuth();
+  const [savedCourseIds, setSavedCourseIds] = useState<number[]>([]);
   const [selectedBranch, setSelectedBranch] = useState("All Departments");
   const [costFilter, setCostFilter] = useState<"All" | "Free" | "Paid">("All");
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    async function fetchSavedCourses() {
+      if (user) {
+        try {
+          const res = await axios.get("http://localhost:5000/api/profile/me");
+          setSavedCourseIds(res.data.savedCourses || []);
+        } catch (err) {
+          console.error("Error fetching profile / saved courses:", err);
+        }
+      }
+    }
+    fetchSavedCourses();
+  }, [user]);
+
+  const handleToggleSave = async (courseId: number) => {
+    try {
+      const res = await axios.put("http://localhost:5000/api/profile/save-course", { courseId });
+      setSavedCourseIds(res.data.savedCourses || []);
+    } catch (err) {
+      console.error("Error saving/unsaving course:", err);
+    }
+  };
 
   const filteredCourses = COURSES.filter((course) => {
     const matchesBranch = 
@@ -236,13 +263,12 @@ export function Courses() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredCourses.map((course) => {
             const theme = getPlatformTheme(course.platform);
+            const isSaved = savedCourseIds.includes(course.id);
             return (
-              <a
+              <div
                 key={course.id}
-                href={course.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group bg-surface-container rounded-2xl border border-outline-variant/10 overflow-hidden shadow-sm transition-all duration-300 flex flex-col justify-between ${theme.borderHover} ${theme.cardBg}`}
+                onClick={() => window.open(course.url, "_blank", "noopener,noreferrer")}
+                className={`group bg-surface-container rounded-2xl border border-outline-variant/10 overflow-hidden shadow-sm transition-all duration-300 flex flex-col justify-between cursor-pointer ${theme.borderHover} ${theme.cardBg}`}
               >
                 <div>
                   {/* Image Header with Brand badge and Cost Badge */}
@@ -266,6 +292,21 @@ export function Courses() {
                     }`}>
                       {course.cost}
                     </span>
+
+                    {/* Bookmark Save Toggle Button */}
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleToggleSave(course.id);
+                      }}
+                      className="absolute bottom-3 right-3 z-20 h-8 w-8 rounded-full bg-surface-container/85 border border-outline-variant/20 flex items-center justify-center hover:bg-surface-container hover:scale-105 active:scale-95 transition-all text-on-surface backdrop-blur-md shadow-sm"
+                      title={isSaved ? "Remove from saved courses" : "Save course"}
+                    >
+                      <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: isSaved ? "'FILL' 1" : undefined }}>
+                        bookmark
+                      </span>
+                    </button>
                   </div>
 
                   {/* Course Info */}
@@ -300,7 +341,7 @@ export function Courses() {
                     <span className="material-symbols-outlined text-[14px] transition-transform group-hover:translate-x-0.5">open_in_new</span>
                   </div>
                 </div>
-              </a>
+              </div>
             );
           })}
         </div>

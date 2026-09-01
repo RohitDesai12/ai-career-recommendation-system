@@ -41,6 +41,10 @@ const ProfileSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    savedCourses: {
+        type: [Number],
+        default: []
+    },
     updatedAt: {
         type: Date,
         default: Date.now

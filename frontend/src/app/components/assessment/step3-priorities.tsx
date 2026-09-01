@@ -97,11 +97,11 @@ export function Step3Priorities({ data, updateData }: Step3Props) {
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-indigo-500 flex items-center justify-center">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-sm">
           <Target className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h2 className="text-2xl text-foreground">Priorities</h2>
+          <h2 className="text-2xl text-foreground font-bold">Priorities</h2>
           <p className="text-muted-foreground">Rank your interests and career values</p>
         </div>
       </div>

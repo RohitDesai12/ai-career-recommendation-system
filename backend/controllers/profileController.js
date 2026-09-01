@@ -71,3 +71,42 @@ exports.updateProfile = async (req, res) => {
         res.status(500).send('Server Error');
     }
 };
+
+// @desc    Save/unsave a course
+// @route   PUT /api/profile/save-course
+// @access  Private
+exports.toggleSaveCourse = async (req, res) => {
+    const { courseId } = req.body;
+
+    if (courseId === undefined) {
+        return res.status(400).json({ msg: 'Please provide courseId' });
+    }
+
+    try {
+        let profile = await Profile.findOne({ user: req.user.id });
+
+        if (!profile) {
+            profile = new Profile({ user: req.user.id, savedCourses: [] });
+        }
+
+        if (!profile.savedCourses) {
+            profile.savedCourses = [];
+        }
+
+        const index = profile.savedCourses.indexOf(courseId);
+        if (index > -1) {
+            // Unsave
+            profile.savedCourses.splice(index, 1);
+        } else {
+            // Save
+            profile.savedCourses.push(courseId);
+        }
+
+        profile.updatedAt = Date.now();
+        await profile.save();
+        res.json(profile);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+};

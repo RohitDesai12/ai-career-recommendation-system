@@ -46,7 +46,7 @@ export function Login() {
       if (strength === 1) return "bg-error";
       if (strength === 2) return "bg-tertiary-container";
       if (strength === 3) return "bg-secondary";
-      return "bg-primary shadow-[0_0_8px_rgba(99,102,241,0.6)]";
+      return "bg-primary shadow-[0_0_8px_rgba(31,92,69,0.5)]";
     }
     return "bg-outline-variant/30";
   };
@@ -54,8 +54,8 @@ export function Login() {
   return (
     <div className="w-full flex items-center justify-center min-h-screen bg-background">
       <div className="flex w-full h-full min-h-screen lg:flex-row bg-background text-on-background relative overflow-hidden">
-        {/* Left Section: Abstract AI Visual (Desktop Only) */}
-        <div className="hidden lg:flex w-1/2 relative bg-surface-container-highest p-16 flex-col justify-between overflow-hidden">
+        {/* Left Section: Abstract Career Visual (Desktop Only) */}
+        <div className="hidden lg:flex w-1/2 relative bg-surface-container-low p-16 flex-col justify-between overflow-hidden border-r border-border">
           {/* Animated Background Decor */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute -top-1/4 -left-1/4 w-[150%] h-[150%] rounded-full bg-primary/10 blur-[100px] animate-pulse duration-10000"></div>
@@ -74,7 +74,7 @@ export function Login() {
 
           <div className="relative z-10 flex items-center gap-2 text-primary">
             <span className="material-symbols-outlined text-[28px]" style={{ fontVariationSettings: "'FILL' 1" }}>insights</span>
-            <span className="font-headline-md text-xl tracking-widest uppercase font-semibold">Nexus AI</span>
+            <span className="font-headline-md text-xl tracking-widest uppercase font-semibold">Career Compass</span>
           </div>
 
           <div className="relative z-10 max-w-md my-auto">
@@ -82,25 +82,25 @@ export function Login() {
               Empower your career trajectory.
             </h1>
             <p className="font-body-lg text-on-surface-variant text-base leading-relaxed">
-              Harness the power of predictive intelligence to navigate your professional growth with unprecedented clarity.
+              Harness the power of intelligent predictive insights to navigate your professional growth with clarity.
             </p>
           </div>
 
           {/* Decorative Graph Element */}
           <div className="relative z-10 w-full max-w-sm mt-auto">
-            <div className="flex items-end gap-2 h-24 p-4 bg-surface/40 backdrop-blur-md rounded-xl shadow-lg border border-outline-variant/10">
-              <div className="w-1/6 bg-primary/20 rounded-t-sm h-[30%] relative group">
+            <div className="flex items-end gap-2 h-24 p-4 bg-card/60 backdrop-blur-md rounded-2xl shadow-lg border border-border">
+              <div className="w-1/6 bg-primary/20 rounded-t-md h-[30%] relative group">
                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-inverse-surface text-inverse-on-surface font-label-sm text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Q1 Growth</div>
               </div>
-              <div className="w-1/6 bg-primary/40 rounded-t-sm h-[50%]"></div>
-              <div className="w-1/6 bg-secondary/60 rounded-t-sm h-[75%]"></div>
-              <div className="w-1/6 bg-primary/80 rounded-t-sm h-[60%]"></div>
-              <div className="w-1/6 bg-secondary rounded-t-sm h-[90%] relative shadow-[0_0_15px_rgba(137,206,255,0.4)]">
+              <div className="w-1/6 bg-primary/40 rounded-t-md h-[50%]"></div>
+              <div className="w-1/6 bg-secondary/60 rounded-t-md h-[75%]"></div>
+              <div className="w-1/6 bg-primary/80 rounded-t-md h-[60%]"></div>
+              <div className="w-1/6 bg-secondary rounded-t-md h-[90%] relative shadow-[0_0_15px_rgba(214,168,95,0.4)]">
                 <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-on-background shadow-[0_0_8px_rgba(255,255,255,0.8)]"></div>
               </div>
-              <div className="w-1/6 bg-primary rounded-t-sm h-[100%] relative shadow-[0_0_20px_rgba(192,193,255,0.5)]"></div>
+              <div className="w-1/6 bg-primary rounded-t-md h-[100%] relative shadow-[0_0_20px_rgba(31,92,69,0.4)]"></div>
             </div>
-            <div className="mt-2 flex justify-between font-label-sm text-[10px] text-on-surface-variant/50 uppercase tracking-widest">
+            <div className="mt-2 flex justify-between font-label-sm text-[10px] text-on-surface-variant/70 uppercase tracking-widest">
               <span>Analysis</span>
               <span>Projection</span>
             </div>
@@ -108,12 +108,12 @@ export function Login() {
         </div>
 
         {/* Right Section: Authentication Form */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 bg-surface relative z-10">
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 bg-background relative z-10">
           <div className="w-full max-w-md flex flex-col justify-center h-full">
             {/* Mobile Logo */}
             <div className="flex lg:hidden items-center gap-2 text-primary mb-12">
               <span className="material-symbols-outlined text-[28px]" style={{ fontVariationSettings: "'FILL' 1" }}>insights</span>
-              <span className="font-headline-md text-xl tracking-widest uppercase font-semibold">Nexus AI</span>
+              <span className="font-headline-md text-xl tracking-widest uppercase font-semibold">Career Compass</span>
             </div>
 
             <div className="mb-10">
@@ -191,7 +191,7 @@ export function Login() {
 
               {/* Submit Button */}
               <button 
-                className="w-full bg-gradient-to-r from-primary to-secondary text-white font-label-sm text-xs font-semibold py-4 rounded-xl uppercase tracking-widest hover:opacity-90 transition-opacity shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group disabled:opacity-75 disabled:cursor-not-allowed" 
+                className="w-full bg-primary text-white font-label-sm text-xs font-bold py-4 rounded-xl uppercase tracking-widest hover:bg-primary/90 transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2 group disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer" 
                 type="submit"
                 disabled={loading}
               >

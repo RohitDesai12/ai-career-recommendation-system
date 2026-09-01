@@ -58,11 +58,11 @@ export function Step4WorkStyle({ data, updateData }: Step4Props) {
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-indigo-500 flex items-center justify-center">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-sm">
           <Briefcase className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h2 className="text-2xl text-foreground">Work Style</h2>
+          <h2 className="text-2xl text-foreground font-bold">Work Style</h2>
           <p className="text-muted-foreground">How do you prefer to work?</p>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router";
 import { useAuth } from "../context/auth-context";
+import { useTheme } from "../context/theme-context";
 import { motion, AnimatePresence } from "motion/react";
 
 const NAV_ITEMS = [
@@ -15,25 +16,10 @@ const NAV_ITEMS = [
 
 export function Sidebar() {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  // Theme switcher state
-  const [theme, setTheme] = useState<"dark" | "light">(() => {
-    const saved = localStorage.getItem("theme");
-    return (saved as "dark" | "light") || "dark";
-  });
-
-  // Apply theme class to HTML element
-  useEffect(() => {
-    if (theme === "light") {
-      document.documentElement.classList.add("light");
-    } else {
-      document.documentElement.classList.remove("light");
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   // Click outside listener to dismiss profile popover
   useEffect(() => {
@@ -148,7 +134,7 @@ export function Sidebar() {
               </button>
               <button 
                 onClick={() => { 
-                  setTheme(prev => prev === "dark" ? "light" : "dark"); 
+                  toggleTheme(); 
                   setIsProfileMenuOpen(false); 
                 }}
                 className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-all gap-3 text-left w-full cursor-pointer"

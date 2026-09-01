@@ -5,6 +5,24 @@ import numpy as np
 import pandas as pd
 import json
 import random
+import os
+import re
+import io
+import urllib.request
+import pypdf
+
+# Load environment variables from .env if present
+try:
+    with open('.env', 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith('#') and '=' in line:
+                k, v = line.split('=', 1)
+                os.environ[k.strip()] = v.strip()
+except Exception:
+    pass
+
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY") 
 
 # Load Career ML models
 try:
@@ -53,7 +71,6 @@ def read_root():
 def assess_aptitude(data: dict):
     return {"score": 85, "top_traits": ["Analytical", "Problem Solving"]}
 
-# Aliases so the frontend's long branch names are correctly resolved
 BRANCH_ALIAS = {
     "Computer Science & Engineering": "CSE",
     "Information Technology": "IT",
@@ -85,13 +102,11 @@ def recommend_career(data: dict):
             if feature in career_encoders:
                 enc = career_encoders[feature]
                 val_str = str(val) if val is not None else "Unknown"
-                # Try alias if not found directly
                 if val_str not in enc.classes_ and feature == "Branch":
                     val_str = BRANCH_ALIAS.get(val_str, val_str)
                 if val_str in enc.classes_:
                     encoded_val = enc.transform([val_str])[0]
                 else:
-                    # Use middle of the encoder range instead of 0 to avoid bias
                     encoded_val = len(enc.classes_) // 2
             else:
                 try: encoded_val = float(val) if val is not None else 0.0
@@ -100,10 +115,8 @@ def recommend_career(data: dict):
 
         input_array = np.array([feature_values])
         
-        # Get probabilities for ALL classes and rank them
         try:
             probs = career_model.predict_proba(input_array)[0]
-            # Build (career_name, probability) pairs and sort descending
             career_probs = []
             for idx, prob in enumerate(probs):
                 if idx < len(career_classes):
@@ -113,7 +126,6 @@ def recommend_career(data: dict):
             recommended_career = career_probs[0][0]
             confidence = round(career_probs[0][1], 2)
             
-            # Top 5 alternatives (excluding the primary)
             alternatives = [
                 {"title": c[0], "confidence": round(c[1], 2)}
                 for c in career_probs[1:6]
@@ -137,141 +149,319 @@ def recommend_career(data: dict):
         print("Recommendation error:", e)
         return {"recommendation": "Software Engineer", "confidence": 50.0}
 
+def extract_text_from_pdf(file_bytes: bytes) -> str:
+    """Extract full raw text content from uploaded PDF bytes."""
+    try:
+        reader = pypdf.PdfReader(io.BytesIO(file_bytes))
+        extracted_pages = []
+        for page in reader.pages:
+            t = page.extract_text()
+            if t:
+                extracted_pages.append(t)
+        return "\n".join(extracted_pages).strip()
+    except Exception as e:
+        print("Error extracting text with pypdf:", e)
+        return ""
+
+def classify_document_with_llm(extracted_text: str, selected_branch: str, selected_role: str) -> dict:
+    """
+    Use an LLM classifier to determine:
+    1. Whether the extracted text represents a genuine candidate resume (never trusting filename).
+    2. How well the candidate's actual background/field matches the selected branch and target role.
+    """
+    prompt = f"""You are an expert document and career domain classifier.
+Given the extracted text, verify if it is a genuine candidate resume or CV, and evaluate the field alignment between the resume content and the user's selected engineering branch and target job role.
+
+Selected Engineering Branch: "{selected_branch}"
+Selected Target Job Role: "{selected_role}"
+
+CRITICAL RULES:
+1. Ignore and never trust the filename or external hints. Focus purely on the semantic content of the document text.
+2. If it is NOT a resume (e.g. homework assignment, syllabus, problem set, lecture note, essay, invoice, generic article):
+   - set "document_type": "not_resume"
+   - explain clearly why in "explanation".
+3. If it IS a genuine resume:
+   - set "document_type": "resume"
+   - identify candidate's primary detected domain (detected_field).
+   - recommend the best matching engineering branch (recommended_branch, e.g. "Computer Science & Engineering", "Mechanical Engineering", "Civil Engineering", "Electrical & Electronics Engineering").
+   - evaluate field_match_score (0 to 100 integer) comparing resume skills/experience with the selected branch and role.
+   - match_status:
+     * "strong" (score >= 70): Strong direct domain alignment.
+     * "partial" (score between 40 and 69): Moderate overlap (e.g. CS profile for ECE/Embedded or Mechatronics).
+     * "mismatch" (score < 40): Major domain mismatch (e.g. CS profile for Civil/Mechanical/Chemical).
+   - field_match_explanation: 1-2 sentence description explaining the fit or discrepancy.
+
+Document text snippet (first 3500 chars):
+\"\"\"
+{extracted_text[:3500]}
+\"\"\"
+
+Return strictly a valid JSON object matching this schema:
+{{
+  "document_type": "resume" | "not_resume",
+  "confidence": 0.95,
+  "candidate_name": "Full Name" | null,
+  "detected_field": "Computer Science & Engineering",
+  "recommended_branch": "Computer Science & Engineering",
+  "field_match_score": 92,
+  "match_status": "strong" | "partial" | "mismatch",
+  "field_match_explanation": "1-2 concise sentences explaining the overlap or fit.",
+  "has_experience": true | false,
+  "has_skills": true | false,
+  "has_education": true | false,
+  "explanation": "Clear explanation of the classification"
+}}"""
+
+    # 1. Attempt Groq LLM classification
+    try:
+        req = urllib.request.Request(
+            'https://api.groq.com/openai/v1/chat/completions',
+            headers={
+                'Authorization': f'Bearer {GROQ_API_KEY}',
+                'Content-Type': 'application/json',
+                'User-Agent': 'CareerRecommender/1.0'
+            },
+            data=json.dumps({
+                'model': 'openai/gpt-oss-120b',
+                'messages': [{'role': 'user', 'content': prompt}],
+                'response_format': {'type': 'json_object'},
+                'temperature': 0.1,
+                'max_tokens': 600
+            }).encode('utf-8')
+        )
+
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            result_json = json.loads(data['choices'][0]['message']['content'])
+            if "document_type" in result_json:
+                return result_json
+    except Exception as llm_err:
+        print("LLM classification failed, using robust heuristic fallback:", llm_err)
+
+    # 2. Heuristic fallback in case LLM is offline
+    lower_text = extracted_text.lower()
+    
+    # Non-resume triggers
+    not_resume_keywords = ['homework', 'problem 1', 'problem 2', 'due date', 'syllabus', 'assignment', 'submission date', 'quiz', 'midterm', 'final exam', 'invoice #', 'receipt #', 'terms and conditions']
+    not_resume_score = sum(1 for kw in not_resume_keywords if kw in lower_text)
+    
+    # Resume triggers
+    has_contact = bool(re.search(r'[\w\.-]+@[\w\.-]+\.\w+', lower_text) or re.search(r'\+?\d[\d\s-]{8,}', lower_text))
+    has_edu = any(k in lower_text for k in ['education', 'b.tech', 'bachelor', 'master', 'university', 'college', 'cgpa', 'gpa'])
+    has_skills = any(k in lower_text for k in ['skills', 'technologies', 'programming', 'languages', 'frameworks', 'tools'])
+    has_exp = any(k in lower_text for k in ['experience', 'internship', 'employment', 'work history', 'projects'])
+    
+    resume_score = sum([has_contact, has_edu, has_skills, has_exp])
+    
+    if not_resume_score >= 2 or (resume_score < 2 and not (has_edu and has_skills)):
+        return {
+            "document_type": "not_resume",
+            "confidence": 0.90,
+            "candidate_name": None,
+            "detected_field": "Not applicable",
+            "recommended_branch": selected_branch,
+            "field_match_score": 0,
+            "match_status": "mismatch",
+            "field_match_explanation": "The document lacks essential resume sections (contact details, structured education, or skill listings) and appears to be a homework assignment, article, or general document.",
+            "has_experience": has_exp,
+            "has_skills": has_skills,
+            "has_education": has_edu,
+            "explanation": "The document lacks essential resume sections."
+        }
+    
+    # Domain keyword heuristics
+    cs_keywords = ['python', 'java', 'react', 'javascript', 'c++', 'sql', 'docker', 'git', 'web', 'fastapi', 'node', 'algorithms', 'software', 'frontend', 'backend']
+    ece_keywords = ['vlsi', 'verilog', 'embedded', 'microcontroller', 'arduino', 'fpga', 'circuits', 'signal processing', 'matlab', 'sensors', 'pcb']
+    mech_keywords = ['cad', 'solidworks', 'ansys', 'autocad', 'thermal', 'hvac', 'manufacturing', 'robotics', 'catia', 'fluid mechanics', 'thermodynamics']
+    civil_keywords = ['structural', 'surveying', 'concrete', 'geotechnical', 'staad', 'construction', 'transportation', 'hydraulics', 'autocad civil']
+    
+    cs_count = sum(1 for kw in cs_keywords if kw in lower_text)
+    ece_count = sum(1 for kw in ece_keywords if kw in lower_text)
+    mech_count = sum(1 for kw in mech_keywords if kw in lower_text)
+    civil_count = sum(1 for kw in civil_keywords if kw in lower_text)
+    
+    domain_counts = {
+        "Computer Science & Engineering": cs_count,
+        "Electronics & Communication Engineering": ece_count,
+        "Mechanical Engineering": mech_count,
+        "Civil Engineering": civil_count
+    }
+    
+    detected_field = max(domain_counts, key=domain_counts.get)
+    if domain_counts[detected_field] == 0:
+        detected_field = selected_branch or "Computer Science & Engineering"
+        
+    # Check match with selected branch
+    is_same_branch = (detected_field.lower() in (selected_branch or "").lower()) or ((selected_branch or "").lower() in detected_field.lower())
+    
+    if is_same_branch:
+        field_match_score = 90
+        match_status = "strong"
+        explanation = f"Your resume strongly aligns with {selected_branch}."
+    elif (detected_field == "Computer Science & Engineering" and "electronics" in (selected_branch or "").lower()) or \
+         (detected_field == "Electronics & Communication Engineering" and "computer" in (selected_branch or "").lower()) or \
+         (detected_field == "Mechanical Engineering" and "electrical" in (selected_branch or "").lower()):
+        field_match_score = 60
+        match_status = "partial"
+        explanation = f"Your resume is primarily focused on {detected_field}, but has transferable skills for {selected_branch}."
+    else:
+        field_match_score = 18
+        match_status = "mismatch"
+        explanation = f"Your resume appears to target {detected_field}, while {selected_branch} was selected."
+        
+    return {
+        "document_type": "resume",
+        "confidence": 0.88,
+        "candidate_name": "Candidate",
+        "detected_field": detected_field,
+        "recommended_branch": detected_field,
+        "field_match_score": field_match_score,
+        "match_status": match_status,
+        "field_match_explanation": explanation,
+        "has_experience": has_exp,
+        "has_skills": has_skills,
+        "has_education": has_edu,
+        "explanation": "Genuine candidate resume validated."
+    }
+
+COMMON_ACTION_VERBS = [
+    "developed", "created", "built", "designed", "implemented", "managed", "led", "engineered",
+    "architected", "optimized", "integrated", "analyzed", "deployed", "spearheaded", "configured",
+    "programmed", "collaborated", "researched", "improved", "automated", "trained", "delivered"
+]
+
 @app.post("/api/analyze-resume")
-def analyze_resume(
+async def analyze_resume(
     branch: str = Form(...),
     jobRole: str = Form(...),
     file: UploadFile = File(...)
 ):
     try:
-        # In a real scenario, we would extract text from the PDF file.
-        # Here we mock the text extraction and focus on the ML application.
+        # 1. Read file bytes and extract PDF text
+        file_bytes = await file.read()
+        raw_text = extract_text_from_pdf(file_bytes)
         
-        # 1. Rule-based extraction (Mocked based on typical student resume)
-        # Randomize slightly to make the UI feel alive
-        word_count = random.randint(250, 600)
-        action_verbs = random.randint(5, 15)
-        intern_months = random.randint(0, 6)
-        has_summary = random.choice([0, 1])
-        has_projects = random.choice([0, 1])
-        formatting_score = random.randint(60, 95)
+        # Check if text is completely empty
+        if not raw_text or len(raw_text.strip()) < 30:
+            return {
+                "document_type": "not_resume",
+                "confidence": 0.99,
+                "candidate_name": None,
+                "career_domain": "Not applicable",
+                "has_experience": False,
+                "has_skills": False,
+                "has_education": False,
+                "explanation": "The uploaded file could not be parsed into readable text or is empty. Please upload a standard text PDF."
+            }
+
+        # 2. Run LLM Document Classifier + Field Alignment Matcher
+        classification = classify_document_with_llm(raw_text, branch, jobRole)
         
+        # 3. IF NOT A RESUME: Do NOT calculate any score, do NOT estimate ATS compatibility!
+        if classification.get("document_type") == "not_resume":
+            return {
+                "document_type": "not_resume",
+                "confidence": classification.get("confidence", 0.94),
+                "candidate_name": classification.get("candidate_name"),
+                "career_domain": classification.get("career_domain", "Not applicable"),
+                "has_experience": classification.get("has_experience", False),
+                "has_skills": classification.get("has_skills", False),
+                "has_education": classification.get("has_education", False),
+                "explanation": classification.get("explanation", "The uploaded document does not appear to be a genuine resume or CV.")
+            }
+
+        # 4. Genuine Resume Analysis on real text
+        words = raw_text.split()
+        word_count = len(words)
+        
+        lower_text = raw_text.lower()
+        
+        # Detect action verbs
+        action_verbs_matched = [v for v in COMMON_ACTION_VERBS if re.search(r'\b' + v + r'\b', lower_text)]
+        action_verbs_count = len(action_verbs_matched)
+        
+        # Detect real sections
         sections_found = {
-            "Summary": has_summary == 1,
-            "Skills": True,
-            "Experience": intern_months > 0,
-            "Education": True,
-            "Projects": has_projects == 1,
-            "Certifications": random.choice([True, False])
+            "Summary": any(s in lower_text for s in ["summary", "objective", "profile", "about me"]),
+            "Skills": any(s in lower_text for s in ["skills", "technical skills", "technologies", "proficiencies", "competencies"]),
+            "Experience": any(s in lower_text for s in ["experience", "employment", "work experience", "internship", "intern"]),
+            "Education": any(s in lower_text for s in ["education", "academic", "university", "b.tech", "degree", "college"]),
+            "Projects": any(s in lower_text for s in ["projects", "personal projects", "academic projects", "key projects"]),
+            "Certifications": any(s in lower_text for s in ["certifications", "certificates", "courses", "licenses", "training"])
         }
         
-        sections_count = sum([1 for v in sections_found.values() if v])
+        sections_count = sum(1 for v in sections_found.values() if v)
         
-        # 2. Keyword matching
-        target_keywords = career_keywords_map.get(jobRole, ["Python", "SQL", "Git", "React", "Linux"])
-        random.shuffle(target_keywords)
-        matched_kws = target_keywords[:len(target_keywords)//2 + 1]
+        # Estimate internship months from experience text
+        intern_months = 3 if sections_found["Experience"] else 0
+        
+        # Keyword matching against target job role
+        target_keywords = career_keywords_map.get(jobRole, ["Python", "SQL", "Git", "React", "Linux", "Docker", "API"])
+        matched_kws = [k for k in target_keywords if re.search(r'\b' + re.escape(k.lower()) + r'\b', lower_text)]
         missing_kws = [k for k in target_keywords if k not in matched_kws]
         
         kw_matched_count = len(matched_kws)
         kw_total = len(target_keywords)
         kw_score = int((kw_matched_count / max(1, kw_total)) * 100)
         
-        # 3. Calculate ATS Score (Formula-based)
-        # Weights: Keywords (40%), Sections (30%), Formatting (20%), Word Count (10%)
-        word_count_score = 100 if 300 <= word_count <= 600 else 50
+        # Formatting score based on structure & length
+        formatting_score = min(98, max(55, 60 + (sections_count * 5) + (10 if 300 <= word_count <= 700 else 0)))
+        
+        # Calculate ATS Score (Keywords 40%, Sections 30%, Formatting 20%, Word Count 10%)
+        word_count_score = 100 if 300 <= word_count <= 700 else (75 if 200 <= word_count <= 900 else 40)
         ats_score = int((kw_score * 0.4) + ((sections_count / len(sections_found)) * 100 * 0.3) + (formatting_score * 0.2) + (word_count_score * 0.1))
         
-        # 4. Strength Analysis
-        resume_quality = 1 # 0: Poor, 1: Average, 2: Good
         strength_str = "Average"
-        if ats_score > 80:
-            resume_quality = 2
+        resume_quality = 1
+        if ats_score >= 80:
             strength_str = "Good"
+            resume_quality = 2
         elif ats_score < 50:
-            resume_quality = 0
             strength_str = "Poor"
-            
-        # 5. ML Prediction (Shortlist Chance)
-        shortlist_chance = 0.0
-        if resume_model:
-            # Build feature array matching resume_features
-            feat_dict = {
-                "Branch": branch,
-                "Year": 3, # Mock year
-                "CGPA": 8.0, # Mock CGPA
-                "Word_Count": word_count,
-                "Has_Summary": has_summary,
-                "Has_Skills": 1,
-                "Has_Experience": 1 if intern_months > 0 else 0,
-                "Has_Education": 1,
-                "Has_Projects": has_projects,
-                "Has_Certifications": 1 if sections_found["Certifications"] else 0,
-                "Has_Achievements": 0,
-                "Sections_Count": sections_count,
-                "Has_Internship": 1 if intern_months > 0 else 0,
-                "Internship_Months": intern_months,
-                "Action_Verb_Count": action_verbs,
-                "Keywords_Matched": kw_matched_count,
-                "Keywords_Total": kw_total,
-                "Keyword_Match_Score": kw_score,
-                "Formatting_Score": formatting_score,
-                "ATS_Score": ats_score,
-                "Resume_Quality": resume_quality
-            }
-            
-            f_vals = []
-            for f in resume_features:
-                val = feat_dict.get(f, 0)
-                if f in resume_encoders:
-                    enc = resume_encoders[f]
-                    val_str = str(val)
-                    if val_str in enc.classes_:
-                        val = enc.transform([val_str])[0]
-                    else:
-                        val = enc.transform([enc.classes_[0]])[0]
-                f_vals.append(val)
-                
-            X_res = np.array([f_vals])
-            try:
-                # If model predicts probability
-                probs = resume_model.predict_proba(X_res)[0]
-                raw_chance = float(probs[1]) * 100 if len(probs) > 1 else float(probs[0]) * 100
-            except:
-                # If it predicts binary
-                pred = resume_model.predict(X_res)[0]
-                raw_chance = 85.0 if pred == 1 else 35.0
-                
-            # Because ML trees often output polarized probs (99.9% or 0.1%),
-            # we blend it with ats_score for a more dynamic and realistic user experience:
-            if raw_chance > 95:
-                shortlist_chance = 70.0 + (ats_score / 100.0) * 25.0
-            elif raw_chance < 5:
-                shortlist_chance = max(5.0, ats_score * 0.5)
-            else:
-                shortlist_chance = raw_chance
-        else:
-            shortlist_chance = min(95.0, ats_score * 1.1)
-            
-        # 6. Generate Suggestions
+            resume_quality = 0
+
+        # Shortlist prediction
+        shortlist_chance = round(min(98.0, max(15.0, (ats_score * 0.75) + (kw_score * 0.25) + random.uniform(-2, 3))), 1)
+        
+        # Generate targeted suggestions
         suggestions = []
         if not sections_found["Experience"]:
-            suggestions.append({"priority": "High", "text": "Add work experience or internship section — most recruiters filter by this first"})
+            suggestions.append({"priority": "High", "text": "Add work experience or internship section — recruiters filter by this first"})
         if missing_kws:
             suggestions.append({"priority": "High", "text": f"Include missing keywords in your skills: {', '.join(missing_kws[:3])}"})
         if word_count < 300:
-            suggestions.append({"priority": "Medium", "text": f"Resume is short at {word_count} words — expand project descriptions to 400–600 words"})
+            suggestions.append({"priority": "Medium", "text": f"Resume is concise at {word_count} words — expand project descriptions to 400–600 words"})
+        elif word_count > 800:
+            suggestions.append({"priority": "Medium", "text": f"Resume is quite long ({word_count} words) — condense to 1–2 focused pages"})
         if not sections_found["Certifications"]:
-            suggestions.append({"priority": "Medium", "text": "Add relevant certifications to strengthen your profile"})
-        if action_verbs < 10:
-            suggestions.append({"priority": "Low", "text": "Use more action verbs to start each bullet point (e.g., Developed, Implemented)"})
+            suggestions.append({"priority": "Medium", "text": "Add relevant industry certifications to strengthen your technical credibility"})
+        if action_verbs_count < 8:
+            suggestions.append({"priority": "Low", "text": "Use more strong action verbs to start each bullet point (e.g., Developed, Engineered, Optimized)"})
             
         if not suggestions:
-            suggestions.append({"priority": "Low", "text": "Resume looks great! Consider tailoring it further for specific companies."})
+            suggestions.append({"priority": "Low", "text": "Resume structure looks strong! Continue tailoring keywords for specific job postings."})
+
+        # Field match object
+        field_match_data = {
+            "score": int(classification.get("field_match_score", 85)),
+            "status": classification.get("match_status", "strong"),
+            "detected_field": classification.get("detected_field", branch),
+            "recommended_branch": classification.get("recommended_branch", branch),
+            "explanation": classification.get("field_match_explanation", f"Resume aligns with {branch}."),
+        }
 
         return {
+            "document_type": "resume",
+            "confidence": classification.get("confidence", 0.95),
+            "candidate_name": classification.get("candidate_name") or "Candidate",
+            "career_domain": classification.get("detected_field") or branch,
+            "has_experience": classification.get("has_experience", sections_found["Experience"]),
+            "has_skills": classification.get("has_skills", sections_found["Skills"]),
+            "has_education": classification.get("has_education", sections_found["Education"]),
+            "explanation": classification.get("explanation", "Genuine candidate resume validated."),
+            "field_match": field_match_data,
             "atsScore": ats_score,
-            "shortlistChance": round(shortlist_chance, 1),
+            "shortlistChance": shortlist_chance,
             "resumeStrength": strength_str,
             "sections": [{"name": k, "found": v} for k, v in sections_found.items()],
             "matchedKeywords": matched_kws,
@@ -280,7 +470,7 @@ def analyze_resume(
             "suggestions": suggestions,
             "stats": {
                 "wordCount": word_count,
-                "actionVerbs": action_verbs,
+                "actionVerbs": action_verbs_count,
                 "internshipMonths": intern_months,
                 "formattingScore": formatting_score
             }
@@ -308,16 +498,14 @@ def get_available_careers():
 @app.post("/api/skill-gap")
 def skill_gap_analysis(data: dict):
     career = data.get("career", "")
-    user_ratings = data.get("skill_ratings", {})  # {skillName: {level, score}}
+    user_ratings = data.get("skill_ratings", {})
 
-    # Load required skills
     try:
         with open('required_skills.json', 'r', encoding='utf-8') as f:
             required_skills_data = json.load(f)
     except:
         required_skills_data = {}
 
-    # Load resources
     try:
         with open('skill_resources.json', 'r', encoding='utf-8') as f:
             resources_data = json.load(f)
@@ -335,7 +523,6 @@ def skill_gap_analysis(data: dict):
     for skill_name, info in req_skills.items():
         required_score = info.get("required", 50)
         category = info.get("category", "General")
-        # Get user's current score for this skill
         user_skill = user_ratings.get(skill_name, {})
         current_score = user_skill.get("score", 0) if isinstance(user_skill, dict) else 0
 
@@ -343,13 +530,12 @@ def skill_gap_analysis(data: dict):
         total_required += required_score
         total_current += min(current_score, required_score)
 
-        # Determine color based on gap
         if gap <= 0:
-            color = "#1D9E75"  # Green - met
+            color = "#1D9E75"
         elif gap <= 25:
-            color = "#EF9F27"  # Amber - close
+            color = "#EF9F27"
         else:
-            color = "#E24B4A"  # Red - big gap
+            color = "#E24B4A"
 
         skills_result.append({
             "name": skill_name,
@@ -360,17 +546,13 @@ def skill_gap_analysis(data: dict):
             "color": color
         })
 
-    # Sort: biggest gaps first
     skills_result.sort(key=lambda x: x["gap"], reverse=True)
-
     readiness = int((total_current / max(1, total_required)) * 100)
 
-    # Estimate time: roughly 1 month per 100 gap points
     total_gap = sum(s["gap"] for s in skills_result)
     months = max(1, round(total_gap / 100))
     time_estimate = f"~{months} months"
 
-    # Gather resources for skills with gaps
     resources_result = []
     for s in skills_result:
         if s["gap"] > 0 and s["name"] in resources_data:
@@ -387,7 +569,7 @@ def skill_gap_analysis(data: dict):
         "skills": skills_result,
         "readiness": readiness,
         "time_estimate": time_estimate,
-        "resources": resources_result[:10],  # Top 10 resources
+        "resources": resources_result[:10],
         "available_careers": list(required_skills_data.keys())
     }
 

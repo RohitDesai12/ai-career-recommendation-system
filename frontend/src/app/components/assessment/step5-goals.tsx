@@ -64,11 +64,11 @@ export function Step5Goals({ data, updateData }: Step5Props) {
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-indigo-500 flex items-center justify-center">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-sm">
           <Trophy className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h2 className="text-2xl text-foreground">Goals & Aspirations</h2>
+          <h2 className="text-2xl text-foreground font-bold">Goals & Aspirations</h2>
           <p className="text-muted-foreground">What are your career goals?</p>
         </div>
       </div>
