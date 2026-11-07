@@ -1,5 +1,6 @@
 const axios = require('axios');
-require('dotenv').config({ path: 'c:/Users/rohit/Documents/project2/backend/.env' });
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
 async function testClassifier(docText) {
   const prompt = `You are an expert document classifier.

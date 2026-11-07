@@ -4,11 +4,23 @@ const Profile = require('../models/Profile');
 const ChatSession = require('../models/ChatSession');
 
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const GROQ_MODELS = ['openai/gpt-oss-120b', 'qwen/qwen3.8-27b', 'openai/gpt-oss-20b', 'groq/compound'];
+const GROQ_MODELS = [
+    'llama-3.3-70b-versatile',
+    'llama-3.1-8b-instant',
+    'llama3-70b-8192',
+    'llama3-8b-8192',
+    'mixtral-8x7b-32768',
+    'gemma2-9b-it',
+    'openai/gpt-oss-120b',
+    'qwen/qwen3.8-27b'
+];
 
 // Robust multi-model Groq caller
 const callGroq = async (messages, responseFormat = null) => {
     const GROQ_API_KEY = process.env.GROQ_API_KEY;
+    if (!GROQ_API_KEY) {
+        throw new Error('GROQ_API_KEY is not defined in environment variables');
+    }
     
     let lastError = null;
     for (const model of GROQ_MODELS) {
@@ -27,7 +39,7 @@ const callGroq = async (messages, responseFormat = null) => {
             const response = await axios.post(GROQ_API_URL, payload, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`,
+                    'Authorization': `Bearer ${GROQ_API_KEY}`,
                     'User-Agent': 'CareerRecommender/1.0'
                 },
                 timeout: 15000

@@ -3,6 +3,7 @@ import { Upload, FileText, CheckCircle2, XCircle, TrendingUp, ArrowLeft, AlertTr
 import { motion } from "motion/react";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { CircularProgress } from "../components/ui/circular-progress";
 
 // Branch & Roles mapping
 const BRANCH_ROLES: Record<string, string[]> = {
@@ -117,8 +118,12 @@ export function ResumeAnalyzer() {
       formData.append("branch", mappedBranchForAnalysis);
       formData.append("jobRole", jobRole);
 
+      const token = localStorage.getItem("token");
       const res = await axios.post("http://localhost:5000/api/ml/analyze-resume", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          ...(token ? { "x-auth-token": token } : {})
+        }
       });
       
       const analysisResult = { ...res.data, role: jobRole };
@@ -127,22 +132,30 @@ export function ResumeAnalyzer() {
       // Only save to profile if document is verified as genuine resume AND is strong match
       if (res.data.document_type === "resume" && res.data.atsScore !== undefined && res.data.field_match?.status === "strong") {
         try {
+          const strengths = (res.data.matchedKeywords || []).slice(0, 4);
+          const improvements = (res.data.suggestions || []).map((s: any) => typeof s === 'string' ? s : s.text).slice(0, 3);
+
           await axios.put("http://localhost:5000/api/profile", {
             resumeData: {
               atsScore: res.data.atsScore,
               shortlistChance: res.data.shortlistChance,
               keywordScore: res.data.keywordScore,
               role: jobRole,
+              strengths: strengths,
+              improvements: improvements,
               analyzedAt: new Date().toISOString()
             }
+          }, {
+            headers: token ? { "x-auth-token": token } : {}
           });
         } catch (saveErr) {
           console.error("Could not save resume data to profile", saveErr);
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert("Error analyzing resume. Make sure backend and ML services are running.");
+      const errorMsg = err.response?.data?.details || err.response?.data?.error || err.response?.data?.msg || "Error analyzing resume. Make sure backend and ML services are running.";
+      alert(errorMsg);
     } finally {
       setAnalyzing(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -166,14 +179,20 @@ export function ResumeAnalyzer() {
       formData.append("branch", mapped);
       formData.append("jobRole", defaultRole);
 
+      const token = localStorage.getItem("token");
       const res = await axios.post("http://localhost:5000/api/ml/analyze-resume", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          ...(token ? { "x-auth-token": token } : {})
+        }
       });
       
       const analysisResult = { ...res.data, role: defaultRole };
       setResults(analysisResult);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      const errorMsg = err.response?.data?.details || err.response?.data?.error || err.response?.data?.msg || "Error analyzing resume.";
+      alert(errorMsg);
     } finally {
       setAnalyzing(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -185,14 +204,22 @@ export function ResumeAnalyzer() {
     // Save to profile upon user confirmation
     if (results && results.document_type === "resume") {
       try {
+        const strengths = (results.matchedKeywords || []).slice(0, 4);
+        const improvements = (results.suggestions || []).map((s: any) => typeof s === 'string' ? s : s.text).slice(0, 3);
+        const token = localStorage.getItem("token");
+
         await axios.put("http://localhost:5000/api/profile", {
           resumeData: {
             atsScore: results.atsScore,
             shortlistChance: results.shortlistChance,
             keywordScore: results.keywordScore,
             role: jobRole,
+            strengths: strengths,
+            improvements: improvements,
             analyzedAt: new Date().toISOString()
           }
+        }, {
+          headers: token ? { "x-auth-token": token } : {}
         });
       } catch (saveErr) {
         console.error("Could not save resume data to profile", saveErr);
@@ -221,16 +248,27 @@ export function ResumeAnalyzer() {
     !forceAnalyze;
 
   return (
-    <div className="w-full py-10 px-6 max-h-screen overflow-y-auto bg-background text-foreground">
+    <div className="min-h-screen bg-background p-6 md:p-8 font-sans">
       <div className="max-w-6xl mx-auto relative">
-        <button 
-          onClick={() => navigate(-1)}
-          className="absolute -top-4 left-0 p-2 text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 cursor-pointer"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
+        <div className="flex items-center justify-between gap-4 mb-6">
+          <button 
+            onClick={() => navigate(-1)}
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 cursor-pointer rounded-xl hover:bg-slate-100"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-xs font-bold">Back</span>
+          </button>
 
-        <div className="mb-8 mt-6">
+          <button
+            onClick={() => navigate("/resume-studio")}
+            className="px-4 py-2 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+          >
+            <Sparkles className="w-4 h-4 text-indigo-600" />
+            <span>Open Resume Studio Workspace</span>
+          </button>
+        </div>
+
+        <div className="mb-8">
           <h1 className="text-3xl text-foreground font-bold tracking-tight mb-1">Resume Analyzer</h1>
           <p className="text-sm text-muted-foreground">Upload your resume — our AI classifier verifies document authenticity and domain field alignment before calculating ATS scores</p>
         </div>
@@ -658,6 +696,52 @@ export function ResumeAnalyzer() {
               </div>
             </div>
 
+            {/* Resume Studio Action Bridge */}
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/40 dark:to-purple-950/40 border border-indigo-200/80 dark:border-indigo-800 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <span className="material-symbols-outlined text-indigo-600 text-[24px]">auto_awesome</span>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                      Take Action with Resume Studio
+                    </h3>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                      Apply these AI recommendations, upgrade formatting, or build tailored copies.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button
+                  type="button"
+                  onClick={() => navigate(`/resume-studio/builder?step=summary`)}
+                  className="p-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-600/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-[18px]">edit_document</span>
+                  <span>Fix in Resume Builder</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate(`/resume-studio/tailor?query=${encodeURIComponent(jobRole || "")}`)}
+                  className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-50 transition-all cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-[18px]">tune</span>
+                  <span>Tailor for {jobRole || "Role"}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate(`/resume-studio/cover-letter?jobTitle=${encodeURIComponent(jobRole || "")}`)}
+                  className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-50 transition-all cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-[18px]">mail</span>
+                  <span>Write Cover Letter</span>
+                </button>
+              </div>
+            </div>
+
           </motion.div>
         )}
       </div>
@@ -667,30 +751,15 @@ export function ResumeAnalyzer() {
 
 // Subcomponents
 
-function ScoreCard({ title, value, suffix, color, label, labelColor }: any) {
-  const circ = 2 * Math.PI * 34;
-  const offset = circ - (value / 100) * circ;
-  
+function ScoreCard({ title, value, suffix = "", color, label, labelColor }: any) {
   return (
     <div className="p-4 rounded-2xl bg-card border border-border flex flex-col items-center text-center gap-1.5">
-      <div className="relative w-20 h-20">
-        <svg className="w-full h-full transform -rotate-90">
-          <circle cx="40" cy="40" r="34" stroke="currentColor" strokeWidth="6" fill="none" className="text-surface-container" />
-          <circle 
-            cx="40" cy="40" r="34" 
-            stroke={color} 
-            strokeWidth="6" 
-            fill="none" 
-            strokeDasharray={circ} 
-            strokeDashoffset={offset} 
-            strokeLinecap="round"
-            className="transition-all duration-1000 ease-out" 
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-sm font-bold text-foreground">{value}{suffix}</span>
-        </div>
-      </div>
+      <CircularProgress
+        value={value}
+        size="lg"
+        color={color}
+        valueSuffix={suffix}
+      />
       <div>
         <div className="text-xs text-muted-foreground font-medium">{title}</div>
         <div className={`text-sm font-bold mt-0.5 ${labelColor}`}>{label}</div>

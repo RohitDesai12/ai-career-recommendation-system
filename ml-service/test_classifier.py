@@ -2,7 +2,18 @@ import urllib.request
 import json
 import os
 
-GROQ_API_KEY = os.environ.get('GROQ_API_KEY')  
+# Load environment variables from .env if present
+try:
+    with open('.env', 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith('#') and '=' in line:
+                k, v = line.split('=', 1)
+                os.environ[k.strip()] = v.strip()
+except Exception:
+    pass
+
+GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
 
 def classify_document(text: str):
     prompt = f"""You are an expert document classifier.

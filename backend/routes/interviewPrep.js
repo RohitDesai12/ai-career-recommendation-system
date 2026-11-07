@@ -9,7 +9,12 @@ const {
     savePrepDetail,
     getSavedPreps,
     unsavePrepDetail,
-    checkSavedStatus
+    checkSavedStatus,
+    generateCustomMockQuestions,
+    crossExamineResponse,
+    generateFullScaleReport,
+    startAdaptiveConversation,
+    adaptiveNextTurn
 } = require('../controllers/interviewPrepController');
 
 // @route   GET /api/interview-prep/search
@@ -31,6 +36,31 @@ router.get('/mock/start', auth, startMockInterview);
 // @desc    Evaluate company-specific mock interview responses
 // @access  Private
 router.post('/mock/evaluate', auth, evaluateMockInterview);
+
+// @route   POST /api/interview-prep/mock/start-conversation
+// @desc    Start conversational adaptive mock interview (Opening Question)
+// @access  Private
+router.post('/mock/start-conversation', auth, startAdaptiveConversation);
+
+// @route   POST /api/interview-prep/mock/next-turn
+// @desc    Live adaptive technical interviewer cross-questioning turn
+// @access  Private
+router.post('/mock/next-turn', auth, adaptiveNextTurn);
+
+// @route   POST /api/interview-prep/mock/generate-custom
+// @desc    Generate customized/resume-based mock questions
+// @access  Private
+router.post('/mock/generate-custom', auth, generateCustomMockQuestions);
+
+// @route   POST /api/interview-prep/mock/cross-examine
+// @desc    Adaptive AI follow-up cross-examination
+// @access  Private
+router.post('/mock/cross-examine', auth, crossExamineResponse);
+
+// @route   POST /api/interview-prep/mock/full-report
+// @desc    Generate full-scale comprehensive performance report
+// @access  Private
+router.post('/mock/full-report', auth, generateFullScaleReport);
 
 // @route   POST /api/interview-prep/save
 // @desc    Save company-specific prep guide for user

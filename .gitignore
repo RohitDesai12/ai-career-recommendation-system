@@ -33,3 +33,7 @@ Thumbs.db
 
 # ML model files
 *.pkl
+
+# Temporary and scratch test directories
+scratch/
+backend/scratch/

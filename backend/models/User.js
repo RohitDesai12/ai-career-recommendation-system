@@ -11,14 +11,33 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    phone: {
+        type: String,
+        default: ''
+    },
     password: {
         type: String,
         required: true
     },
     role: {
         type: String,
-        enum: ['student', 'admin'],
+        enum: ['student', 'admin', 'employer', 'recruiter'],
         default: 'student'
+    },
+    status: {
+        type: String,
+        enum: ['Active', 'Suspended', 'Pending', 'Deleted'],
+        default: 'Active'
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    consent: {
+        termsAccepted: { type: Boolean, default: false },
+        privacyAccepted: { type: Boolean, default: false },
+        version: { type: String, default: 'v1.0' },
+        acceptedAt: { type: Date, default: null }
     },
     createdAt: {
         type: Date,

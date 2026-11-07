@@ -213,30 +213,32 @@ Return strictly a valid JSON object matching this schema:
 }}"""
 
     # 1. Attempt Groq LLM classification
-    try:
-        req = urllib.request.Request(
-            'https://api.groq.com/openai/v1/chat/completions',
-            headers={
-                'Authorization': f'Bearer {GROQ_API_KEY}',
-                'Content-Type': 'application/json',
-                'User-Agent': 'CareerRecommender/1.0'
-            },
-            data=json.dumps({
-                'model': 'openai/gpt-oss-120b',
-                'messages': [{'role': 'user', 'content': prompt}],
-                'response_format': {'type': 'json_object'},
-                'temperature': 0.1,
-                'max_tokens': 600
-            }).encode('utf-8')
-        )
+    if GROQ_API_KEY:
+        for model_name in ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'llama3-70b-8192', 'openai/gpt-oss-120b']:
+            try:
+                req = urllib.request.Request(
+                    'https://api.groq.com/openai/v1/chat/completions',
+                    headers={
+                        'Authorization': f'Bearer {GROQ_API_KEY}',
+                        'Content-Type': 'application/json',
+                        'User-Agent': 'CareerRecommender/1.0'
+                    },
+                    data=json.dumps({
+                        'model': model_name,
+                        'messages': [{'role': 'user', 'content': prompt}],
+                        'response_format': {'type': 'json_object'},
+                        'temperature': 0.1,
+                        'max_tokens': 600
+                    }).encode('utf-8')
+                )
 
-        with urllib.request.urlopen(req, timeout=12) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            result_json = json.loads(data['choices'][0]['message']['content'])
-            if "document_type" in result_json:
-                return result_json
-    except Exception as llm_err:
-        print("LLM classification failed, using robust heuristic fallback:", llm_err)
+                with urllib.request.urlopen(req, timeout=12) as resp:
+                    data = json.loads(resp.read().decode('utf-8'))
+                    result_json = json.loads(data['choices'][0]['message']['content'])
+                    if "document_type" in result_json:
+                        return result_json
+            except Exception as llm_err:
+                print(f"LLM classification with {model_name} failed:", llm_err)
 
     # 2. Heuristic fallback in case LLM is offline
     lower_text = extracted_text.lower()

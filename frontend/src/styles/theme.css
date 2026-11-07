@@ -3,22 +3,22 @@
 :root {
   --font-size: 16px;
   
-  /* CareerCompass Warm Editorial Palette */
-  /* Background: #F7F3EA Warm Cream | Cards: #FFFDF8 | Primary: #1F5C45 Forest Green */
-  /* Secondary: #D6A85F Muted Gold | Accent: #C8754D Terracotta | Text: #202820 Deep Charcoal */
-  --background: #F7F3EA;
-  --surface-1: #FFFDF8;
-  --surface-2: #EFEAE0;
-  --border-color: #E5DDCF;
+  /* Career Compass Clean SaaS Palette (Jobscan-inspired) */
+  --background: #F7FAFC;
+  --surface-1: #FFFFFF;
+  --surface-2: #EEF6FF;
+  --border-color: #E2E8F0;
   
-  --primary: #1F5C45;
-  --secondary: #D6A85F;
-  --accent: #C8754D;
-  --success: #287556;
-  --danger: #B84A39;
+  --primary: #356FD8;
+  --primary-hover: #2557B8;
+  --secondary: #5B8FE3;
+  --accent: #356FD8;
+  --success: #16A34A;
+  --danger: #DC2626;
   
-  --text-primary: #202820;
-  --text-muted: #5E6860;
+  --text-primary: #1F2937;
+  --text-heading: #172033;
+  --text-muted: #5B6472;
   
   /* Standard Tailwind variables */
   --foreground: var(--text-primary);
@@ -27,7 +27,7 @@
   --popover: var(--surface-1);
   --popover-foreground: var(--text-primary);
   --primary-foreground: #ffffff;
-  --secondary-foreground: #202820;
+  --secondary-foreground: #ffffff;
   --success-foreground: #ffffff;
   --muted: var(--surface-2);
   --muted-foreground: var(--text-muted);
@@ -36,48 +36,70 @@
   --destructive-foreground: #ffffff;
   --border: var(--border-color);
   --input: transparent;
-  --input-background: #EFEAE0;
-  --switch-background: #D5CCBE;
+  --input-background: #EEF6FF;
+  --switch-background: #D8D2E7;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --ring: var(--primary);
-  --chart-1: #1F5C45;
-  --chart-2: #D6A85F;
-  --chart-3: #C8754D;
-  --chart-4: #3D7A64;
-  --chart-5: #E2B970;
-  --radius: 0.75rem;
+  --chart-1: #356FD8;
+  --chart-2: #5B8FE3;
+  --chart-3: #D97706;
+  --chart-4: #16A34A;
+  --chart-5: #DC2626;
+  --radius: 0.875rem;
   
-  /* Sidebar */
-  --sidebar: #F4EFE6;
-  --sidebar-foreground: var(--text-primary);
-  --sidebar-primary: var(--primary);
+  /* Sidebar Design Tokens (Navy System) */
+  --sidebar-bg: #111827;
+  --sidebar-text: #9CA3AF;
+  --sidebar-text-active: #FFFFFF;
+  --sidebar-icon: #9CA3AF;
+  --sidebar-icon-active: #FFFFFF;
+  --sidebar-active-bg: #1C2D55;
+  --sidebar-hover-bg: rgba(255, 255, 255, 0.05);
+  --sidebar-border: #1F2937;
+  --sidebar-heading: #6B7280;
+
+  /* Sidebar fallback variables */
+  --sidebar: #111827;
+  --sidebar-foreground: #9CA3AF;
+  --sidebar-primary: #1C2D55;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: var(--surface-1);
-  --sidebar-accent-foreground: var(--text-primary);
-  --sidebar-border: var(--border-color);
-  --sidebar-ring: var(--primary);
+  --sidebar-accent: #1C2D55;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-ring: #6D28D9;
+
+  /* Text & Surface Semantic Tokens */
+  --text-on-dark: #FFFFFF;
+  --text-on-dark-secondary: rgba(255, 255, 255, 0.80);
+  --text-on-dark-muted: rgba(255, 255, 255, 0.65);
+  --text-on-accent: #FFFFFF;
+  --text-on-accent-secondary: rgba(255, 255, 255, 0.85);
+  --text-on-accent-muted: rgba(255, 255, 255, 0.70);
+  --border-default: #E2E8F0;
+  --surface: #FFFFFF;
+  --surface-secondary: #F8FAFC;
+  --surface-elevated: #FFFFFF;
 
   /* Surface and container tokens */
-  --surface-dim: #EAE4D7;
-  --surface-bright: #FFFDF8;
-  --surface-container: #FFFDF8;
+  --surface-dim: #F1F5F9;
+  --surface-bright: #FFFFFF;
+  --surface-container: #FFFFFF;
   --surface-container-lowest: #FFFFFF;
-  --surface-container-low: #F4EFE6;
-  --surface-container-high: #EBE4D6;
-  --surface-container-highest: #E2D9C8;
-  --on-surface: #202820;
-  --on-surface-variant: #5E6860;
-  --outline: #7A756B;
-  --outline-variant: #E5DDCF;
-  --primary-container: #E2EFE9;
-  --on-primary-container: #103B2B;
-  --secondary-container: #FBF4E4;
-  --tertiary: #C8754D;
-  --tertiary-container: #FAECE5;
-  --error: #B84A39;
+  --surface-container-low: #F7FAFC;
+  --surface-container-high: #EEF6FF;
+  --surface-container-highest: #E2E8F0;
+  --on-surface: #1F2937;
+  --on-surface-variant: #5B6472;
+  --outline: #94A3B8;
+  --outline-variant: #E2E8F0;
+  --primary-container: #EEF6FF;
+  --on-primary-container: #1D4ED8;
+  --secondary-container: #EEF6FF;
+  --tertiary: #5B8FE3;
+  --tertiary-container: #EEF6FF;
+  --error: #DC2626;
   --on-error: #ffffff;
-  --error-container: #FBE9E6;
+  --error-container: #FEE2E2;
 }
 
 @theme inline {
@@ -109,6 +131,26 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent: var(--sidebar-accent);
 
+  /* New semantic tokens */
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-sidebar-text: var(--sidebar-text);
+  --color-sidebar-text-active: var(--sidebar-text-active);
+  --color-sidebar-icon: var(--sidebar-icon);
+  --color-sidebar-icon-active: var(--sidebar-icon-active);
+  --color-sidebar-active-bg: var(--sidebar-active-bg);
+  --color-sidebar-hover-bg: var(--sidebar-hover-bg);
+  --color-sidebar-heading: var(--sidebar-heading);
+  --color-text-on-dark: var(--text-on-dark);
+  --color-text-on-dark-secondary: var(--text-on-dark-secondary);
+  --color-text-on-dark-muted: var(--text-on-dark-muted);
+  --color-text-on-accent: var(--text-on-accent);
+  --color-text-on-accent-secondary: var(--text-on-accent-secondary);
+  --color-text-on-accent-muted: var(--text-on-accent-muted);
+  --color-border-default: var(--border-default);
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-elevated: var(--surface-elevated);
+
   /* Custom variables mapped to Tailwind colors */
   --color-surface-dim: var(--surface-dim);
   --color-surface-bright: var(--surface-bright);
@@ -132,20 +174,20 @@
 }
 
 html.dark, :root.dark, .dark {
-  /* CareerCompass Deep Forest Charcoal Dark Palette */
-  --background: #131915;
-  --surface-1: #1B251F;
-  --surface-2: #16201A;
-  --border-color: #29382E;
+  /* Modern Violet Deep Slate Dark Palette */
+  --background: #0F0E17;
+  --surface-1: #181622;
+  --surface-2: #211E30;
+  --border-color: #2F2B45;
   
-  --primary: #3EA07A;
-  --secondary: #D6A85F;
-  --accent: #C8754D;
-  --success: #34A853;
-  --danger: #E05D4A;
+  --primary: #8B5CF6;
+  --secondary: #38BDF8;
+  --accent: #F59E0B;
+  --success: #10B981;
+  --danger: #F87171;
   
-  --text-primary: #F7F3EA;
-  --text-muted: #9EADA2;
+  --text-primary: #F7F5FC;
+  --text-muted: #9D97B0;
   
   /* Standard Tailwind variables mapped to dark palette */
   --foreground: var(--text-primary);
@@ -154,52 +196,59 @@ html.dark, :root.dark, .dark {
   --popover: var(--surface-1);
   --popover-foreground: var(--text-primary);
   --primary-foreground: #ffffff;
-  --secondary-foreground: #202820;
+  --secondary-foreground: #0F0E17;
   --success-foreground: #ffffff;
   --muted: var(--surface-2);
   --muted-foreground: var(--text-muted);
-  --accent: var(--accent);
   --accent-foreground: #ffffff;
   --destructive: var(--danger);
   --destructive-foreground: #ffffff;
   --border: var(--border-color);
   --input: transparent;
   --input-background: var(--surface-2);
-  --switch-background: #36483E;
+  --switch-background: #393452;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --ring: var(--primary);
   
   /* Sidebar */
-  --sidebar: #141D17;
-  --sidebar-foreground: var(--text-primary);
-  --sidebar-primary: var(--primary);
+  --sidebar-bg: #111827;
+  --sidebar-text: #9CA3AF;
+  --sidebar-text-active: #FFFFFF;
+  --sidebar-icon: #9CA3AF;
+  --sidebar-icon-active: #FFFFFF;
+  --sidebar-active-bg: #1C2D55;
+  --sidebar-hover-bg: rgba(255, 255, 255, 0.05);
+  --sidebar-border: #1F2937;
+  --sidebar-heading: #6B7280;
+  --sidebar: #111827;
+  --sidebar-foreground: #9CA3AF;
+  --sidebar-primary: #1C2D55;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: var(--surface-1);
-  --sidebar-accent-foreground: var(--text-primary);
-  --sidebar-border: var(--border-color);
+  --sidebar-accent: #1C2D55;
+  --sidebar-accent-foreground: #ffffff;
   --sidebar-ring: var(--primary);
 
   /* Redesign custom variables */
-  --surface-dim: #0E1410;
-  --surface-bright: #243329;
-  --surface-container: #1B251F;
-  --surface-container-lowest: #0E1410;
-  --surface-container-low: #141D17;
-  --surface-container-high: #223027;
-  --surface-container-highest: #2C3D32;
-  --on-surface: #F7F3EA;
-  --on-surface-variant: #9EADA2;
-  --outline: #839589;
-  --outline-variant: #29382E;
-  --primary-container: #163E2D;
-  --on-primary-container: #BEE4D3;
-  --secondary-container: #3B2E15;
-  --tertiary: #C8754D;
-  --tertiary-container: #422013;
-  --error: #E05D4A;
+  --surface-dim: #0B0A11;
+  --surface-bright: #242035;
+  --surface-container: #181622;
+  --surface-container-lowest: #0B0A11;
+  --surface-container-low: #13111C;
+  --surface-container-high: #211E30;
+  --surface-container-highest: #2D2940;
+  --on-surface: #F7F5FC;
+  --on-surface-variant: #9D97B0;
+  --outline: #797394;
+  --outline-variant: #2F2B45;
+  --primary-container: #2E1065;
+  --on-primary-container: #DDD6FE;
+  --secondary-container: #0C447C;
+  --tertiary: #993556;
+  --tertiary-container: #4A1525;
+  --error: #F87171;
   --on-error: #ffffff;
-  --error-container: #4A1A14;
+  --error-container: #451214;
 }
 
 @layer base {
@@ -207,13 +256,22 @@ html.dark, :root.dark, .dark {
     @apply border-border outline-ring/50;
   }
 
+  html {
+    font-size: 14px;
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: -0.01em;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    color: var(--text-primary);
+    font-family: 'Sora', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: inherit;
+    letter-spacing: -0.015em;
   }
 }

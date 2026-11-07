@@ -1,181 +1,484 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import axios from "axios";
 import { useAuth } from "../context/auth-context";
-import { useTheme } from "../context/theme-context";
-import { motion, AnimatePresence } from "motion/react";
-
-const NAV_ITEMS = [
-  { path: "/dashboard", label: "Dashboard", icon: "dashboard" },
-  { path: "/assessment", label: "Career Test", icon: "bolt" },
-  { path: "/roadmap", label: "Roadmap", icon: "map" },
-  { path: "/resume", label: "Resume Analyser", icon: "description" },
-  { path: "/chatbot", label: "AI Mentor", icon: "smart_toy" },
-  { path: "/interview-prep", label: "Interview Prep", icon: "work" },
-  { path: "/courses", label: "Courses", icon: "school" },
-];
+import { useSidebar } from "../context/sidebar-context";
 
 export function Sidebar() {
-  const { user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { user } = useAuth();
   const location = useLocation();
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const { isCollapsed, isMobileOpen, setIsMobileOpen, openSection, toggleSection } = useSidebar();
 
-  // Click outside listener to dismiss profile popover
+  const [applicationsCount, setApplicationsCount] = useState<number>(0);
+
+  // Resume Studio Sub-Links
+  const resumeStudioItems = [
+    { path: "/resume-studio", label: "Overview", icon: "dashboard_customize" },
+    { path: "/resume-studio/create", label: "Create Hub", icon: "add_circle" },
+    { path: "/resume-studio/templates", label: "Templates", icon: "grid_view" },
+    { path: "/resume-studio/builder", label: "Resume Builder", icon: "edit_document" },
+    { path: "/resume", label: "Resume Analyzer", icon: "document_scanner" },
+    { path: "/resume-studio/tailor", label: "Tailor for Job", icon: "tune" },
+    { path: "/resume-studio/cover-letter", label: "Cover Letter", icon: "mail" },
+    { path: "/resume-studio/my-resumes", label: "My Resumes", icon: "folder" },
+    { path: "/resume-studio/settings", label: "Studio Settings", icon: "settings" },
+    { path: "/resume-studio/score-history", label: "Score History", icon: "history" },
+  ];
+
+  // Roadmap Sub-Links
+  const roadmapItems = [
+    { path: "/roadmap", label: "Overview", icon: "dashboard_customize", activeCheck: (p: string) => p === "/roadmap" || p === "/roadmap/overview" },
+    { path: "/roadmap/roadmaps", label: "Roadmaps", icon: "layers", activeCheck: (p: string) => p === "/roadmap/roadmaps" },
+    { path: "/roadmap/history", label: "History", icon: "history", activeCheck: (p: string) => p === "/roadmap/history" },
+  ];
+
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsProfileMenuOpen(false);
-      }
+    if (user) {
+      const token = localStorage.getItem("token");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      axios
+        .get("http://localhost:5000/api/jobs/applications", { headers })
+        .then((res) => {
+          if (res.data?.applications) {
+            setApplicationsCount(res.data.applications.length);
+          }
+        })
+        .catch(() => {
+          // Fallback to legacy endpoint if needed
+          axios
+            .get("http://localhost:5000/api/employer/my-applications", { headers })
+            .then((res) => {
+              if (res.data?.applications) {
+                setApplicationsCount(res.data.applications.length);
+              }
+            })
+            .catch(() => {});
+        });
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  }, [user, location.pathname]);
+
+  const isResumePath = location.pathname.startsWith("/resume");
+  const isRoadmapPath = location.pathname.startsWith("/roadmap");
+
+  const isRoadmapOpen = openSection === "roadmap";
+  const isResumeStudioOpen = openSection === "resume-studio";
+
+  const getItemClass = (isActive: boolean) =>
+    `flex items-center ${isCollapsed ? "justify-center px-0 h-10 w-10 mx-auto" : "justify-between px-3.5 py-2.5"} rounded-xl transition-all duration-150 text-xs font-semibold group ${
+      isActive
+        ? "bg-[#1F315C] text-white font-bold shadow-none"
+        : "text-[#9CA3AF] hover:text-white hover:bg-white/[0.06]"
+    }`;
+
+  const getSubItemClass = (isActive: boolean) =>
+    `flex items-center gap-2 px-3 py-1.5 rounded-lg text-[11.5px] font-medium transition-colors ${
+      isActive
+        ? "bg-[#1F315C] text-white font-bold shadow-none"
+        : "text-[#9CA3AF] hover:text-white hover:bg-white/[0.06]"
+    }`;
 
   return (
-    <aside className="w-72 bg-surface-container-low flex flex-col border-r border-outline-variant/20 h-screen sticky top-0 z-30">
-      {/* Brand Logo & Name */}
-      <div className="h-16 px-6 flex items-center gap-3">
-        <img 
-          alt="Career Compass Logo" 
-          className="h-8 w-auto object-contain" 
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYFh4eMgyp30I0EVYQi1eQtOgK8bXKYk4sfFpOkGx3i0dDv2-46KpHAzLDgLxsvmvz5tlYYdBpv8pEPyr95iDxA_vdPSv8hvDgfzFtlyihcRbYwU1T5BiKIm1xqTz9eKDtNonRh1Q5gpF_1L8HNn2kY2pvya6KUDEYKP_FfN9wpc0hToLGIQw079_LWwHg1FFNvktS6FkBJcrFIjYVw57HWcw7HyLLMYHT_brhzxgGZQONHW79G9qA"
+    <>
+      {/* Mobile Backdrop Overlay */}
+      {isMobileOpen && (
+        <div
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 lg:hidden transition-opacity"
+          onClick={() => setIsMobileOpen(false)}
         />
-        <span className="font-headline-md text-[20px] font-semibold text-on-surface">Compass</span>
-      </div>
+      )}
 
-      {/* Navigation Links */}
-      <nav className="flex-1 px-4 mt-6 flex flex-col gap-2">
-        {NAV_ITEMS.map((item) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 ${
-                isActive
-                  ? "bg-primary-container text-on-primary-container font-bold shadow-md shadow-primary/10"
-                  : "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
-              }`}
-            >
-              <span className="material-symbols-outlined mr-3 text-[22px]">{item.icon}</span>
-              <span className="text-sm font-medium tracking-wide">{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
-
-      {/* Sidebar Footer / Action Area */}
-      <div className="p-4 border-t border-outline-variant/10 relative" ref={menuRef}>
-        
-        {/* Floating Profile Dropdown Menu */}
-        <AnimatePresence>
-          {isProfileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: 15, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 15, scale: 0.95 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
-              className="absolute bottom-20 left-4 right-4 bg-surface-container border border-outline-variant/15 rounded-2xl p-2.5 shadow-2xl z-50 flex flex-col gap-1 backdrop-blur-xl"
-            >
-              <button 
-                onClick={() => { console.log("Profile clicked"); setIsProfileMenuOpen(false); }}
-                className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-all gap-3 text-left w-full cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[18px] text-primary">person</span>
-                Profile
-              </button>
-              <button 
-                onClick={() => { console.log("Progress clicked"); setIsProfileMenuOpen(false); }}
-                className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-all gap-3 text-left w-full cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[18px] text-secondary">trending_up</span>
-                Progress
-              </button>
-              <Link 
-                to="/resume"
-                onClick={() => setIsProfileMenuOpen(false)}
-                className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-all gap-3 text-left w-full"
-              >
-                <span className="material-symbols-outlined text-[18px] text-tertiary">description</span>
-                Resume
-              </Link>
-              <Link 
-                to="/assessment"
-                onClick={() => setIsProfileMenuOpen(false)}
-                className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-all gap-3 text-left w-full"
-              >
-                <span className="material-symbols-outlined text-[18px] text-primary">bolt</span>
-                Career Assessment
-              </Link>
-              <Link 
-                to="/saved-preps"
-                onClick={() => setIsProfileMenuOpen(false)}
-                className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-all gap-3 text-left w-full"
-              >
-                <span className="material-symbols-outlined text-[18px] text-secondary">bookmark</span>
-                Saved Interview Prep
-              </Link>
-              <button 
-                onClick={() => { console.log("Settings clicked"); setIsProfileMenuOpen(false); }}
-                className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-all gap-3 text-left w-full cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[18px] text-on-surface-variant">settings</span>
-                Settings
-              </button>
-              <button 
-                onClick={() => { console.log("Help clicked"); setIsProfileMenuOpen(false); }}
-                className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-all gap-3 text-left w-full cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[18px] text-secondary">help</span>
-                Help & Support
-              </button>
-              <button 
-                onClick={() => { 
-                  toggleTheme(); 
-                  setIsProfileMenuOpen(false); 
-                }}
-                className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-all gap-3 text-left w-full cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[18px] text-tertiary">
-                  {theme === "dark" ? "light_mode" : "dark_mode"}
-                </span>
-                Theme: {theme === "dark" ? "Light" : "Dark"}
-              </button>
-              
-              <div className="h-[1px] bg-outline-variant/10 my-1" />
-              
-              <button
-                onClick={() => { logout(); setIsProfileMenuOpen(false); }}
-                className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold text-error hover:bg-error-container/10 transition-all gap-3 text-left w-full cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[18px]">logout</span>
-                Sign Out
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* User profile row representing the shifted avatar section */}
-        <div 
-          onClick={() => setIsProfileMenuOpen(prev => !prev)}
-          className="flex items-center gap-3 px-3 py-2 bg-surface-container/30 rounded-2xl border border-outline-variant/5 hover:bg-surface-container/60 hover:border-outline-variant/15 active:scale-98 transition-all cursor-pointer select-none"
-        >
-          <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center border border-primary/30 flex-shrink-0 shadow-sm shadow-primary/25 animate-pulse">
-            <span className="material-symbols-outlined text-on-primary text-[18px]">person</span>
-          </div>
-          <div className="flex flex-col min-w-0 flex-1">
-            <span className="text-xs font-semibold text-on-surface truncate">{user?.name || "User"}</span>
-            <span className="text-[10px] text-on-surface-variant/70 truncate">{user?.email || ""}</span>
-          </div>
-          <span className="material-symbols-outlined text-on-surface-variant/50 text-[18px]">
-            {isProfileMenuOpen ? "expand_less" : "expand_more"}
-          </span>
+      {/* Main Sidebar Element */}
+      <aside
+        className={`bg-[#111827] text-[#9CA3AF] flex flex-col border-r border-[#1F2937] h-screen sticky top-0 z-40 font-sans shrink-0 select-none transition-all duration-200 ease-in-out ${
+          isCollapsed ? "w-[72px]" : "w-64"
+        } ${
+          isMobileOpen
+            ? "fixed inset-y-0 left-0 translate-x-0 w-64 shadow-2xl"
+            : "max-lg:fixed max-lg:inset-y-0 max-lg:left-0 max-lg:-translate-x-full max-lg:w-64"
+        }`}
+      >
+        {/* Brand Header */}
+        <div className={`h-16 border-b border-[#1F2937] flex items-center shrink-0 ${isCollapsed ? "justify-center px-0" : "px-5"}`}>
+          <Link
+            to="/dashboard"
+            onClick={() => setIsMobileOpen(false)}
+            className={`flex items-center gap-3 group ${isCollapsed ? "justify-center" : ""}`}
+            title="Career Compass Dashboard"
+          >
+            <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-600/20 group-hover:scale-105 transition-transform shrink-0">
+              <span className="material-symbols-outlined text-[20px]">explore</span>
+            </div>
+            {!isCollapsed && (
+              <div className="flex flex-col min-w-0">
+                <span className="font-heading text-[16px] font-black text-white leading-tight truncate">Career Compass</span>
+                <span className="text-[10px] text-[#9CA3AF] font-semibold tracking-tight truncate">Your Career, Our Direction</span>
+              </div>
+            )}
+          </Link>
         </div>
 
-      </div>
-    </aside>
+        {/* Navigation Scroll Container (Zero Visible Scrollbar, 100% Scrollable) */}
+        <nav className="flex-1 px-2.5 py-3 flex flex-col gap-1 overflow-y-auto min-h-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          
+          {/* Section: DASHBOARD */}
+          {!isCollapsed && (
+            <div className="text-[10.5px] font-bold text-[#6B7280] uppercase tracking-[0.08em] px-3 pt-2 pb-1">
+              Dashboard
+            </div>
+          )}
+          <div className="relative group/tooltip">
+            <Link
+              to="/dashboard"
+              onClick={() => setIsMobileOpen(false)}
+              className={getItemClass(location.pathname === "/dashboard")}
+            >
+              <div className="flex items-center gap-2.5">
+                <span className={`material-symbols-outlined text-[19px] shrink-0 ${location.pathname === "/dashboard" ? "text-white" : "text-[#9CA3AF] group-hover:text-white"}`}>
+                  grid_view
+                </span>
+                {!isCollapsed && <span>Dashboard</span>}
+              </div>
+            </Link>
+            {isCollapsed && (
+              <div className="hidden group-hover/tooltip:block absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-slate-900 text-white text-[11px] font-bold rounded-lg shadow-xl whitespace-nowrap z-50 pointer-events-none border border-slate-800">
+                Dashboard
+              </div>
+            )}
+          </div>
+
+          {/* Section: CAREER DISCOVERY */}
+          {!isCollapsed && (
+            <div className="text-[10.5px] font-bold text-[#6B7280] uppercase tracking-[0.08em] px-3 pt-3 pb-1">
+              Career Discovery
+            </div>
+          )}
+          <div className="relative group/tooltip">
+            <Link
+              to="/assessment"
+              onClick={() => setIsMobileOpen(false)}
+              className={getItemClass(location.pathname === "/assessment")}
+            >
+              <div className="flex items-center gap-2.5">
+                <span className={`material-symbols-outlined text-[19px] shrink-0 ${location.pathname === "/assessment" ? "text-white" : "text-[#9CA3AF] group-hover:text-white"}`}>
+                  bolt
+                </span>
+                {!isCollapsed && <span>Career Test</span>}
+              </div>
+            </Link>
+            {isCollapsed && (
+              <div className="hidden group-hover/tooltip:block absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-slate-900 text-white text-[11px] font-bold rounded-lg shadow-xl whitespace-nowrap z-50 pointer-events-none border border-slate-800">
+                Career Test
+              </div>
+            )}
+          </div>
+
+          {/* EXPANDABLE ROADMAP GROUP (Starts CLOSED on page load) */}
+          <div className="relative group/tooltip">
+            <div
+              onClick={() => {
+                if (isCollapsed) {
+                  navigate("/roadmap");
+                  setIsMobileOpen(false);
+                } else {
+                  toggleSection("roadmap");
+                }
+              }}
+              className={`flex items-center ${isCollapsed ? "justify-center px-0 h-10 w-10 mx-auto" : "justify-between px-3.5 py-2.5"} rounded-xl transition-all duration-150 text-xs font-semibold cursor-pointer select-none group ${
+                isRoadmapPath
+                  ? "bg-[#1F315C] text-white font-bold"
+                  : "text-[#9CA3AF] hover:text-white hover:bg-white/[0.06]"
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <span className={`material-symbols-outlined text-[19px] shrink-0 ${isRoadmapPath ? "text-white" : "text-[#9CA3AF] group-hover:text-white"}`}>
+                  map
+                </span>
+                {!isCollapsed && <span>Roadmap</span>}
+              </div>
+              {!isCollapsed && (
+                <span
+                  className={`material-symbols-outlined text-[18px] transition-transform duration-200 ${
+                    isRoadmapOpen ? "rotate-180" : ""
+                  } ${isRoadmapPath ? "text-white" : "text-[#9CA3AF] group-hover:text-white"}`}
+                >
+                  expand_more
+                </span>
+              )}
+            </div>
+            {isCollapsed && (
+              <div className="hidden group-hover/tooltip:block absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-slate-900 text-white text-[11px] font-bold rounded-lg shadow-xl whitespace-nowrap z-50 pointer-events-none border border-slate-800">
+                Roadmap
+              </div>
+            )}
+
+            {/* Submenu: Overview, Roadmaps, History */}
+            {!isCollapsed && isRoadmapOpen && (
+              <div className="mt-1 ml-3 pl-3 border-l-2 border-slate-700/60 space-y-0.5 py-1 animate-in fade-in slide-in-from-top-1 duration-150">
+                {roadmapItems.map((item) => {
+                  const isActive = item.activeCheck(location.pathname);
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setIsMobileOpen(false)}
+                      className={getSubItemClass(isActive)}
+                    >
+                      <span className="material-symbols-outlined text-[16px] shrink-0">{item.icon}</span>
+                      <span className="truncate">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Section: LEARNING */}
+          {!isCollapsed && (
+            <div className="text-[10.5px] font-bold text-[#6B7280] uppercase tracking-[0.08em] px-3 pt-3 pb-1">
+              Learning
+            </div>
+          )}
+          <div className="relative group/tooltip">
+            <Link
+              to="/courses"
+              onClick={() => setIsMobileOpen(false)}
+              className={getItemClass(location.pathname === "/courses")}
+            >
+              <div className="flex items-center gap-2.5">
+                <span className={`material-symbols-outlined text-[19px] shrink-0 ${location.pathname === "/courses" ? "text-white" : "text-[#9CA3AF] group-hover:text-white"}`}>
+                  school
+                </span>
+                {!isCollapsed && <span>Courses</span>}
+              </div>
+            </Link>
+            {isCollapsed && (
+              <div className="hidden group-hover/tooltip:block absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-slate-900 text-white text-[11px] font-bold rounded-lg shadow-xl whitespace-nowrap z-50 pointer-events-none border border-slate-800">
+                Courses
+              </div>
+            )}
+          </div>
+
+          {/* Section: RESUME STUDIO */}
+          {!isCollapsed && (
+            <div className="text-[10.5px] font-bold text-[#6B7280] uppercase tracking-[0.08em] px-3 pt-3 pb-1">
+              Resume Studio
+            </div>
+          )}
+          <div className="relative group/tooltip">
+            <div
+              onClick={() => {
+                if (isCollapsed) {
+                  navigate("/resume-studio");
+                  setIsMobileOpen(false);
+                } else {
+                  toggleSection("resume-studio");
+                }
+              }}
+              className={`flex items-center ${isCollapsed ? "justify-center px-0 h-10 w-10 mx-auto" : "justify-between px-3.5 py-2.5"} rounded-xl transition-all duration-150 text-xs font-semibold cursor-pointer select-none group ${
+                isResumePath
+                  ? "bg-[#1F315C] text-white font-bold"
+                  : "text-[#9CA3AF] hover:text-white hover:bg-white/[0.06]"
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <span className={`material-symbols-outlined text-[19px] shrink-0 ${isResumePath ? "text-white" : "text-[#9CA3AF] group-hover:text-white"}`}>
+                  badge
+                </span>
+                {!isCollapsed && <span>Resume Studio</span>}
+              </div>
+              {!isCollapsed && (
+                <span
+                  className={`material-symbols-outlined text-[18px] transition-transform duration-200 ${
+                    isResumeStudioOpen ? "rotate-180" : ""
+                  } ${isResumePath ? "text-white" : "text-[#9CA3AF] group-hover:text-white"}`}
+                >
+                  expand_more
+                </span>
+              )}
+            </div>
+            {isCollapsed && (
+              <div className="hidden group-hover/tooltip:block absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-slate-900 text-white text-[11px] font-bold rounded-lg shadow-xl whitespace-nowrap z-50 pointer-events-none border border-slate-800">
+                Resume Studio
+              </div>
+            )}
+
+            {/* Sub-Items Accordion */}
+            {!isCollapsed && isResumeStudioOpen && (
+              <div className="mt-1 ml-3 pl-3 border-l-2 border-slate-700/60 space-y-0.5 py-1 animate-in fade-in slide-in-from-top-1 duration-150">
+                {resumeStudioItems.map((item) => {
+                  const isSubActive = location.pathname === item.path;
+                  return (
+                    <Link
+                      key={item.label}
+                      to={item.path}
+                      onClick={() => setIsMobileOpen(false)}
+                      className={getSubItemClass(isSubActive)}
+                    >
+                      <span className="material-symbols-outlined text-[15px] shrink-0">{item.icon}</span>
+                      <span className="truncate">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Section: PRACTICE & COACHING */}
+          {!isCollapsed && (
+            <div className="text-[10.5px] font-bold text-[#6B7280] uppercase tracking-[0.08em] px-3 pt-3 pb-1">
+              Practice & Coaching
+            </div>
+          )}
+          <div className="relative group/tooltip">
+            <Link
+              to="/interview-prep"
+              onClick={() => setIsMobileOpen(false)}
+              className={getItemClass(location.pathname === "/interview-prep")}
+            >
+              <div className="flex items-center gap-2.5">
+                <span className={`material-symbols-outlined text-[19px] shrink-0 ${location.pathname === "/interview-prep" ? "text-white" : "text-[#9CA3AF] group-hover:text-white"}`}>
+                  menu_book
+                </span>
+                {!isCollapsed && <span>Interview Prep</span>}
+              </div>
+            </Link>
+            {isCollapsed && (
+              <div className="hidden group-hover/tooltip:block absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-slate-900 text-white text-[11px] font-bold rounded-lg shadow-xl whitespace-nowrap z-50 pointer-events-none border border-slate-800">
+                Interview Prep
+              </div>
+            )}
+          </div>
+
+          <div className="relative group/tooltip">
+            <Link
+              to="/mock-interview"
+              onClick={() => setIsMobileOpen(false)}
+              className={getItemClass(location.pathname === "/mock-interview")}
+            >
+              <div className="flex items-center gap-2.5">
+                <span className={`material-symbols-outlined text-[19px] shrink-0 ${location.pathname === "/mock-interview" ? "text-white" : "text-[#9CA3AF] group-hover:text-white"}`}>
+                  mic
+                </span>
+                {!isCollapsed && <span>Mock Interview</span>}
+              </div>
+            </Link>
+            {isCollapsed && (
+              <div className="hidden group-hover/tooltip:block absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-slate-900 text-white text-[11px] font-bold rounded-lg shadow-xl whitespace-nowrap z-50 pointer-events-none border border-slate-800">
+                Mock Interview
+              </div>
+            )}
+          </div>
+
+          {/* Section: JOBS */}
+          {!isCollapsed && (
+            <div className="text-[10.5px] font-bold text-[#6B7280] uppercase tracking-[0.08em] px-3 pt-3 pb-1">
+              Jobs
+            </div>
+          )}
+          <div className="relative group/tooltip">
+            <div
+              onClick={() => {
+                if (isCollapsed) {
+                  navigate("/jobs");
+                  setIsMobileOpen(false);
+                } else {
+                  toggleSection("jobs");
+                }
+              }}
+              className={`flex items-center ${isCollapsed ? "justify-center px-0 h-10 w-10 mx-auto" : "justify-between px-3.5 py-2.5"} rounded-xl transition-all duration-150 text-xs font-semibold cursor-pointer select-none group ${
+                location.pathname.startsWith("/jobs")
+                  ? "bg-[#1F315C] text-white font-bold"
+                  : "text-[#9CA3AF] hover:text-white hover:bg-white/[0.06]"
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <span className={`material-symbols-outlined text-[19px] shrink-0 ${location.pathname.startsWith("/jobs") ? "text-white" : "text-[#9CA3AF] group-hover:text-white"}`}>
+                  business_center
+                </span>
+                {!isCollapsed && <span>Jobs</span>}
+              </div>
+              {!isCollapsed && (
+                <span
+                  className={`material-symbols-outlined text-[18px] transition-transform duration-200 ${
+                    openSection === "jobs" || location.pathname.startsWith("/jobs") ? "rotate-180" : ""
+                  } ${location.pathname.startsWith("/jobs") ? "text-white" : "text-[#9CA3AF] group-hover:text-white"}`}
+                >
+                  expand_more
+                </span>
+              )}
+            </div>
+            {isCollapsed && (
+              <div className="hidden group-hover/tooltip:block absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-slate-900 text-white text-[11px] font-bold rounded-lg shadow-xl whitespace-nowrap z-50 pointer-events-none border border-slate-800">
+                Jobs
+              </div>
+            )}
+
+            {/* Sub-Items Accordion */}
+            {!isCollapsed && (openSection === "jobs" || location.pathname.startsWith("/jobs")) && (
+              <div className="mt-1 ml-3 pl-3 border-l-2 border-slate-700/60 space-y-0.5 py-1 animate-in fade-in slide-in-from-top-1 duration-150">
+                {[
+                  {
+                    path: "/jobs",
+                    label: "Recommended Jobs",
+                    icon: "recommend",
+                    isActive: location.pathname === "/jobs" && (!location.search || location.search.includes("tab=recommended")),
+                  },
+                  {
+                    path: "/jobs?tab=explore",
+                    label: "Explore Jobs",
+                    icon: "search",
+                    isActive: location.pathname === "/jobs" && (location.search.includes("tab=explore") || location.search.includes("tab=all")),
+                  },
+                  {
+                    path: "/jobs?tab=companies",
+                    label: "Company Career Pages",
+                    icon: "domain",
+                    isActive: location.pathname === "/jobs" && location.search.includes("tab=companies"),
+                  },
+                  {
+                    path: "/jobs?tab=saved",
+                    label: "Saved Jobs",
+                    icon: "bookmark",
+                    isActive: location.pathname === "/jobs" && location.search.includes("tab=saved"),
+                  },
+                  {
+                    path: "/jobs?tab=applied",
+                    label: "Applied Jobs",
+                    icon: "assignment",
+                    badge: applicationsCount,
+                    isActive: location.pathname === "/jobs" && (location.search.includes("tab=applied") || location.search.includes("tab=applications")),
+                  },
+                  {
+                    path: "/jobs?tab=alerts",
+                    label: "Job Alerts",
+                    icon: "notifications",
+                    isActive: location.pathname === "/jobs" && location.search.includes("tab=alerts"),
+                  },
+                ].map((item) => (
+                  <Link
+                    key={item.label}
+                    to={item.path}
+                    onClick={() => setIsMobileOpen(false)}
+                    className={getSubItemClass(item.isActive)}
+                  >
+                    <span className="material-symbols-outlined text-[15px] shrink-0">{item.icon}</span>
+                    <span className="truncate">{item.label}</span>
+                    {item.badge && item.badge > 0 ? (
+                      <span className="ml-auto px-1.5 py-0.2 rounded-full text-[9.5px] font-bold bg-indigo-500/20 text-indigo-300">
+                        {item.badge}
+                      </span>
+                    ) : null}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+        </nav>
+      </aside>
+    </>
   );
 }
+
+export default Sidebar;

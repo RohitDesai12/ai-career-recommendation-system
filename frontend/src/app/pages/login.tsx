@@ -32,8 +32,14 @@ export function Login() {
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", { email, password });
       const { token, user } = res.data;
-      login(token, user || { id: "1", name: email.split("@")[0], email, role: "user" });
-      navigate("/dashboard");
+      const loggedInUser = user || { id: "1", name: email.split("@")[0], email, role: "student" };
+      login(token, loggedInUser);
+
+      if (loggedInUser.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err: any) {
       setError(err.response?.data?.msg || "Invalid credentials");
     } finally {
@@ -206,9 +212,16 @@ export function Login() {
               </button>
             </form>
 
-            <div className="mt-8 text-center font-body-md text-sm text-on-surface-variant">
-              Don't have an account? <Link className="text-secondary hover:text-secondary/80 transition-colors underline underline-offset-4 decoration-secondary/30 hover:decoration-secondary" to="/signup">Create one now</Link>
+            <div className="mt-6 text-center font-body-md text-sm text-on-surface-variant">
+              Don't have an account? <Link className="text-secondary hover:text-secondary/80 transition-colors underline underline-offset-4 decoration-secondary/30 hover:decoration-secondary font-semibold" to="/signup">Create one now</Link>
             </div>
+
+            <p className="mt-4 text-center text-[11px] text-on-surface-variant/70 leading-relaxed">
+              By signing in, you access your account under our{" "}
+              <Link to="/terms" target="_blank" className="text-primary hover:underline font-medium">Terms & Conditions</Link>{" "}
+              and{" "}
+              <Link to="/privacy-policy" target="_blank" className="text-primary hover:underline font-medium">Privacy Policy</Link>.
+            </p>
           </div>
         </div>
       </div>

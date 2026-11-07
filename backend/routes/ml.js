@@ -4,14 +4,39 @@ const auth = require('../middleware/auth');
 const axios = require('axios');
 const multer = require('multer');
 
-const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://localhost:8000';
+const jwt = require('jsonwebtoken');
+
+const optionalAuth = (req, res, next) => {
+    let token = req.header('x-auth-token');
+    if (!token) {
+        const authHeader = req.header('Authorization') || req.header('authorization');
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            token = authHeader.split(' ')[1];
+        } else if (authHeader) {
+            token = authHeader;
+        }
+    }
+
+    if (token) {
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production');
+            req.user = decoded.user || decoded;
+        } catch (err) {
+            // Proceed without blocking if token is invalid/expired
+        }
+    }
+    next();
+};
+
+const rawUrl = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000';
+const ML_SERVICE_URL = rawUrl.replace('localhost', '127.0.0.1');
 
 const upload = multer();
 
 // @desc    Forward assessment to ML service
 // @route   POST /api/ml/assess
-// @access  Private
-router.post('/assess', auth, async (req, res) => {
+// @access  Public / Optional Auth
+router.post('/assess', optionalAuth, async (req, res) => {
     try {
         const response = await axios.post(`${ML_SERVICE_URL}/api/assess`, req.body);
         res.json(response.data);
@@ -23,8 +48,8 @@ router.post('/assess', auth, async (req, res) => {
 
 // @desc    Forward recommendation request to ML service
 // @route   POST /api/ml/recommend
-// @access  Private
-router.post('/recommend', auth, async (req, res) => {
+// @access  Public / Optional Auth
+router.post('/recommend', optionalAuth, async (req, res) => {
     try {
         const response = await axios.post(`${ML_SERVICE_URL}/api/recommend`, req.body);
         res.json(response.data);
@@ -36,8 +61,8 @@ router.post('/recommend', auth, async (req, res) => {
 
 // @desc    Forward resume analysis to ML service
 // @route   POST /api/ml/analyze-resume
-// @access  Private
-router.post('/analyze-resume', auth, upload.single('file'), async (req, res) => {
+// @access  Public / Optional Auth
+router.post('/analyze-resume', optionalAuth, upload.single('file'), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
@@ -47,16 +72,21 @@ router.post('/analyze-resume', auth, upload.single('file'), async (req, res) => 
 
         // Construct standard FormData and Blob using Node 18+ globals
         const formData = new FormData();
-        const fileBlob = new Blob([req.file.buffer], { type: req.file.mimetype });
-        formData.append('file', fileBlob, req.file.originalname);
+        const fileBlob = new Blob([req.file.buffer], { type: req.file.mimetype || 'application/pdf' });
+        formData.append('file', fileBlob, req.file.originalname || 'resume.pdf');
         formData.append('branch', branch || '');
         formData.append('jobRole', jobRole || '');
 
-        const response = await axios.post(`${ML_SERVICE_URL}/api/analyze-resume`, formData);
+        const response = await axios.post(`${ML_SERVICE_URL}/api/analyze-resume`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            timeout: 30000
+        });
         res.json(response.data);
     } catch (err) {
-        console.error('Error contacting ML service during resume analysis', err.message);
-        res.status(500).send('ML Service Error');
+        console.error('Error contacting ML service during resume analysis:', err.response?.data || err.message);
+        res.status(500).json({ error: 'ML Service Error', details: err.response?.data?.detail || err.message });
     }
 });
 
