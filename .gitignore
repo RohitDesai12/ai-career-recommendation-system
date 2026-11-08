@@ -6,9 +6,13 @@
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
 .venv/
 venv/
 env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 # Node
 node_modules/
@@ -19,10 +23,13 @@ pnpm-debug.log*
 # Build files
 dist/
 build/
+coverage/
 
-# IDE
+# IDE & Editor
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # Logs
 *.log
@@ -34,6 +41,6 @@ Thumbs.db
 # ML model files
 *.pkl
 
-# Temporary and scratch test directories
+# Temporary, scratch, and cache directories
 scratch/
 backend/scratch/
