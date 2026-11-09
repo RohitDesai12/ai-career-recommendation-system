@@ -33,6 +33,22 @@ const ML_SERVICE_URL = rawUrl.replace('localhost', '127.0.0.1');
 
 const upload = multer();
 
+// @desc    Check ML service health and model status
+// @route   GET /api/ml/model-status
+// @access  Public
+router.get('/model-status', async (req, res) => {
+    try {
+        const response = await axios.get(`${ML_SERVICE_URL}/health`, { timeout: 5000 });
+        res.json(response.data);
+    } catch (err) {
+        res.status(503).json({
+            status: 'unavailable',
+            message: 'ML Service offline or unreachable',
+            error: err.message
+        });
+    }
+});
+
 // @desc    Forward assessment to ML service
 // @route   POST /api/ml/assess
 // @access  Public / Optional Auth

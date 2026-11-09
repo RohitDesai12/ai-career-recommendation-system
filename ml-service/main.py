@@ -24,24 +24,95 @@ except Exception:
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY") 
 
-# Load Career ML models
+from model_manager import (
+    ensure_model_file,
+    generate_heuristic_recommendation,
+    SKIP_HEAVY_MODEL_LOAD,
+    CAREER_MODEL_URL,
+    RESUME_MODEL_URL,
+)
+
+# Model Status Telemetry
+MODEL_STATUS = {
+    "career_model": {
+        "loaded": False,
+        "mode": "heuristic_fallback",
+        "type": None,
+        "features_count": 0,
+        "classes_count": 0,
+        "file_present": False,
+        "file_size_bytes": 0,
+        "warning": None
+    },
+    "resume_model": {
+        "loaded": False,
+        "file_present": False,
+        "file_size_bytes": 0
+    },
+    "environment": {
+        "skip_heavy_model_load": SKIP_HEAVY_MODEL_LOAD,
+        "career_model_url_configured": bool(CAREER_MODEL_URL),
+        "resume_model_url_configured": bool(RESUME_MODEL_URL),
+        "groq_configured": bool(GROQ_API_KEY)
+    }
+}
+
+# Load Career ML metadata & encoders
 try:
-    career_model = joblib.load('career_model_v3.pkl')
-    career_encoders = joblib.load('label_encoders_v3.pkl')
     with open('model_meta_v3.json', 'r', encoding='utf-8') as f:
         career_meta = json.load(f)
     career_features = career_meta['features']
     career_classes = career_meta['career_classes']
+    MODEL_STATUS["career_model"]["features_count"] = len(career_features)
+    MODEL_STATUS["career_model"]["classes_count"] = len(career_classes)
 except Exception as e:
-    print("Warning: Could not load Career ML models.", e)
-    career_model = None
+    print("Warning: Could not load Career metadata.", e)
     career_features = []
     career_classes = []
 
+try:
+    career_encoders = joblib.load('label_encoders_v3.pkl')
+except Exception as e:
+    print("Warning: Could not load Career encoders.", e)
+    career_encoders = {}
+
+# Load Career Model
+career_model = None
+if SKIP_HEAVY_MODEL_LOAD:
+    print("Notice: SKIP_HEAVY_MODEL_LOAD=true. Bypassing 1.88 GB model load to conserve memory.")
+    MODEL_STATUS["career_model"]["warning"] = "SKIP_HEAVY_MODEL_LOAD=true active. Operating in lightweight domain fallback mode."
+else:
+    c_available, c_path = ensure_model_file('career_model_v3.pkl', CAREER_MODEL_URL)
+    if c_available:
+        try:
+            career_model = joblib.load(c_path)
+            sz = os.path.getsize(c_path)
+            MODEL_STATUS["career_model"].update({
+                "loaded": True,
+                "mode": "trained_model",
+                "type": type(career_model).__name__,
+                "file_present": True,
+                "file_size_bytes": sz,
+                "warning": None
+            })
+        except Exception as e:
+            print("Warning: Could not deserialize Career ML model:", e)
+            MODEL_STATUS["career_model"]["warning"] = f"Deserialization error: {e}"
+    else:
+        print("Warning: career_model_v3.pkl not found locally or via CAREER_MODEL_URL. Fallback mode active.")
+        MODEL_STATUS["career_model"]["warning"] = "Model file not found. Fallback mode active."
+
 # Load Resume ML models
 try:
-    resume_model = joblib.load('resume_model.pkl')
-    resume_encoders = joblib.load('resume_encoders.pkl')
+    r_available, r_path = ensure_model_file('resume_model.pkl', RESUME_MODEL_URL)
+    if r_available:
+        resume_model = joblib.load(r_path)
+        MODEL_STATUS["resume_model"]["loaded"] = True
+        MODEL_STATUS["resume_model"]["file_present"] = True
+        MODEL_STATUS["resume_model"]["file_size_bytes"] = os.path.getsize(r_path)
+    else:
+        resume_model = None
+    resume_encoders = joblib.load('resume_encoders.pkl') if os.path.exists('resume_encoders.pkl') else {}
     with open('resume_model_meta.json', 'r', encoding='utf-8') as f:
         resume_meta = json.load(f)
     resume_features = resume_meta['features']
@@ -65,7 +136,23 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"status": "ML Service is running"}
+    return {
+        "status": "ML Service is running",
+        "career_model_mode": MODEL_STATUS["career_model"]["mode"],
+        "career_model_loaded": MODEL_STATUS["career_model"]["loaded"]
+    }
+
+@app.get("/health")
+def health_check():
+    return {
+        "status": "healthy",
+        "service": "career-compass-ml",
+        "models": MODEL_STATUS
+    }
+
+@app.get("/api/model-status")
+def get_model_status():
+    return MODEL_STATUS
 
 @app.post("/api/assess")
 def assess_aptitude(data: dict):
@@ -95,7 +182,10 @@ BRANCH_ALIAS = {
 @app.post("/api/recommend")
 def recommend_career(data: dict):
     try:
-        if not career_model: return {"recommendation": "Software Engineer", "confidence": 80.0}
+        if not career_model:
+            # Transparent heuristic fallback when ML model is unavailable
+            return generate_heuristic_recommendation(data, career_classes, BRANCH_ALIAS)
+
         feature_values = []
         for feature in career_features:
             val = data.get(feature)
@@ -143,11 +233,19 @@ def recommend_career(data: dict):
         return {
             "recommendation": recommended_career,
             "confidence": confidence,
+            "model_status": "trained_model",
+            "warning": None,
             "alternatives": alternatives
         }
     except Exception as e:
         print("Recommendation error:", e)
-        return {"recommendation": "Software Engineer", "confidence": 50.0}
+        return {
+            "recommendation": "Software Development Engineer",
+            "confidence": 50.0,
+            "model_status": "error_fallback",
+            "warning": f"Recommendation error: {str(e)}",
+            "alternatives": []
+        }
 
 def extract_text_from_pdf(file_bytes: bytes) -> str:
     """Extract full raw text content from uploaded PDF bytes."""
