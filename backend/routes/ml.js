@@ -75,6 +75,19 @@ router.post('/recommend', optionalAuth, async (req, res) => {
     }
 });
 
+// @desc    Forward explicit V8 recommendation ranking request to ML service
+// @route   POST /api/ml/recommend/v8
+// @access  Public / Optional Auth
+router.post('/recommend/v8', optionalAuth, async (req, res) => {
+    try {
+        const response = await axios.post(`${ML_SERVICE_URL}/api/recommend/v8`, req.body);
+        res.json(response.data);
+    } catch (err) {
+        console.error('Error contacting ML service for V8 ranking', err.message);
+        res.status(500).json({ error: 'ML Service Error', details: err.message });
+    }
+});
+
 // @desc    Forward resume analysis to ML service
 // @route   POST /api/ml/analyze-resume
 // @access  Public / Optional Auth

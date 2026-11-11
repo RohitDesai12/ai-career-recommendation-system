@@ -1,6 +1,10 @@
 const AssessmentAttempt = require('../models/AssessmentAttempt');
 const Profile = require('../models/Profile');
 const StudentActivity = require('../models/StudentActivity');
+const axios = require('axios');
+
+const rawMlUrl = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000';
+const ML_SERVICE_URL = rawMlUrl.replace('localhost', '127.0.0.1');
 
 // Comprehensive platform career definitions with ideal dimension footprints
 const CAREER_DEFINITIONS = [
@@ -526,40 +530,159 @@ exports.submitAssessment = async (req, res) => {
     try {
         const {
             field,
+            academic,
+            direction,
             interests,
             scenarios,
             challenges,
             workStyle,
             careerValues,
             tradeOffs,
-            constraints
+            skillsData,
+            constraints,
+            v8Profile
         } = req.body;
 
         const inputs = {
+            academic: academic || {},
+            direction: direction || {},
             interests: interests || [],
             scenarios: scenarios || [],
             challenges: challenges || [],
             workStyle: workStyle || {},
             careerValues: careerValues || [],
             tradeOffs: tradeOffs || [],
+            skillsData: skillsData || {},
             constraints: constraints || {}
         };
 
         const dimensions = calculateDimensions(inputs);
-        const recommendedCareers = calculateCareerMatches(dimensions, field, inputs);
         const keyStrengths = generateKeyStrengths(dimensions);
 
-        // Create persistent attempt
+        // Sanitize and construct the canonical 20 features for the V8 model without CSE bias
+        const activeBranch = v8Profile?.Branch || academic?.branch || 'General Engineering';
+        let defaultPrimarySkill = 'Problem Solving';
+        let defaultSecondarySkill = 'Analytical Thinking';
+        let defaultTargetSector = 'Engineering';
+
+        if (activeBranch.includes('Mechatronics') || activeBranch.includes('Robotics')) {
+            defaultPrimarySkill = 'Robotics';
+            defaultSecondarySkill = 'Automation';
+            defaultTargetSector = 'Automotive';
+        } else if (activeBranch.includes('Mechanical') || activeBranch.includes('Automotive')) {
+            defaultPrimarySkill = 'SolidWorks';
+            defaultSecondarySkill = 'CAD';
+            defaultTargetSector = 'Core Manufacturing';
+        } else if (activeBranch.includes('Civil')) {
+            defaultPrimarySkill = 'AutoCAD';
+            defaultSecondarySkill = 'Structural Analysis';
+            defaultTargetSector = 'Construction';
+        } else if (activeBranch.includes('Electrical')) {
+            defaultPrimarySkill = 'Power Systems';
+            defaultSecondarySkill = 'PLC';
+            defaultTargetSector = 'CleanTech & Energy';
+        } else if (activeBranch.includes('Electronics') || activeBranch.includes('Communication')) {
+            defaultPrimarySkill = 'Embedded C';
+            defaultSecondarySkill = 'Microcontrollers';
+            defaultTargetSector = 'Semiconductors';
+        } else if (activeBranch.includes('Biotechnology') || activeBranch.includes('Biomedical')) {
+            defaultPrimarySkill = 'Bioinformatics';
+            defaultSecondarySkill = 'Laboratory Techniques';
+            defaultTargetSector = 'Healthcare & Biotech';
+        } else if (activeBranch.includes('Chemical')) {
+            defaultPrimarySkill = 'Process Simulation';
+            defaultSecondarySkill = 'Aspen Plus';
+            defaultTargetSector = 'Chemicals';
+        } else if (activeBranch.includes('Computer') || activeBranch.includes('Information')) {
+            defaultPrimarySkill = 'Software Development';
+            defaultSecondarySkill = 'Data Structures';
+            defaultTargetSector = 'Information Technology';
+        }
+
+        const constructedV8Profile = {
+            Branch: activeBranch,
+            Specialization: v8Profile?.Specialization || academic?.specialization || 'General',
+            CGPA: v8Profile?.CGPA !== undefined && v8Profile.CGPA !== null ? Number(v8Profile.CGPA) : (academic?.cgpa ? Number(academic.cgpa) : 8.0),
+            Academic_Performance: v8Profile?.Academic_Performance || (
+                (academic?.cgpa || 8.0) >= 8.5 ? 'Excellent' :
+                (academic?.cgpa || 8.0) >= 7.5 ? 'Good' :
+                (academic?.cgpa || 8.0) >= 6.5 ? 'Average' : 'Below Average'
+            ),
+            Primary_Skill: v8Profile?.Primary_Skill || skillsData?.existingSkills?.[0]?.name || defaultPrimarySkill,
+            Secondary_Skill: v8Profile?.Secondary_Skill || skillsData?.existingSkills?.[1]?.name || defaultSecondarySkill,
+            Programming_Languages: v8Profile?.Programming_Languages || skillsData?.programmingLanguages || 'None / Basic Scripting',
+            Technical_Proficiency: v8Profile?.Technical_Proficiency || skillsData?.technicalProficiency || 'Intermediate',
+            Certifications: v8Profile?.Certifications || (Array.isArray(skillsData?.certifications) && skillsData.certifications.length > 0 ? skillsData.certifications.join(', ') : 'None / In Progress'),
+            Interest_Area: v8Profile?.Interest_Area || (inputs.interests && inputs.interests[0]) || (activeBranch.includes('Mechatronics') ? 'Robotics and Automation' : 'General Engineering'),
+            Career_Goal: v8Profile?.Career_Goal || inputs.constraints?.careerGoal || 'Develop innovative engineering solutions',
+            Preferred_Environment: v8Profile?.Preferred_Environment || inputs.workStyle?.environment || (activeBranch.includes('Mechatronics') ? 'R&D Center' : 'Corporate Office'),
+            Target_Sector: v8Profile?.Target_Sector || defaultTargetSector,
+            Expected_Salary: v8Profile?.Expected_Salary !== undefined && v8Profile.Expected_Salary !== null ? Number(v8Profile.Expected_Salary) : (inputs.constraints?.expectedSalary ? Number(inputs.constraints.expectedSalary) : 10.0),
+            Higher_Studies_Interest: v8Profile?.Higher_Studies_Interest || (inputs.constraints?.higherStudies === 'Yes' || inputs.constraints?.careerGoal?.includes('Higher') ? 'Yes' : 'No'),
+            Research_Interest: v8Profile?.Research_Interest || (inputs.interests.some(i => String(i).toLowerCase().includes('research')) ? 'High' : 'Moderate'),
+            Problem_Solving_Level: v8Profile?.Problem_Solving_Level || 'Advanced',
+            Communication_Level: v8Profile?.Communication_Level || 'Good',
+            Preferred_Location: v8Profile?.Preferred_Location || inputs.constraints?.locationPreference || 'Flexible',
+            Startup_Interest: v8Profile?.Startup_Interest || (inputs.careerValues.some(v => String(v).toLowerCase().includes('startup') || String(v).toLowerCase().includes('entrepreneur')) ? 'High' : 'Moderate')
+        };
+
+        let v8ResponseData = null;
+        let recommendedCareers = [];
+
+        // 1. Primary: Execute real V8 model inference and 6-factor ranking via ML Service
+        try {
+            const mlRes = await axios.post(`${ML_SERVICE_URL}/api/recommend/v8`, constructedV8Profile, { timeout: 10000 });
+            if (mlRes.data && mlRes.data.status === 'success' && Array.isArray(mlRes.data.top_recommendations)) {
+                v8ResponseData = mlRes.data;
+                recommendedCareers = mlRes.data.top_recommendations.map(c => ({
+                    title: c.career_title,
+                    department: c.target_sector || 'Engineering',
+                    matchScore: Math.round(c.compatibility_score || 85),
+                    compatibilityScore: c.compatibility_score,
+                    v8ModelScore: c.v8_model_score,
+                    matchTier: c.compatibility_score >= 80 ? 'Best Match' : c.compatibility_score >= 65 ? 'High Match' : 'Good Match',
+                    salaryRange: c.salary_range || '₹8,00,000 - ₹24,00,000 / yr',
+                    whyMatches: [c.why_recommended],
+                    areasToDevelop: c.missing_skills || [],
+                    keySkills: c.matching_skills || [],
+                    componentScores: c.component_scores || {},
+                    skillGaps: c.skill_gaps || {},
+                    suggestedNextSteps: c.suggested_next_steps || [],
+                    recommendedCertifications: c.recommended_certifications || []
+                }));
+            }
+        } catch (mlErr) {
+            console.warn('V8 ML Service endpoint call did not complete during assessment submit:', mlErr.message);
+        }
+
+        // 2. Fallback if ML service is unreachable
+        if (!recommendedCareers || recommendedCareers.length === 0) {
+            recommendedCareers = calculateCareerMatches(dimensions, field, inputs);
+        }
+
+        const topCareer = recommendedCareers[0] || {
+            title: 'Software Development Engineer',
+            department: 'Engineering',
+            matchScore: 85,
+            whyMatches: ['Strong foundational alignment with your assessment responses.']
+        };
+
+        // Create persistent attempt with rich academic, skills, V8 profile & results
         const attempt = new AssessmentAttempt({
             user: req.user.id,
             field: field || 'All Fields',
+            direction: inputs.direction,
+            academic: inputs.academic,
             interests: inputs.interests,
             scenarios: inputs.scenarios,
             challenges: inputs.challenges,
             workStyle: inputs.workStyle,
             careerValues: inputs.careerValues,
             tradeOffs: inputs.tradeOffs,
+            skillsData: inputs.skillsData,
             constraints: inputs.constraints,
+            v8Profile: constructedV8Profile,
+            v8Results: v8ResponseData,
             dimensions,
             keyStrengths,
             recommendedCareers,
@@ -569,24 +692,29 @@ exports.submitAssessment = async (req, res) => {
         await attempt.save();
 
         // Synchronize with student Profile
-        const topCareer = recommendedCareers[0];
         try {
             await Profile.findOneAndUpdate(
                 { user: req.user.id },
                 {
                     $set: {
+                        branch: inputs.academic?.branch || 'Computer Science and Engineering',
+                        specialization: inputs.academic?.specialization || 'General',
+                        cgpa: inputs.academic?.cgpa || 8.0,
                         targetCareer: topCareer.title,
-                        department: topCareer.department,
+                        department: topCareer.department || 'Engineering',
+                        skills: Array.isArray(inputs.skillsData?.existingSkills) && inputs.skillsData.existingSkills.length > 0
+                            ? inputs.skillsData.existingSkills.map(s => s.name || s)
+                            : ['Problem Solving', 'Engineering Fundamentals'],
                         interests: inputs.interests,
                         recommendedCareers: recommendedCareers.slice(0, 5).map(c => ({
                             title: c.title,
-                            confidence: c.matchScore,
-                            description: c.whyMatches[0] || 'High alignment with your career assessment profile'
+                            confidence: c.matchScore || c.compatibilityScore || 85,
+                            description: c.whyMatches?.[0] || 'High alignment with your career assessment profile'
                         })),
                         careerPreferences: {
                             preferredRoles: recommendedCareers.slice(0, 3).map(c => c.title),
-                            preferredLocations: [inputs.constraints.locationPreference || 'Flexible'],
-                            workModes: [inputs.constraints.workMode || 'Hybrid'],
+                            preferredLocations: [inputs.constraints?.locationPreference || 'Flexible'],
+                            workModes: [inputs.constraints?.workMode || 'Hybrid'],
                             experienceLevel: '0-2 years',
                             jobAlertsEnabled: true,
                             alertFrequency: 'Daily'
@@ -600,10 +728,10 @@ exports.submitAssessment = async (req, res) => {
             // Log activity
             await StudentActivity.create({
                 user: req.user.id,
-                action: 'Completed Career Discovery Assessment',
-                title: `Top Match: ${topCareer.title} (${topCareer.matchScore}%)`,
+                action: 'Completed Universal Career Discovery Assessment',
+                title: `Top Match: ${topCareer.title} (${topCareer.matchScore || topCareer.compatibilityScore || 85}%)`,
                 category: 'assessment',
-                details: `Explored ${field || 'All Fields'}. Recommended ${recommendedCareers.length} career trajectories.`,
+                details: `Branch: ${inputs.academic?.branch || 'Engineering'}. Field: ${field || 'All Fields'}. Recommended ${recommendedCareers.length} pathways via V8 engine.`,
                 createdAt: new Date()
             });
         } catch (syncErr) {
@@ -618,6 +746,9 @@ exports.submitAssessment = async (req, res) => {
             primaryCareer: topCareer,
             alternativeCareers: recommendedCareers.slice(1),
             allCareers: recommendedCareers,
+            top_recommendations: v8ResponseData?.top_recommendations || recommendedCareers,
+            v8Data: v8ResponseData,
+            v8Profile: constructedV8Profile,
             attempt
         });
     } catch (err) {
@@ -639,6 +770,11 @@ exports.getLatestAssessment = async (req, res) => {
         res.json({
             attemptId: attempt._id,
             field: attempt.field,
+            academic: attempt.academic,
+            skillsData: attempt.skillsData,
+            v8Profile: attempt.v8Profile,
+            v8Results: attempt.v8Results,
+            top_recommendations: attempt.v8Results?.top_recommendations || attempt.recommendedCareers,
             dimensions: attempt.dimensions,
             keyStrengths: attempt.keyStrengths,
             primaryCareer: attempt.recommendedCareers[0] || null,

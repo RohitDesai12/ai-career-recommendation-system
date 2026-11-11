@@ -91,17 +91,124 @@ This guide provides instructions for deploying Career Compass across free hostin
 
 ---
 
-## 4. Python ML Service Deployment Options
+## 4. Python ML Service Deployment (V8 Recommendation Engine)
 
-### Option A: Standalone Web Service on Render (Free Tier)
+The Career Compass ML service is powered by the **V8 HistGradientBoosting Pipeline** (`career_model_v8.pkl`, ~2.9 MB, 35 career classes, 20 canonical input features) along with the **Resume Analyzer** (`resume_model.pkl`). Because the V8 pipeline is compact (~2.9 MB), it runs within free-tier cloud memory (e.g. Render 512 MB RAM) without OOM issues or heavy memory constraints.
+
+### Option A: Render / Railway Free Tier (Recommended)
+
 1. In Render, click **New + → Web Service**.
-2. Select repository, set **Root Directory** to `ml-service`.
-3. Set **Runtime**: `Python 3`.
-4. Set **Build Command**: `pip install -r requirements.txt`.
-5. Set **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`.
-6. Add environment variable:
-   - `GROQ_API_KEY`: *Your Groq API key*
+2. Select your repository: `ai-career-recommendation-system`.
+3. Configure the service settings:
+   - **Name**: `career-compass-ml`
+   - **Root Directory**: `ml-service`
+   - **Runtime**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+   - **Instance Type**: `Free` (512 MB RAM)
+4. Under **Environment Variables**, add:
+   | Key | Value | Description |
+   | :--- | :--- | :--- |
+   | `GROQ_API_KEY` | *Your Groq API key* | Used for LLM-based resume extraction and classification |
+   | `V8_MODEL_URL` | *(optional)* | Hugging Face or R2 URL to download `career_model_v8.pkl` if hosted externally |
+   | `RESUME_MODEL_URL` | *(optional)* | Hugging Face or R2 URL to download `resume_model.pkl` if hosted externally |
+5. Click **Create Web Service**.
+6. Once deployed, copy the ML service URL (e.g., `https://career-compass-ml.onrender.com`) and paste it as `ML_SERVICE_URL` in your backend Render service.
 
-> [!IMPORTANT]
-> The `career_model_v3.pkl` model file is ~1.88 GB and is excluded from Git. If hosting `ml-service` in a 512MB RAM free container, `main.py` is pre-configured with a graceful fallback (`if not career_model: return ...`) so the service functions seamlessly without crashing. For full model predictions in cloud production, consider hosting on a Hugging Face Space (Free 16GB RAM) or downloading the model from cloud object storage (Cloudflare R2 / AWS S3) upon container boot.
+---
+
+### Option B: Hugging Face Spaces (Free 16 GB RAM & 2 vCPUs)
+
+For running in a dedicated AI microservice container on Hugging Face:
+
+1. Sign up or log in at [huggingface.co](https://huggingface.co).
+2. Click **New Space** ([huggingface.co/new-space](https://huggingface.co/new-space)).
+   - **Space Name**: `career-compass-ml`
+   - **License**: `mit`
+   - **Space SDK**: **Docker** (Blank)
+   - **Hardware**: **CPU basic • 2 vCPU • 16 GB RAM • Free**
+3. Clone your new Hugging Face Space repository locally:
+   ```bash
+   git clone https://huggingface.co/spaces/<your-username>/career-compass-ml
+   ```
+4. Copy the contents of the `ml-service/` directory into your Space folder, including `Dockerfile`, `main.py`, `model_manager.py`, `requirements.txt`, and model files.
+5. Push to Hugging Face:
+   ```bash
+   cd career-compass-ml
+   git add .
+   git commit -m "feat: deploy Career Compass V8 ML service"
+   git push origin main
+   ```
+6. Your public URL will be:
+   ```
+   https://<your-username>-career-compass-ml.hf.space
+   ```
+7. Set this URL as `ML_SERVICE_URL` in your Render Backend environment variables.
+
+---
+
+## 5. Health & Telemetry Verification
+
+After deployment, verify that each service is communicating properly:
+
+### 1. ML Service Health Check
+Query your deployed ML service directly:
+```bash
+curl https://<your-ml-service>.onrender.com/health
+```
+Expected response:
+```json
+{
+  "status": "healthy",
+  "service": "career-compass-ml",
+  "active_engine": "v8",
+  "models": {
+    "career_engine": {
+      "engine": "v8",
+      "model_name": "Career Compass V8 - HistGradientBoosting",
+      "available": true,
+      "classes_count": 35,
+      "features_count": 20
+    },
+    "resume_model": {
+      "loaded": true,
+      "file_present": true
+    }
+  }
+}
+```
+
+### 2. Backend Proxy Health Check
+Query the backend to verify it connects to the ML service:
+```bash
+curl https://<your-backend>.onrender.com/api/ml/model-status
+```
+
+---
+
+## 6. Complete Environment Variables Summary
+
+### Frontend (`frontend/.env`)
+| Variable | Value | Description |
+| :--- | :--- | :--- |
+| `VITE_API_URL` | `https://<backend>.onrender.com/api` | Base URL for REST API calls |
+
+### Backend (`backend/.env`)
+| Variable | Value | Description |
+| :--- | :--- | :--- |
+| `PORT` | `5000` | Port for Express server |
+| `NODE_ENV` | `production` | Production mode |
+| `MONGO_URI` | `mongodb+srv://...` | MongoDB Atlas connection string |
+| `JWT_SECRET` | *random 32-byte hex* | JWT signing secret |
+| `ML_SERVICE_URL` | `https://<ml-service>.onrender.com` | Base URL for ML service |
+| `GROQ_API_KEY` | *gsk_...* | Groq API key for job matching & AI assistant |
+| `ALLOWED_ORIGINS` | `https://<frontend>.vercel.app` | Allowed CORS origins (comma-separated) |
+
+### ML Service (`ml-service/.env`)
+| Variable | Value | Description |
+| :--- | :--- | :--- |
+| `GROQ_API_KEY` | *gsk_...* | Groq API key for resume parsing & LLM classification |
+| `V8_MODEL_URL` | *(optional)* | External download URL for `career_model_v8.pkl` |
+| `RESUME_MODEL_URL` | *(optional)* | External download URL for `resume_model.pkl` |
+| `MODEL_DOWNLOAD_TIMEOUT`| `300` | Download timeout in seconds |
 

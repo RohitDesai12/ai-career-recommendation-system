@@ -22,109 +22,87 @@ try:
 except Exception:
     pass
 
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY") 
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
 from model_manager import (
     ensure_model_file,
-    generate_heuristic_recommendation,
-    SKIP_HEAVY_MODEL_LOAD,
-    CAREER_MODEL_URL,
+    V8_MODEL_URL,
     RESUME_MODEL_URL,
 )
 
+# V8 Intelligent Career Recommendation & Ranking Engine (The Sole Recommendation Engine)
+try:
+    from v8 import (
+        rank_careers_v8,
+        is_v8_available,
+        predict_v8,
+        get_all_careers,
+        load_v8_model,
+        load_v8_metadata
+    )
+except ImportError:
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from v8 import (
+        rank_careers_v8,
+        is_v8_available,
+        predict_v8,
+        get_all_careers,
+        load_v8_model,
+        load_v8_metadata
+    )
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Load Resume ML models (Preserving complete Resume Analyzer functionality)
+try:
+    r_available, r_path = ensure_model_file('resume_model.pkl', RESUME_MODEL_URL)
+    if r_available:
+        resume_model = joblib.load(r_path)
+        resume_size_bytes = os.path.getsize(r_path)
+    else:
+        resume_model = None
+        resume_size_bytes = 0
+
+    r_enc_path = os.path.join(BASE_DIR, 'resume_encoders.pkl')
+    resume_encoders = joblib.load(r_enc_path) if os.path.exists(r_enc_path) else {}
+
+    with open(os.path.join(BASE_DIR, 'resume_model_meta.json'), 'r', encoding='utf-8') as f:
+        resume_meta = json.load(f)
+    resume_features = resume_meta.get('features', [])
+    career_keywords_map = resume_meta.get('career_keywords', {})
+except Exception as e:
+    print("Warning: Could not load Resume ML models:", e)
+    resume_model = None
+    resume_features = []
+    resume_encoders = {}
+    career_keywords_map = {}
+    resume_size_bytes = 0
+
 # Model Status Telemetry
 MODEL_STATUS = {
-    "career_model": {
-        "loaded": False,
-        "mode": "heuristic_fallback",
-        "type": None,
-        "features_count": 0,
-        "classes_count": 0,
-        "file_present": False,
-        "file_size_bytes": 0,
-        "warning": None
+    "career_engine": {
+        "engine": "v8",
+        "model_name": "Career Compass V8 - HistGradientBoosting",
+        "available": is_v8_available(),
+        "classes_count": len(get_all_careers()) if is_v8_available() else 35,
+        "features_count": 20,
+        "mode": "trained_pipeline" if is_v8_available() else "unavailable"
     },
     "resume_model": {
-        "loaded": False,
-        "file_present": False,
-        "file_size_bytes": 0
+        "loaded": resume_model is not None,
+        "file_present": resume_model is not None,
+        "file_size_bytes": resume_size_bytes
     },
     "environment": {
-        "skip_heavy_model_load": SKIP_HEAVY_MODEL_LOAD,
-        "career_model_url_configured": bool(CAREER_MODEL_URL),
+        "active_recommendation_engine": "v8",
+        "v8_model_url_configured": bool(V8_MODEL_URL),
         "resume_model_url_configured": bool(RESUME_MODEL_URL),
         "groq_configured": bool(GROQ_API_KEY)
     }
 }
 
-# Load Career ML metadata & encoders
-try:
-    with open('model_meta_v3.json', 'r', encoding='utf-8') as f:
-        career_meta = json.load(f)
-    career_features = career_meta['features']
-    career_classes = career_meta['career_classes']
-    MODEL_STATUS["career_model"]["features_count"] = len(career_features)
-    MODEL_STATUS["career_model"]["classes_count"] = len(career_classes)
-except Exception as e:
-    print("Warning: Could not load Career metadata.", e)
-    career_features = []
-    career_classes = []
-
-try:
-    career_encoders = joblib.load('label_encoders_v3.pkl')
-except Exception as e:
-    print("Warning: Could not load Career encoders.", e)
-    career_encoders = {}
-
-# Load Career Model
-career_model = None
-if SKIP_HEAVY_MODEL_LOAD:
-    print("Notice: SKIP_HEAVY_MODEL_LOAD=true. Bypassing 1.88 GB model load to conserve memory.")
-    MODEL_STATUS["career_model"]["warning"] = "SKIP_HEAVY_MODEL_LOAD=true active. Operating in lightweight domain fallback mode."
-else:
-    c_available, c_path = ensure_model_file('career_model_v3.pkl', CAREER_MODEL_URL)
-    if c_available:
-        try:
-            career_model = joblib.load(c_path)
-            sz = os.path.getsize(c_path)
-            MODEL_STATUS["career_model"].update({
-                "loaded": True,
-                "mode": "trained_model",
-                "type": type(career_model).__name__,
-                "file_present": True,
-                "file_size_bytes": sz,
-                "warning": None
-            })
-        except Exception as e:
-            print("Warning: Could not deserialize Career ML model:", e)
-            MODEL_STATUS["career_model"]["warning"] = f"Deserialization error: {e}"
-    else:
-        print("Warning: career_model_v3.pkl not found locally or via CAREER_MODEL_URL. Fallback mode active.")
-        MODEL_STATUS["career_model"]["warning"] = "Model file not found. Fallback mode active."
-
-# Load Resume ML models
-try:
-    r_available, r_path = ensure_model_file('resume_model.pkl', RESUME_MODEL_URL)
-    if r_available:
-        resume_model = joblib.load(r_path)
-        MODEL_STATUS["resume_model"]["loaded"] = True
-        MODEL_STATUS["resume_model"]["file_present"] = True
-        MODEL_STATUS["resume_model"]["file_size_bytes"] = os.path.getsize(r_path)
-    else:
-        resume_model = None
-    resume_encoders = joblib.load('resume_encoders.pkl') if os.path.exists('resume_encoders.pkl') else {}
-    with open('resume_model_meta.json', 'r', encoding='utf-8') as f:
-        resume_meta = json.load(f)
-    resume_features = resume_meta['features']
-    career_keywords_map = resume_meta.get('career_keywords', {})
-except Exception as e:
-    print("Warning: Could not load Resume ML models.", e)
-    resume_model = None
-    resume_features = []
-    resume_encoders = {}
-    career_keywords_map = {}
-
-app = FastAPI(title="AI Career Recommendation API")
+app = FastAPI(title="AI Career Recommendation API — V8 Engine")
 
 app.add_middleware(
     CORSMiddleware,
@@ -138,8 +116,10 @@ app.add_middleware(
 def read_root():
     return {
         "status": "ML Service is running",
-        "career_model_mode": MODEL_STATUS["career_model"]["mode"],
-        "career_model_loaded": MODEL_STATUS["career_model"]["loaded"]
+        "active_recommendation_engine": "v8",
+        "v8_available": is_v8_available(),
+        "classes_count": len(get_all_careers()) if is_v8_available() else 35,
+        "features_count": 20
     }
 
 @app.get("/health")
@@ -147,6 +127,7 @@ def health_check():
     return {
         "status": "healthy",
         "service": "career-compass-ml",
+        "active_engine": "v8",
         "models": MODEL_STATUS
     }
 
@@ -158,94 +139,77 @@ def get_model_status():
 def assess_aptitude(data: dict):
     return {"score": 85, "top_traits": ["Analytical", "Problem Solving"]}
 
-BRANCH_ALIAS = {
-    "Computer Science & Engineering": "CSE",
-    "Information Technology": "IT",
-    "Software Engineering": "CSE",
-    "Data Science": "Data Science",
-    "Electronics & Communication Engineering": "ECE",
-    "Electronics Engineering": "ECE",
-    "VLSI Design": "ECE",
-    "Embedded Systems": "ECE",
-    "Electrical Engineering": "EEE",
-    "Electrical & Electronics Engineering": "EEE",
-    "Power Engineering": "EEE",
-    "Mechanical Engineering": "Mechanical",
-    "Manufacturing Engineering": "Mechanical",
-    "Automotive Engineering": "Mechanical",
-    "Aerospace Engineering": "Aerospace",
-    "Civil Engineering": "Civil",
-    "Construction Engineering": "Civil",
-    "Transportation Engineering": "Civil",
-}
+@app.post("/api/recommend/v8")
+def recommend_career_v8(data: dict):
+    """
+    V8 Intelligent Career Recommendation & Ranking.
+    Evaluates all 35 career classes via HistGradientBoosting predict_proba(),
+    computes 6-factor compatibility scores, and returns top ranked pathways
+    with skill gap analysis and transparent explanations.
+    """
+    try:
+        top_n = int(data.get("top_n", 5))
+        return rank_careers_v8(data, top_n=top_n)
+    except Exception as e:
+        logger_err = str(e)
+        print("V8 recommendation error:", logger_err)
+        return {
+            "status": "error",
+            "message": f"V8 ranking error: {logger_err}",
+            "recommendation": "Software Development Engineer",
+            "confidence": 50.0,
+            "model_status": "error_fallback",
+            "alternatives": []
+        }
 
 @app.post("/api/recommend")
 def recommend_career(data: dict):
+    """
+    Consolidated Primary Recommendation Endpoint (Powered Exclusively by V8).
+    Maintains backwards compatibility with legacy callers while returning rich V8 results.
+    """
     try:
-        if not career_model:
-            # Transparent heuristic fallback when ML model is unavailable
-            return generate_heuristic_recommendation(data, career_classes, BRANCH_ALIAS)
+        top_n = int(data.get("top_n", 5))
+        v8_result = rank_careers_v8(data, top_n=top_n)
 
-        feature_values = []
-        for feature in career_features:
-            val = data.get(feature)
-            if feature in career_encoders:
-                enc = career_encoders[feature]
-                val_str = str(val) if val is not None else "Unknown"
-                if val_str not in enc.classes_ and feature == "Branch":
-                    val_str = BRANCH_ALIAS.get(val_str, val_str)
-                if val_str in enc.classes_:
-                    encoded_val = enc.transform([val_str])[0]
-                else:
-                    encoded_val = len(enc.classes_) // 2
-            else:
-                try: encoded_val = float(val) if val is not None else 0.0
-                except ValueError: encoded_val = 0.0
-            feature_values.append(encoded_val)
+        # Populate backwards-compatible top-level properties
+        primary = v8_result.get("primary_career", {})
+        top_title = primary.get("career_title", "Software Development Engineer")
+        top_conf = round(float(primary.get("compatibility_score", 85.0)), 2)
 
-        input_array = np.array([feature_values])
-        
-        try:
-            probs = career_model.predict_proba(input_array)[0]
-            career_probs = []
-            for idx, prob in enumerate(probs):
-                if idx < len(career_classes):
-                    career_probs.append((career_classes[idx], float(prob) * 100))
-            career_probs.sort(key=lambda x: x[1], reverse=True)
-            
-            recommended_career = career_probs[0][0]
-            confidence = round(career_probs[0][1], 2)
-            
-            alternatives = [
-                {"title": c[0], "confidence": round(c[1], 2)}
-                for c in career_probs[1:6]
-            ]
-        except Exception as e:
-            print("predict_proba failed, falling back to predict:", e)
-            pred_idx = career_model.predict(input_array)[0]
-            if isinstance(pred_idx, (int, np.integer)) and pred_idx < len(career_classes):
-                recommended_career = career_classes[pred_idx]
-            else:
-                recommended_career = str(pred_idx)
-            confidence = 85.0
-            alternatives = []
+        alternatives = [
+            {
+                "title": alt.get("career_title", ""),
+                "confidence": round(float(alt.get("compatibility_score", 70.0)), 2)
+            }
+            for alt in v8_result.get("alternative_careers", [])
+        ]
 
-        return {
-            "recommendation": recommended_career,
-            "confidence": confidence,
-            "model_status": "trained_model",
+        v8_result.update({
+            "recommendation": top_title,
+            "confidence": top_conf,
+            "model_status": "v8_trained_pipeline",
             "warning": None,
             "alternatives": alternatives
-        }
+        })
+        return v8_result
+
     except Exception as e:
         print("Recommendation error:", e)
         return {
+            "status": "error",
             "recommendation": "Software Development Engineer",
             "confidence": 50.0,
             "model_status": "error_fallback",
             "warning": f"Recommendation error: {str(e)}",
-            "alternatives": []
+            "alternatives": [],
+            "top_recommendations": []
         }
+
+
+# =========================================================================
+# RESUME ANALYZER (Fully Preserved)
+# =========================================================================
 
 def extract_text_from_pdf(file_bytes: bytes) -> str:
     """Extract full raw text content from uploaded PDF bytes."""
@@ -264,7 +228,7 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
 def classify_document_with_llm(extracted_text: str, selected_branch: str, selected_role: str) -> dict:
     """
     Use an LLM classifier to determine:
-    1. Whether the extracted text represents a genuine candidate resume (never trusting filename).
+    1. Whether the extracted text represents a genuine candidate resume.
     2. How well the candidate's actual background/field matches the selected branch and target role.
     """
     prompt = f"""You are an expert document and career domain classifier.
@@ -340,19 +304,19 @@ Return strictly a valid JSON object matching this schema:
 
     # 2. Heuristic fallback in case LLM is offline
     lower_text = extracted_text.lower()
-    
+
     # Non-resume triggers
     not_resume_keywords = ['homework', 'problem 1', 'problem 2', 'due date', 'syllabus', 'assignment', 'submission date', 'quiz', 'midterm', 'final exam', 'invoice #', 'receipt #', 'terms and conditions']
     not_resume_score = sum(1 for kw in not_resume_keywords if kw in lower_text)
-    
+
     # Resume triggers
     has_contact = bool(re.search(r'[\w\.-]+@[\w\.-]+\.\w+', lower_text) or re.search(r'\+?\d[\d\s-]{8,}', lower_text))
     has_edu = any(k in lower_text for k in ['education', 'b.tech', 'bachelor', 'master', 'university', 'college', 'cgpa', 'gpa'])
     has_skills = any(k in lower_text for k in ['skills', 'technologies', 'programming', 'languages', 'frameworks', 'tools'])
     has_exp = any(k in lower_text for k in ['experience', 'internship', 'employment', 'work history', 'projects'])
-    
+
     resume_score = sum([has_contact, has_edu, has_skills, has_exp])
-    
+
     if not_resume_score >= 2 or (resume_score < 2 and not (has_edu and has_skills)):
         return {
             "document_type": "not_resume",
@@ -368,32 +332,32 @@ Return strictly a valid JSON object matching this schema:
             "has_education": has_edu,
             "explanation": "The document lacks essential resume sections."
         }
-    
+
     # Domain keyword heuristics
     cs_keywords = ['python', 'java', 'react', 'javascript', 'c++', 'sql', 'docker', 'git', 'web', 'fastapi', 'node', 'algorithms', 'software', 'frontend', 'backend']
     ece_keywords = ['vlsi', 'verilog', 'embedded', 'microcontroller', 'arduino', 'fpga', 'circuits', 'signal processing', 'matlab', 'sensors', 'pcb']
     mech_keywords = ['cad', 'solidworks', 'ansys', 'autocad', 'thermal', 'hvac', 'manufacturing', 'robotics', 'catia', 'fluid mechanics', 'thermodynamics']
     civil_keywords = ['structural', 'surveying', 'concrete', 'geotechnical', 'staad', 'construction', 'transportation', 'hydraulics', 'autocad civil']
-    
+
     cs_count = sum(1 for kw in cs_keywords if kw in lower_text)
     ece_count = sum(1 for kw in ece_keywords if kw in lower_text)
     mech_count = sum(1 for kw in mech_keywords if kw in lower_text)
     civil_count = sum(1 for kw in civil_keywords if kw in lower_text)
-    
+
     domain_counts = {
         "Computer Science & Engineering": cs_count,
         "Electronics & Communication Engineering": ece_count,
         "Mechanical Engineering": mech_count,
         "Civil Engineering": civil_count
     }
-    
+
     detected_field = max(domain_counts, key=domain_counts.get)
     if domain_counts[detected_field] == 0:
         detected_field = selected_branch or "Computer Science & Engineering"
-        
+
     # Check match with selected branch
     is_same_branch = (detected_field.lower() in (selected_branch or "").lower()) or ((selected_branch or "").lower() in detected_field.lower())
-    
+
     if is_same_branch:
         field_match_score = 90
         match_status = "strong"
@@ -408,7 +372,7 @@ Return strictly a valid JSON object matching this schema:
         field_match_score = 18
         match_status = "mismatch"
         explanation = f"Your resume appears to target {detected_field}, while {selected_branch} was selected."
-        
+
     return {
         "document_type": "resume",
         "confidence": 0.88,
@@ -437,11 +401,9 @@ async def analyze_resume(
     file: UploadFile = File(...)
 ):
     try:
-        # 1. Read file bytes and extract PDF text
         file_bytes = await file.read()
         raw_text = extract_text_from_pdf(file_bytes)
-        
-        # Check if text is completely empty
+
         if not raw_text or len(raw_text.strip()) < 30:
             return {
                 "document_type": "not_resume",
@@ -454,10 +416,8 @@ async def analyze_resume(
                 "explanation": "The uploaded file could not be parsed into readable text or is empty. Please upload a standard text PDF."
             }
 
-        # 2. Run LLM Document Classifier + Field Alignment Matcher
         classification = classify_document_with_llm(raw_text, branch, jobRole)
-        
-        # 3. IF NOT A RESUME: Do NOT calculate any score, do NOT estimate ATS compatibility!
+
         if classification.get("document_type") == "not_resume":
             return {
                 "document_type": "not_resume",
@@ -470,17 +430,13 @@ async def analyze_resume(
                 "explanation": classification.get("explanation", "The uploaded document does not appear to be a genuine resume or CV.")
             }
 
-        # 4. Genuine Resume Analysis on real text
         words = raw_text.split()
         word_count = len(words)
-        
         lower_text = raw_text.lower()
-        
-        # Detect action verbs
+
         action_verbs_matched = [v for v in COMMON_ACTION_VERBS if re.search(r'\b' + v + r'\b', lower_text)]
         action_verbs_count = len(action_verbs_matched)
-        
-        # Detect real sections
+
         sections_found = {
             "Summary": any(s in lower_text for s in ["summary", "objective", "profile", "about me"]),
             "Skills": any(s in lower_text for s in ["skills", "technical skills", "technologies", "proficiencies", "competencies"]),
@@ -489,41 +445,30 @@ async def analyze_resume(
             "Projects": any(s in lower_text for s in ["projects", "personal projects", "academic projects", "key projects"]),
             "Certifications": any(s in lower_text for s in ["certifications", "certificates", "courses", "licenses", "training"])
         }
-        
+
         sections_count = sum(1 for v in sections_found.values() if v)
-        
-        # Estimate internship months from experience text
         intern_months = 3 if sections_found["Experience"] else 0
-        
-        # Keyword matching against target job role
+
         target_keywords = career_keywords_map.get(jobRole, ["Python", "SQL", "Git", "React", "Linux", "Docker", "API"])
         matched_kws = [k for k in target_keywords if re.search(r'\b' + re.escape(k.lower()) + r'\b', lower_text)]
         missing_kws = [k for k in target_keywords if k not in matched_kws]
-        
+
         kw_matched_count = len(matched_kws)
         kw_total = len(target_keywords)
         kw_score = int((kw_matched_count / max(1, kw_total)) * 100)
-        
-        # Formatting score based on structure & length
+
         formatting_score = min(98, max(55, 60 + (sections_count * 5) + (10 if 300 <= word_count <= 700 else 0)))
-        
-        # Calculate ATS Score (Keywords 40%, Sections 30%, Formatting 20%, Word Count 10%)
         word_count_score = 100 if 300 <= word_count <= 700 else (75 if 200 <= word_count <= 900 else 40)
         ats_score = int((kw_score * 0.4) + ((sections_count / len(sections_found)) * 100 * 0.3) + (formatting_score * 0.2) + (word_count_score * 0.1))
-        
+
         strength_str = "Average"
-        resume_quality = 1
         if ats_score >= 80:
             strength_str = "Good"
-            resume_quality = 2
         elif ats_score < 50:
             strength_str = "Poor"
-            resume_quality = 0
 
-        # Shortlist prediction
         shortlist_chance = round(min(98.0, max(15.0, (ats_score * 0.75) + (kw_score * 0.25) + random.uniform(-2, 3))), 1)
-        
-        # Generate targeted suggestions
+
         suggestions = []
         if not sections_found["Experience"]:
             suggestions.append({"priority": "High", "text": "Add work experience or internship section — recruiters filter by this first"})
@@ -537,11 +482,10 @@ async def analyze_resume(
             suggestions.append({"priority": "Medium", "text": "Add relevant industry certifications to strengthen your technical credibility"})
         if action_verbs_count < 8:
             suggestions.append({"priority": "Low", "text": "Use more strong action verbs to start each bullet point (e.g., Developed, Engineered, Optimized)"})
-            
+
         if not suggestions:
             suggestions.append({"priority": "Low", "text": "Resume structure looks strong! Continue tailoring keywords for specific job postings."})
 
-        # Field match object
         field_match_data = {
             "score": int(classification.get("field_match_score", 85)),
             "status": classification.get("match_status", "strong"),

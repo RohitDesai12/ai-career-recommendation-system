@@ -1,0 +1,345 @@
+{
+  "model_name": "Career Compass V8 - HistGradientBoosting",
+  "model_type": "HistGradientBoosting",
+  "dataset_file": "btech_career_dataset_v8.csv",
+  "rows": 5000,
+  "target": "Recommended_Career",
+  "feature_columns": [
+    "Branch",
+    "Specialization",
+    "CGPA",
+    "Academic_Performance",
+    "Primary_Skill",
+    "Secondary_Skill",
+    "Programming_Languages",
+    "Technical_Proficiency",
+    "Certifications",
+    "Interest_Area",
+    "Career_Goal",
+    "Preferred_Environment",
+    "Target_Sector",
+    "Expected_Salary",
+    "Higher_Studies_Interest",
+    "Research_Interest",
+    "Problem_Solving_Level",
+    "Communication_Level",
+    "Preferred_Location",
+    "Startup_Interest"
+  ],
+  "classes": [
+    "AI Engineer",
+    "Automotive Engineer",
+    "Backend Developer",
+    "Biotechnology Researcher",
+    "Business Intelligence Analyst",
+    "Chemical Process Engineer",
+    "Civil Structural Engineer",
+    "Cloud Engineer",
+    "Computer Vision Engineer",
+    "Cybersecurity Analyst",
+    "Data Analyst",
+    "Data Engineer",
+    "Data Scientist",
+    "Database Engineer",
+    "DevOps Engineer",
+    "Electrical Power Systems Engineer",
+    "Electronics Design Engineer",
+    "Embedded Systems Engineer",
+    "Environmental Engineer",
+    "Frontend Developer",
+    "Full Stack Developer",
+    "Higher Studies",
+    "IoT Engineer",
+    "Machine Learning Engineer",
+    "Mechanical Design Engineer",
+    "Mobile Application Developer",
+    "NLP Engineer",
+    "Network Security Engineer",
+    "Penetration Tester",
+    "Research Scientist",
+    "Robotics Engineer",
+    "Security Engineer",
+    "Software Development Engineer",
+    "Startup Founder",
+    "VLSI Design Engineer"
+  ],
+  "split": {
+    "train": 3500,
+    "validation": 750,
+    "test": 750
+  },
+  "validation_comparison": [
+    {
+      "model": "ExtraTrees_400",
+      "validation_accuracy": 0.908,
+      "validation_precision_macro": 0.9103070791108351,
+      "validation_recall_macro": 0.9082099495554873,
+      "validation_f1_macro": 0.9075037828825336,
+      "validation_precision_weighted": 0.9120639003479372,
+      "validation_recall_weighted": 0.908,
+      "validation_f1_weighted": 0.9082995550673885,
+      "fit_seconds": 1.33
+    },
+    {
+      "model": "RandomForest_350",
+      "validation_accuracy": 0.912,
+      "validation_precision_macro": 0.914353977358227,
+      "validation_recall_macro": 0.9127189273138929,
+      "validation_f1_macro": 0.9117808055339557,
+      "validation_precision_weighted": 0.9157993288007019,
+      "validation_recall_weighted": 0.912,
+      "validation_f1_weighted": 0.9121495043230917,
+      "fit_seconds": 1.62
+    },
+    {
+      "model": "HistGradientBoosting",
+      "validation_accuracy": 0.9746666666666667,
+      "validation_precision_macro": 0.9745440966900595,
+      "validation_recall_macro": 0.9738129435672751,
+      "validation_f1_macro": 0.9737430623234752,
+      "validation_precision_weighted": 0.975301434217956,
+      "validation_recall_weighted": 0.9746666666666667,
+      "validation_f1_weighted": 0.9745550417393559,
+      "fit_seconds": 72.4
+    }
+  ],
+  "test_metrics": {
+    "accuracy": 0.98,
+    "precision_macro": 0.9804743289836458,
+    "recall_macro": 0.9788122090941639,
+    "f1_macro": 0.9792385188439395,
+    "precision_weighted": 0.9805049177875265,
+    "recall_weighted": 0.98,
+    "f1_weighted": 0.9798698960114055
+  },
+  "per_class_metrics": {
+    "AI Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 27.0
+    },
+    "Automotive Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 19.0
+    },
+    "Backend Developer": {
+      "precision": 0.9,
+      "recall": 0.8571428571428571,
+      "f1-score": 0.8780487804878049,
+      "support": 21.0
+    },
+    "Biotechnology Researcher": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 19.0
+    },
+    "Business Intelligence Analyst": {
+      "precision": 0.9583333333333334,
+      "recall": 0.9583333333333334,
+      "f1-score": 0.9583333333333334,
+      "support": 24.0
+    },
+    "Chemical Process Engineer": {
+      "precision": 0.9642857142857143,
+      "recall": 1.0,
+      "f1-score": 0.9818181818181818,
+      "support": 27.0
+    },
+    "Civil Structural Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 21.0
+    },
+    "Cloud Engineer": {
+      "precision": 0.9565217391304348,
+      "recall": 1.0,
+      "f1-score": 0.9777777777777777,
+      "support": 22.0
+    },
+    "Computer Vision Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 21.0
+    },
+    "Cybersecurity Analyst": {
+      "precision": 1.0,
+      "recall": 0.95,
+      "f1-score": 0.9743589743589743,
+      "support": 20.0
+    },
+    "Data Analyst": {
+      "precision": 0.9130434782608695,
+      "recall": 1.0,
+      "f1-score": 0.9545454545454546,
+      "support": 21.0
+    },
+    "Data Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "Data Scientist": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 22.0
+    },
+    "Database Engineer": {
+      "precision": 1.0,
+      "recall": 0.9,
+      "f1-score": 0.9473684210526315,
+      "support": 20.0
+    },
+    "DevOps Engineer": {
+      "precision": 1.0,
+      "recall": 0.9583333333333334,
+      "f1-score": 0.9787234042553191,
+      "support": 24.0
+    },
+    "Electrical Power Systems Engineer": {
+      "precision": 1.0,
+      "recall": 0.8947368421052632,
+      "f1-score": 0.9444444444444444,
+      "support": 19.0
+    },
+    "Electronics Design Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 26.0
+    },
+    "Embedded Systems Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 23.0
+    },
+    "Environmental Engineer": {
+      "precision": 1.0,
+      "recall": 0.9375,
+      "f1-score": 0.967741935483871,
+      "support": 16.0
+    },
+    "Frontend Developer": {
+      "precision": 0.95,
+      "recall": 1.0,
+      "f1-score": 0.9743589743589743,
+      "support": 19.0
+    },
+    "Full Stack Developer": {
+      "precision": 1.0,
+      "recall": 0.9523809523809523,
+      "f1-score": 0.975609756097561,
+      "support": 21.0
+    },
+    "Higher Studies": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 23.0
+    },
+    "IoT Engineer": {
+      "precision": 0.95,
+      "recall": 1.0,
+      "f1-score": 0.9743589743589743,
+      "support": 19.0
+    },
+    "Machine Learning Engineer": {
+      "precision": 0.9615384615384616,
+      "recall": 1.0,
+      "f1-score": 0.9803921568627451,
+      "support": 25.0
+    },
+    "Mechanical Design Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 22.0
+    },
+    "Mobile Application Developer": {
+      "precision": 0.9545454545454546,
+      "recall": 1.0,
+      "f1-score": 0.9767441860465116,
+      "support": 21.0
+    },
+    "NLP Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "Network Security Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 22.0
+    },
+    "Penetration Tester": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 19.0
+    },
+    "Research Scientist": {
+      "precision": 0.9583333333333334,
+      "recall": 1.0,
+      "f1-score": 0.9787234042553191,
+      "support": 23.0
+    },
+    "Robotics Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 22.0
+    },
+    "Security Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "Software Development Engineer": {
+      "precision": 0.85,
+      "recall": 0.85,
+      "f1-score": 0.85,
+      "support": 20.0
+    },
+    "Startup Founder": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "VLSI Design Engineer": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 22.0
+    },
+    "accuracy": 0.98,
+    "macro avg": {
+      "precision": 0.9804743289836458,
+      "recall": 0.9788122090941639,
+      "f1-score": 0.9792385188439395,
+      "support": 750.0
+    },
+    "weighted avg": {
+      "precision": 0.9805049177875265,
+      "recall": 0.98,
+      "f1-score": 0.9798698960114055,
+      "support": 750.0
+    }
+  },
+  "model_file": "career_model_v8.pkl",
+  "model_size_mb": 2.775,
+  "sklearn_version": "1.7.2",
+  "training_seconds": 166.93,
+  "data_warning": "Synthetic labels: metrics measure agreement with the generator, not verified real-world career recommendation quality."
+}

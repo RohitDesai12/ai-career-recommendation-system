@@ -38,8 +38,9 @@ coverage/
 .DS_Store
 Thumbs.db
 
-# ML model files
+# ML model files and datasets
 *.pkl
+ml-service/data/
 
 # Temporary, scratch, and cache directories
 scratch/

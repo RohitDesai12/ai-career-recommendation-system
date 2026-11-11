@@ -11,6 +11,11 @@ const AssessmentAttemptSchema = new mongoose.Schema({
         required: true,
         default: 'All Fields'
     },
+    direction: {
+        primary: { type: String, default: '' },
+        primaryTitle: { type: String, default: '' },
+        secondary: [{ type: String }]
+    },
     interests: [{
         type: String
     }],
@@ -47,6 +52,32 @@ const AssessmentAttemptSchema = new mongoose.Schema({
         locationPreference: { type: String, default: 'Flexible' },
         workMode: { type: String, default: 'Hybrid' }
     },
+    academic: {
+        branch: { type: String, default: 'Computer Science and Engineering' },
+        specialization: { type: String, default: 'General' },
+        currentYear: { type: String, default: '3rd Year' },
+        cgpa: { type: Number },
+        academicStrengths: [{ type: String }]
+    },
+    skillsData: {
+        existingSkills: [{
+            name: String,
+            proficiency: { type: String, default: 'Intermediate' }
+        }],
+        desiredSkills: [{ type: String }],
+        customSkills: [{ type: String }],
+        programmingLanguages: { type: String, default: 'None / Basic Scripting' },
+        technicalProficiency: { type: String, default: 'Intermediate' },
+        certifications: [{ type: String }]
+    },
+    v8Profile: {
+        type: mongoose.Schema.Types.Mixed,
+        default: {}
+    },
+    v8Results: {
+        type: mongoose.Schema.Types.Mixed,
+        default: {}
+    },
     dimensions: {
         technicalInterest: { type: Number, default: 50 },
         analytical: { type: Number, default: 50 },
@@ -62,6 +93,8 @@ const AssessmentAttemptSchema = new mongoose.Schema({
         title: String,
         department: String,
         matchScore: Number,
+        compatibilityScore: Number,
+        v8ModelScore: Number,
         matchTier: {
             type: String,
             enum: ['Best Match', 'High Match', 'Good Match', 'Possible Path'],
@@ -70,7 +103,11 @@ const AssessmentAttemptSchema = new mongoose.Schema({
         salaryRange: String,
         whyMatches: [String],
         areasToDevelop: [String],
-        keySkills: [String]
+        keySkills: [String],
+        componentScores: mongoose.Schema.Types.Mixed,
+        skillGaps: mongoose.Schema.Types.Mixed,
+        suggestedNextSteps: [String],
+        recommendedCertifications: [String]
     }],
     createdAt: {
         type: Date,

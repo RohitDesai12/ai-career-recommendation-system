@@ -1,0 +1,2725 @@
+{
+  "AI Engineer": {
+    "career_name": "AI Engineer",
+    "career_description": "Designs, builds, and deploys intelligent systems, LLM-powered applications, and enterprise AI solutions into production environments.",
+    "required_technical_skills": [
+      "PyTorch",
+      "TensorFlow",
+      "Generative AI",
+      "LLM APIs",
+      "RAG",
+      "Model Serving",
+      "Vector Databases",
+      "Prompt Engineering",
+      "Python",
+      "VHDL",
+      "Arduino"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "SQL",
+      "JavaScript",
+      "C++",
+      "C"
+    ],
+    "relevant_interest_areas": [
+      "Artificial Intelligence",
+      "Product Innovation",
+      "Data Science",
+      "Applied Research",
+      "Biotechnology & Genomics",
+      "Clean Technology"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Artificial Intelligence and Data Science",
+      "Information Technology",
+      "Electronics and Communication",
+      "Electronics Engineering"
+    ],
+    "relevant_specializations": [
+      "Artificial Intelligence",
+      "Natural Language Processing",
+      "Machine Learning",
+      "Software Engineering"
+    ],
+    "useful_certifications": [
+      "AWS Certified Machine Learning - Specialty",
+      "TensorFlow Developer Certificate",
+      "DeepLearning.AI Generative AI for Everyone",
+      "Generative AI certification",
+      "AI engineering certification",
+      "Microsoft Power BI Data Analyst"
+    ],
+    "beginner_learning_requirements": [
+      "Python proficiency",
+      "Linear algebra and calculus fundamentals",
+      "Basic neural networks",
+      "REST API integration"
+    ],
+    "related_alternative_careers": [
+      "Machine Learning Engineer",
+      "NLP Engineer",
+      "Computer Vision Engineer",
+      "Data Scientist",
+      "Software Development Engineer"
+    ],
+    "career_development_opportunities": [
+      "Lead AI Architect",
+      "Director of AI Research",
+      "VP of Artificial Intelligence"
+    ],
+    "dataset_sample_size": 178
+  },
+  "Automotive Engineer": {
+    "career_name": "Automotive Engineer",
+    "career_description": "Designs, develops, tests, and optimizes mechanical, electrical, and mechatronic systems for electric and internal combustion vehicles.",
+    "required_technical_skills": [
+      "CATIA",
+      "SolidWorks",
+      "ANSYS",
+      "Finite Element Analysis",
+      "Powertrain Engineering",
+      "Aerodynamics",
+      "Thermodynamics",
+      "MATLAB",
+      "Vehicle Dynamics",
+      "Automotive Systems",
+      "React",
+      "Product Design",
+      "Automotive Technology",
+      "Automotive Dynamics",
+      "Powertrains",
+      "CAD",
+      "Control Systems",
+      "Sensors and Actuators"
+    ],
+    "recommended_programming_languages": [
+      "MATLAB",
+      "Python",
+      "C",
+      "C++"
+    ],
+    "relevant_interest_areas": [
+      "Core Manufacturing",
+      "Mechanical Design",
+      "Electric Mobility",
+      "Clean Technology",
+      "Electric Vehicles",
+      "Automotive Systems",
+      "Autonomous Systems",
+      "Data Engineering",
+      "Cloud Computing",
+      "Automotive Technology",
+      "Mechanical Design and Manufacturing",
+      "Robotics and Automation"
+    ],
+    "relevant_academic_backgrounds": [
+      "Mechanical Engineering",
+      "Automotive Engineering",
+      "Mechatronics Engineering",
+      "Electrical Engineering",
+      "Electrical and Electronics",
+      "Biomedical Engineering"
+    ],
+    "relevant_specializations": [
+      "Automotive Systems",
+      "Mechanical Design",
+      "Thermal Engineering",
+      "Manufacturing",
+      "Powertrain",
+      "Vehicle Dynamics",
+      "EV Technology"
+    ],
+    "useful_certifications": [
+      "Certified SolidWorks Professional (CSWP)",
+      "ANSYS Mechanical Simulation Certificate",
+      "Six Sigma Green Belt",
+      "CATIA certification",
+      "Automotive systems certification",
+      "Revit certification"
+    ],
+    "beginner_learning_requirements": [
+      "Engineering mechanics",
+      "CAD modeling fundamentals",
+      "Material science basics",
+      "Kinematics"
+    ],
+    "related_alternative_careers": [
+      "Mechanical Design Engineer",
+      "Robotics Engineer",
+      "Aerospace Structural Engineer",
+      "Civil Structural Engineer"
+    ],
+    "career_development_opportunities": [
+      "Chief Automotive Engineer",
+      "Vehicle Dynamics Specialist",
+      "Director of Powertrain Engineering"
+    ],
+    "dataset_sample_size": 130
+  },
+  "Backend Developer": {
+    "career_name": "Backend Developer",
+    "career_description": "Architects, develops, and maintains server-side logic, high-throughput REST/GraphQL APIs, databases, and microservices.",
+    "required_technical_skills": [
+      "Node.js",
+      "FastAPI",
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "Microservices",
+      "Docker",
+      "Database Design",
+      "Message Queues",
+      "SQL",
+      "Go",
+      "Python",
+      "Java"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "JavaScript",
+      "TypeScript",
+      "Java",
+      "Go",
+      "SQL"
+    ],
+    "relevant_interest_areas": [
+      "Software Development",
+      "Cloud Architecture",
+      "Database Systems",
+      "System Performance",
+      "Backend Systems",
+      "Cloud Computing",
+      "Chemical Processes",
+      "Water Resources"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Electronics and Communication",
+      "Artificial Intelligence and Data Science",
+      "Civil Engineering",
+      "Mechanical Engineering"
+    ],
+    "relevant_specializations": [
+      "Software Engineering",
+      "Cloud Computing",
+      "Database Systems",
+      "Web Technologies"
+    ],
+    "useful_certifications": [
+      "AWS Certified Developer - Associate",
+      "Oracle Certified Professional: Java SE",
+      "MongoDB Certified Developer",
+      "Oracle Java",
+      "Backend development certification",
+      "Google Cloud data certification"
+    ],
+    "beginner_learning_requirements": [
+      "Core programming in Python/Java/Node",
+      "SQL query design",
+      "HTTP protocol & REST principles",
+      "Git version control"
+    ],
+    "related_alternative_careers": [
+      "Software Development Engineer",
+      "Full Stack Developer",
+      "Database Engineer",
+      "Cloud Engineer",
+      "DevOps Engineer"
+    ],
+    "career_development_opportunities": [
+      "Staff Backend Engineer",
+      "Principal Software Architect",
+      "Engineering Manager"
+    ],
+    "dataset_sample_size": 141
+  },
+  "Biotechnology Researcher": {
+    "career_name": "Biotechnology Researcher",
+    "career_description": "Conducts scientific investigations in molecular biology, bioinformatics, genetic engineering, and bioprocess technology.",
+    "required_technical_skills": [
+      "Genomics",
+      "Bioinformatics",
+      "CRISPR",
+      "Cell Culture",
+      "Assay Development",
+      "Statistical Analysis",
+      "Molecular Biology",
+      "Linux",
+      "Kotlin",
+      "Python",
+      "ANSYS",
+      "Biotechnology and Biomedical Research",
+      "Biomedical Research",
+      "Laboratory Techniques",
+      "Microbiology",
+      "Genetics",
+      "Biochemistry",
+      "R"
+    ],
+    "recommended_programming_languages": [
+      "R",
+      "Python",
+      "MATLAB",
+      "SQL",
+      "Verilog"
+    ],
+    "relevant_interest_areas": [
+      "Biotechnology & Genomics",
+      "Applied Research",
+      "Healthcare & Life Sciences",
+      "Scientific Discovery",
+      "Healthcare & Biotech",
+      "Artificial Intelligence",
+      "Autonomous Systems",
+      "Business Development",
+      "Biotechnology and Biomedical Research",
+      "Biotechnology & Biomedical Research",
+      "Scientific Research and Innovation"
+    ],
+    "relevant_academic_backgrounds": [
+      "Biotechnology",
+      "Biomedical Engineering",
+      "Chemical Engineering",
+      "Environmental Engineering",
+      "Electronics and Communication",
+      "Bioinformatics"
+    ],
+    "relevant_specializations": [
+      "Biotechnology & Genomics",
+      "Applied Research",
+      "Molecular Biology",
+      "Biomedical Devices"
+    ],
+    "useful_certifications": [
+      "Bioinformatics Specialization (Coursera/UCSD)",
+      "GLP/GMP Laboratory Certification",
+      "Biopython Data Analysis",
+      "Bioinformatics certification",
+      "Laboratory techniques certification",
+      "Chemical engineering certification"
+    ],
+    "beginner_learning_requirements": [
+      "Molecular biology lab fundamentals",
+      "Basic genetics",
+      "Introductory bioinformatics using Python/R",
+      "Biostatistics"
+    ],
+    "related_alternative_careers": [
+      "Research Scientist",
+      "Data Scientist",
+      "Chemical Process Engineer",
+      "Higher Studies"
+    ],
+    "career_development_opportunities": [
+      "Principal Scientist",
+      "Director of Biotech R&D",
+      "Head of Clinical Research"
+    ],
+    "dataset_sample_size": 129
+  },
+  "Business Intelligence Analyst": {
+    "career_name": "Business Intelligence Analyst",
+    "career_description": "Transforms raw enterprise data into actionable business intelligence through dashboards, KPI tracking, and predictive insights.",
+    "required_technical_skills": [
+      "Power BI",
+      "Tableau",
+      "SQL",
+      "Data Modeling",
+      "ETL Pipelines",
+      "Excel Modeling",
+      "Data Warehousing",
+      "Statistical Analysis",
+      "Java",
+      "Excel",
+      "Jupyter"
+    ],
+    "recommended_programming_languages": [
+      "SQL",
+      "Python",
+      "R",
+      "DAX",
+      "Excel",
+      "Go"
+    ],
+    "relevant_interest_areas": [
+      "Business Analytics",
+      "Data Science",
+      "Strategic Management",
+      "Market Research",
+      "Business Intelligence",
+      "Infrastructure",
+      "Networking",
+      "Water Resources"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Artificial Intelligence and Data Science",
+      "Industrial Engineering",
+      "Electronics and Communication",
+      "Automotive Engineering"
+    ],
+    "relevant_specializations": [
+      "Business Analytics",
+      "Data Analytics",
+      "Database Systems",
+      "Management Information Systems"
+    ],
+    "useful_certifications": [
+      "Microsoft Certified: Power BI Data Analyst Associate",
+      "Tableau Desktop Certified Associate",
+      "Google Data Analytics Professional",
+      "Tableau certification",
+      "Microsoft Power BI Data Analyst",
+      "Electronics design certification"
+    ],
+    "beginner_learning_requirements": [
+      "Intermediate SQL joins & aggregations",
+      "Data visualization principles",
+      "Excel pivot tables & VLOOKUP",
+      "Descriptive statistics"
+    ],
+    "related_alternative_careers": [
+      "Data Analyst",
+      "Data Scientist",
+      "Database Engineer",
+      "Data Engineer"
+    ],
+    "career_development_opportunities": [
+      "Lead BI Architect",
+      "Director of Analytics",
+      "Chief Data Officer (CDO)"
+    ],
+    "dataset_sample_size": 160
+  },
+  "Chemical Process Engineer": {
+    "career_name": "Chemical Process Engineer",
+    "career_description": "Designs, simulates, and optimizes industrial chemical manufacturing processes, reaction kinetics, and environmental safety protocols.",
+    "required_technical_skills": [
+      "Aspen Plus",
+      "MATLAB",
+      "Process Simulation",
+      "Thermodynamics",
+      "Mass Transfer",
+      "Process Safety",
+      "P&ID Development",
+      "GIS",
+      "Microcontrollers",
+      "Verilog",
+      "Chemical and Process Engineering",
+      "Process Engineering",
+      "Chemical Reaction Engineering",
+      "Fluid Mechanics",
+      "Process Control"
+    ],
+    "recommended_programming_languages": [
+      "MATLAB",
+      "Python",
+      "SQL",
+      "Excel"
+    ],
+    "relevant_interest_areas": [
+      "Chemical Processing",
+      "Process Simulation",
+      "Clean Technology",
+      "Energy Systems",
+      "Chemical Processes",
+      "Sustainability",
+      "Core Manufacturing",
+      "Electric Vehicles",
+      "Automation",
+      "Chemical and Process Engineering",
+      "Chemical & Process Engineering",
+      "Scientific Research and Innovation"
+    ],
+    "relevant_academic_backgrounds": [
+      "Chemical Engineering",
+      "Petrochemical Engineering",
+      "Biotechnology",
+      "Materials Engineering",
+      "Mathematics and Computing",
+      "Automotive Engineering",
+      "Instrumentation Engineering",
+      "Electrical Engineering"
+    ],
+    "relevant_specializations": [
+      "Process Engineering",
+      "Petrochemicals",
+      "Environmental Technology",
+      "Materials Science"
+    ],
+    "useful_certifications": [
+      "Aspen Plus Certified User",
+      "OSHA Process Safety Management",
+      "Six Sigma Green Belt",
+      "Chemical engineering certification",
+      "Process safety certification",
+      "FPGA design certification"
+    ],
+    "beginner_learning_requirements": [
+      "Fluid mechanics",
+      "Heat and mass transfer fundamentals",
+      "Chemical thermodynamics",
+      "Process flow diagrams"
+    ],
+    "related_alternative_careers": [
+      "Environmental Engineer",
+      "Biotechnology Researcher",
+      "Research Scientist"
+    ],
+    "career_development_opportunities": [
+      "Plant Operations Manager",
+      "Chief Process Architect",
+      "Director of Manufacturing Operations"
+    ],
+    "dataset_sample_size": 180
+  },
+  "Civil Structural Engineer": {
+    "career_name": "Civil Structural Engineer",
+    "career_description": "Performs structural modeling, analysis, and seismic design for buildings, bridges, and infrastructure projects.",
+    "required_technical_skills": [
+      "STAAD.Pro",
+      "ETABS",
+      "AutoCAD",
+      "Revit",
+      "Finite Element Analysis",
+      "Seismic Design",
+      "Concrete Technology",
+      "Linux",
+      "Node.js",
+      "Civil Engineering and Infrastructure",
+      "Construction and Structural Design",
+      "Structural Analysis",
+      "BIM",
+      "Geotechnical Engineering",
+      "Construction Management"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "MATLAB",
+      "SQL",
+      "Java",
+      "C"
+    ],
+    "relevant_interest_areas": [
+      "Civil Infrastructure",
+      "Structural Modeling",
+      "Urban Planning",
+      "Sustainable Design",
+      "Structural Design",
+      "Infrastructure",
+      "Construction",
+      "Data Science",
+      "User Experience",
+      "Civil Engineering and Infrastructure",
+      "Construction and Structural Design"
+    ],
+    "relevant_academic_backgrounds": [
+      "Civil Engineering",
+      "Structural Engineering",
+      "Construction Engineering",
+      "Instrumentation Engineering",
+      "Environmental Engineering",
+      "Electronics and Communication",
+      "Production Engineering"
+    ],
+    "relevant_specializations": [
+      "Structural Engineering",
+      "Infrastructure Planning",
+      "Geotechnical Engineering",
+      "Construction Management"
+    ],
+    "useful_certifications": [
+      "STAAD.Pro Certified Structural Designer",
+      "AutoCAD Certified Professional",
+      "LEED Green Associate",
+      "Revit certification",
+      "AutoCAD Certified",
+      "PMP"
+    ],
+    "beginner_learning_requirements": [
+      "Strength of materials",
+      "Structural analysis theorems",
+      "Reinforced concrete design basics",
+      "AutoCAD drafting"
+    ],
+    "related_alternative_careers": [
+      "Environmental Engineer",
+      "Mechanical Design Engineer",
+      "Higher Studies"
+    ],
+    "career_development_opportunities": [
+      "Chief Structural Consultant",
+      "Director of Infrastructure Engineering",
+      "Principal Structural Engineer"
+    ],
+    "dataset_sample_size": 140
+  },
+  "Cloud Engineer": {
+    "career_name": "Cloud Engineer",
+    "career_description": "Architects, provisions, monitors, and optimizes scalable, fault-tolerant infrastructure on AWS, Azure, and Google Cloud.",
+    "required_technical_skills": [
+      "AWS",
+      "Azure",
+      "Google Cloud",
+      "Terraform",
+      "Docker",
+      "Kubernetes",
+      "Linux",
+      "Networking",
+      "IAM Security",
+      "Research Methods",
+      "Metasploit"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "Bash",
+      "Go",
+      "YAML",
+      "Terraform HCL",
+      "SQL",
+      "C++"
+    ],
+    "relevant_interest_areas": [
+      "Cloud Architecture",
+      "System Performance",
+      "Infrastructure Automation",
+      "Cybersecurity",
+      "Infrastructure",
+      "Cloud Computing",
+      "Renewable Energy",
+      "Automotive Systems",
+      "Applied Research"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Electronics and Communication",
+      "Agricultural Engineering",
+      "Artificial Intelligence and Data Science"
+    ],
+    "relevant_specializations": [
+      "Cloud Computing",
+      "Computer Networks",
+      "Cybersecurity",
+      "Distributed Systems"
+    ],
+    "useful_certifications": [
+      "AWS Certified Solutions Architect - Associate",
+      "Microsoft Certified: Azure Administrator Associate",
+      "Google Associate Cloud Engineer",
+      "Google Cloud Associate",
+      "Microsoft Azure Fundamentals",
+      "AWS Solutions Architect"
+    ],
+    "beginner_learning_requirements": [
+      "Linux system administration",
+      "TCP/IP & DNS networking basics",
+      "Core AWS/Azure services (EC2, S3, IAM)",
+      "Basic containerization"
+    ],
+    "related_alternative_careers": [
+      "DevOps Engineer",
+      "Backend Developer",
+      "Security Engineer",
+      "Database Engineer"
+    ],
+    "career_development_opportunities": [
+      "Principal Cloud Architect",
+      "Director of Cloud Infrastructure",
+      "VP of Platform Engineering"
+    ],
+    "dataset_sample_size": 149
+  },
+  "Computer Vision Engineer": {
+    "career_name": "Computer Vision Engineer",
+    "career_description": "Develops algorithms and deep learning models that enable machines to process, analyze, and interpret visual data.",
+    "required_technical_skills": [
+      "OpenCV",
+      "PyTorch",
+      "TensorFlow",
+      "YOLO",
+      "Image Processing",
+      "CNNs",
+      "Object Detection",
+      "Image Segmentation",
+      "ANSYS",
+      "Python",
+      "Water Quality Analysis"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "C++",
+      "C",
+      "Go"
+    ],
+    "relevant_interest_areas": [
+      "Computer Vision",
+      "Artificial Intelligence",
+      "Robotics & Autonomous Systems",
+      "Deep Learning",
+      "Robotics & Automation",
+      "Sustainability",
+      "Automation",
+      "IoT"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Artificial Intelligence and Data Science",
+      "Electronics and Communication",
+      "Mechatronics Engineering",
+      "Civil Engineering"
+    ],
+    "relevant_specializations": [
+      "Computer Vision",
+      "Artificial Intelligence",
+      "Deep Learning",
+      "Signal Processing"
+    ],
+    "useful_certifications": [
+      "Deep Learning Specialization (Coursera/Andrew Ng)",
+      "OpenCV Bootcamp Certificate",
+      "NVIDIA Deep Learning Institute Certificate",
+      "Computer vision certification",
+      "Deep learning certification",
+      "Backend development certification"
+    ],
+    "beginner_learning_requirements": [
+      "Linear algebra and matrix operations",
+      "Image representations (RGB, convolutions)",
+      "OpenCV basics in Python",
+      "CNN architectures"
+    ],
+    "related_alternative_careers": [
+      "AI Engineer",
+      "Machine Learning Engineer",
+      "Robotics Engineer",
+      "NLP Engineer"
+    ],
+    "career_development_opportunities": [
+      "Lead Computer Vision Scientist",
+      "Autonomous Systems Architect",
+      "Head of Vision AI"
+    ],
+    "dataset_sample_size": 142
+  },
+  "Cybersecurity Analyst": {
+    "career_name": "Cybersecurity Analyst",
+    "career_description": "Monitors network traffic, analyzes threat intelligence, investigates security incidents, and defends enterprise systems against cyberattacks.",
+    "required_technical_skills": [
+      "Wireshark",
+      "SIEM",
+      "Splunk",
+      "Incident Response",
+      "Vulnerability Assessment",
+      "Firewalls",
+      "Network Protocols",
+      "Threat Intelligence",
+      "Networking",
+      "Linux",
+      "Python",
+      "Go",
+      "ANSYS"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "Bash",
+      "PowerShell",
+      "SQL",
+      "JavaScript"
+    ],
+    "relevant_interest_areas": [
+      "Cybersecurity",
+      "Network Security",
+      "Threat Intelligence",
+      "Digital Forensics",
+      "Ethical Hacking",
+      "Database Systems",
+      "Core Manufacturing"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Cybersecurity",
+      "Electronics and Communication",
+      "Production Engineering"
+    ],
+    "relevant_specializations": [
+      "Cybersecurity",
+      "Computer Networks",
+      "Information Security",
+      "Forensics"
+    ],
+    "useful_certifications": [
+      "CompTIA Security+",
+      "Certified Ethical Hacker (CEH)",
+      "Cisco Certified CyberOps Associate",
+      "Cisco CCNA",
+      "Certified Ethical Hacker"
+    ],
+    "beginner_learning_requirements": [
+      "OSI and TCP/IP networking models",
+      "Linux & Windows command-line navigation",
+      "Common attack vectors (OWASP Top 10)",
+      "Packet sniffing with Wireshark"
+    ],
+    "related_alternative_careers": [
+      "Security Engineer",
+      "Penetration Tester",
+      "Network Security Engineer",
+      "Cloud Engineer"
+    ],
+    "career_development_opportunities": [
+      "Chief Information Security Officer (CISO)",
+      "Security Operations Center (SOC) Lead",
+      "Principal Threat Researcher"
+    ],
+    "dataset_sample_size": 131
+  },
+  "Data Analyst": {
+    "career_name": "Data Analyst",
+    "career_description": "Collects, cleans, analyzes, and visualizes datasets to identify trends, answer business questions, and guide management decisions.",
+    "required_technical_skills": [
+      "SQL",
+      "Python",
+      "Pandas",
+      "Power BI",
+      "Tableau",
+      "Excel",
+      "Data Cleaning",
+      "Descriptive Statistics",
+      "ESP32",
+      "Cisco"
+    ],
+    "recommended_programming_languages": [
+      "SQL",
+      "Python",
+      "R",
+      "Excel"
+    ],
+    "relevant_interest_areas": [
+      "Data Science",
+      "Business Analytics",
+      "Market Trends",
+      "Data Visualization",
+      "Data Analytics",
+      "Business Intelligence",
+      "Product Innovation",
+      "Automotive Systems",
+      "Structural Design"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Artificial Intelligence and Data Science",
+      "Electronics and Communication",
+      "Electrical Engineering"
+    ],
+    "relevant_specializations": [
+      "Data Analytics",
+      "Business Analytics",
+      "Applied Statistics",
+      "Software Engineering"
+    ],
+    "useful_certifications": [
+      "Google Data Analytics Professional Certificate",
+      "Microsoft Certified: Power BI Data Analyst Associate",
+      "IBM Data Analyst Professional",
+      "Microsoft Power BI Data Analyst",
+      "Google Data Analytics",
+      "AI engineering certification"
+    ],
+    "beginner_learning_requirements": [
+      "Proficiency in SQL querying",
+      "Data wrangling using Python Pandas",
+      "Spreadsheet formulas & pivot tables",
+      "Chart creation and visual storytelling"
+    ],
+    "related_alternative_careers": [
+      "Business Intelligence Analyst",
+      "Data Scientist",
+      "Data Engineer",
+      "Database Engineer"
+    ],
+    "career_development_opportunities": [
+      "Senior Analytics Manager",
+      "Lead Data Strategist",
+      "Head of Business Intelligence"
+    ],
+    "dataset_sample_size": 139
+  },
+  "Data Engineer": {
+    "career_name": "Data Engineer",
+    "career_description": "Designs, builds, and manages scalable data pipelines, data warehouses, and ETL workflows to support analytics and machine learning.",
+    "required_technical_skills": [
+      "Apache Spark",
+      "Airflow",
+      "Kafka",
+      "SQL",
+      "Data Warehousing",
+      "Snowflake",
+      "ETL Pipelines",
+      "Docker",
+      "Hadoop",
+      "Python",
+      "AWS",
+      "CATIA",
+      "Google Cloud"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "SQL",
+      "Scala",
+      "Java"
+    ],
+    "relevant_interest_areas": [
+      "Data Science",
+      "Database Systems",
+      "Cloud Architecture",
+      "Distributed Computing",
+      "Data Engineering",
+      "Cloud Computing",
+      "Big Data",
+      "Language Technology",
+      "Healthcare & Biotech"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Artificial Intelligence and Data Science",
+      "Electronics and Communication",
+      "Electrical Engineering"
+    ],
+    "relevant_specializations": [
+      "Big Data Systems",
+      "Database Systems",
+      "Cloud Computing",
+      "Software Engineering"
+    ],
+    "useful_certifications": [
+      "Databricks Certified Data Engineer Associate",
+      "AWS Certified Data Analytics - Specialty",
+      "Google Cloud Professional Data Engineer",
+      "Databricks certification",
+      "AWS Data Engineer",
+      "Google Cloud data certification"
+    ],
+    "beginner_learning_requirements": [
+      "Advanced SQL and schema design (star/snowflake)",
+      "Python scripting for data pipelines",
+      "Batch vs streaming processing basics",
+      "Distributed computing principles"
+    ],
+    "related_alternative_careers": [
+      "Database Engineer",
+      "Data Scientist",
+      "Cloud Engineer",
+      "Backend Developer"
+    ],
+    "career_development_opportunities": [
+      "Principal Data Architect",
+      "Director of Data Engineering",
+      "VP of Data Infrastructure"
+    ],
+    "dataset_sample_size": 133
+  },
+  "Data Scientist": {
+    "career_name": "Data Scientist",
+    "career_description": "Applies statistical modeling, machine learning algorithms, and predictive analytics to solve complex business problems from large datasets.",
+    "required_technical_skills": [
+      "Scikit-learn",
+      "Pandas",
+      "Statistical Modeling",
+      "Exploratory Data Analysis",
+      "Feature Engineering",
+      "A/B Testing",
+      "Machine Learning",
+      "Python",
+      "Product Design",
+      "Jupyter",
+      "Kotlin",
+      "SQL",
+      "Bioinformatics"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "R",
+      "SQL",
+      "MATLAB"
+    ],
+    "relevant_interest_areas": [
+      "Data Science",
+      "Artificial Intelligence",
+      "Predictive Analytics",
+      "Applied Research",
+      "Research",
+      "Statistics",
+      "Hardware Design",
+      "IoT"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Artificial Intelligence and Data Science",
+      "Information Technology",
+      "Mathematics & Computing",
+      "Mathematics and Computing",
+      "Mechatronics Engineering"
+    ],
+    "relevant_specializations": [
+      "Data Science",
+      "Artificial Intelligence",
+      "Applied Statistics",
+      "Computational Modeling"
+    ],
+    "useful_certifications": [
+      "IBM Data Science Professional Certificate",
+      "Microsoft Certified: Azure Data Scientist Associate",
+      "HarvardX Data Science Professional",
+      "Data science certification",
+      "Google Data Analytics",
+      "Machine learning certification"
+    ],
+    "beginner_learning_requirements": [
+      "Multivariate statistics and probability",
+      "Machine learning algorithms (regression, trees, clustering)",
+      "Feature scaling and validation strategies",
+      "Data visualization with Seaborn/Matplotlib"
+    ],
+    "related_alternative_careers": [
+      "Machine Learning Engineer",
+      "Data Analyst",
+      "AI Engineer",
+      "Business Intelligence Analyst"
+    ],
+    "career_development_opportunities": [
+      "Chief Data Scientist",
+      "Director of Machine Learning",
+      "VP of Advanced Analytics"
+    ],
+    "dataset_sample_size": 150
+  },
+  "Database Engineer": {
+    "career_name": "Database Engineer",
+    "career_description": "Administers, tunes, and optimizes relational and distributed NoSQL database management systems for enterprise availability and integrity.",
+    "required_technical_skills": [
+      "PostgreSQL",
+      "MySQL",
+      "MongoDB",
+      "Database Tuning",
+      "Query Optimization",
+      "Replication",
+      "High Availability",
+      "Backup & Recovery",
+      "SQL",
+      "Oracle Database",
+      "OpenCV",
+      "Tableau"
+    ],
+    "recommended_programming_languages": [
+      "SQL",
+      "Bash",
+      "Python",
+      "Scala",
+      "C++"
+    ],
+    "relevant_interest_areas": [
+      "Database Systems",
+      "System Performance",
+      "Infrastructure Automation",
+      "Data Management",
+      "Cloud Security",
+      "Business Analytics",
+      "Biotechnology & Genomics"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Artificial Intelligence and Data Science",
+      "Chemical Engineering",
+      "Electronics Engineering"
+    ],
+    "relevant_specializations": [
+      "Database Systems",
+      "Software Engineering",
+      "Cloud Computing"
+    ],
+    "useful_certifications": [
+      "Oracle Database Administrator Certified Professional",
+      "MongoDB Certified DBA",
+      "PostgreSQL Certified Professional",
+      "MongoDB certification",
+      "Oracle SQL",
+      "Database administration certification"
+    ],
+    "beginner_learning_requirements": [
+      "Relational algebra and normalization",
+      "Indexing strategies (B-Trees, Hash)",
+      "ACID properties & transaction isolation levels",
+      "SQL query plan analysis"
+    ],
+    "related_alternative_careers": [
+      "Data Engineer",
+      "Backend Developer",
+      "Cloud Engineer",
+      "DevOps Engineer"
+    ],
+    "career_development_opportunities": [
+      "Principal Database Architect",
+      "Director of Infrastructure Operations",
+      "Chief Technology Officer"
+    ],
+    "dataset_sample_size": 135
+  },
+  "DevOps Engineer": {
+    "career_name": "DevOps Engineer",
+    "career_description": "Bridges software development and IT operations through continuous integration, automated testing, container orchestration, and IaC.",
+    "required_technical_skills": [
+      "Docker",
+      "Kubernetes",
+      "CI/CD Pipelines",
+      "Terraform",
+      "GitHub Actions",
+      "Ansible",
+      "Prometheus",
+      "Grafana",
+      "Linux Administration",
+      "Linux",
+      "Jenkins",
+      "Verilog"
+    ],
+    "recommended_programming_languages": [
+      "Bash",
+      "Python",
+      "YAML",
+      "Go"
+    ],
+    "relevant_interest_areas": [
+      "Cloud Architecture",
+      "System Performance",
+      "Infrastructure Automation",
+      "Developer Tooling",
+      "Cloud Computing",
+      "Infrastructure",
+      "Automation",
+      "Automotive Systems",
+      "Research"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Electronics and Communication",
+      "Mechanical Engineering",
+      "Biotechnology",
+      "Production Engineering"
+    ],
+    "relevant_specializations": [
+      "Cloud Computing",
+      "Software Engineering",
+      "Computer Networks"
+    ],
+    "useful_certifications": [
+      "Certified Kubernetes Administrator (CKA)",
+      "AWS Certified DevOps Engineer - Professional",
+      "HashiCorp Certified: Terraform Associate",
+      "AWS Solutions Architect",
+      "DevOps certification",
+      "Kubernetes certification"
+    ],
+    "beginner_learning_requirements": [
+      "Linux shell commands and shell scripting",
+      "Git workflows and branching strategies",
+      "Dockerfile authoring & container networking",
+      "CI/CD concepts with GitHub Actions"
+    ],
+    "related_alternative_careers": [
+      "Cloud Engineer",
+      "Backend Developer",
+      "Security Engineer",
+      "Database Engineer"
+    ],
+    "career_development_opportunities": [
+      "Head of Platform Engineering",
+      "VP of Site Reliability Engineering (SRE)",
+      "Director of DevOps"
+    ],
+    "dataset_sample_size": 159
+  },
+  "Electrical Power Systems Engineer": {
+    "career_name": "Electrical Power Systems Engineer",
+    "career_description": "Designs, models, analyzes, and protects electrical power generation, transmission, distribution grids, and renewable energy integrations.",
+    "required_technical_skills": [
+      "ETAP",
+      "MATLAB",
+      "Power System Protection",
+      "Renewable Energy Integration",
+      "Substation Design",
+      "Load Flow Analysis",
+      "Smart Grids",
+      "PLC",
+      "Power Systems",
+      "MQTT",
+      "Azure",
+      "Electrical Systems and Power Engineering",
+      "Electrical Machines",
+      "PLC & SCADA",
+      "Control Systems",
+      "Renewable Energy"
+    ],
+    "recommended_programming_languages": [
+      "MATLAB",
+      "Python",
+      "R",
+      "C++"
+    ],
+    "relevant_interest_areas": [
+      "Clean Technology",
+      "Energy Systems",
+      "Core Manufacturing",
+      "Smart Grids",
+      "Renewable Energy",
+      "Energy Management",
+      "Power Systems",
+      "IoT",
+      "Product Design",
+      "Electrical Systems and Power Engineering",
+      "Electrical Systems & Power Engineering"
+    ],
+    "relevant_academic_backgrounds": [
+      "Electrical Engineering",
+      "Electrical and Electronics Engineering",
+      "Energy Engineering",
+      "Electrical and Electronics",
+      "Automotive Engineering",
+      "Electronics and Communication",
+      "Instrumentation Engineering",
+      "Mechatronics Engineering"
+    ],
+    "relevant_specializations": [
+      "Power Systems",
+      "Renewable Energy",
+      "Control Systems",
+      "High Voltage Engineering"
+    ],
+    "useful_certifications": [
+      "ETAP Power System Analysis Certificate",
+      "Certified Energy Manager (CEM)",
+      "IEEE Power & Energy Society Credentials",
+      "PLC certification",
+      "Power systems certification",
+      "PCB design certification"
+    ],
+    "beginner_learning_requirements": [
+      "Circuit theory and three-phase power",
+      "Synchronous machines & transformers",
+      "Per-unit system calculations",
+      "Power transmission fundamentals"
+    ],
+    "related_alternative_careers": [
+      "Electronics Design Engineer",
+      "IoT Engineer",
+      "Automotive Engineer"
+    ],
+    "career_development_opportunities": [
+      "Chief Grid Architect",
+      "Director of Renewable Energy Projects",
+      "Vice President of Power Generation"
+    ],
+    "dataset_sample_size": 124
+  },
+  "Electronics Design Engineer": {
+    "career_name": "Electronics Design Engineer",
+    "career_description": "Designs, simulates, prototypes, and tests electronic hardware, analog/digital circuits, PCB layouts, and microelectronic systems.",
+    "required_technical_skills": [
+      "Altium Designer",
+      "Eagle CAD",
+      "SPICE Simulation",
+      "PCB Layout",
+      "Circuit Design",
+      "Oscilloscopes",
+      "Signal Integrity",
+      "EMC/EMI Testing",
+      "Embedded C",
+      "PCB Design",
+      "MATLAB",
+      "Process Simulation",
+      "Node.js",
+      "Electronics",
+      "Electronics and Circuit Design",
+      "Microcontrollers",
+      "Analog Electronics",
+      "Digital Electronics"
+    ],
+    "recommended_programming_languages": [
+      "C",
+      "C++",
+      "Python",
+      "MATLAB",
+      "Embedded C"
+    ],
+    "relevant_interest_areas": [
+      "Electronics",
+      "Hardware Engineering",
+      "Product Innovation",
+      "Robotics & Autonomous Systems",
+      "Hardware Design",
+      "Software Development",
+      "Environmental Sustainability",
+      "Mechanical Design",
+      "Electronics and Circuit Design",
+      "Embedded Systems and IoT"
+    ],
+    "relevant_academic_backgrounds": [
+      "Electronics and Communication",
+      "Electrical and Electronics Engineering",
+      "Biomedical Engineering",
+      "Mechatronics Engineering",
+      "Electrical and Electronics",
+      "Environmental Engineering",
+      "Instrumentation Engineering"
+    ],
+    "relevant_specializations": [
+      "Electronics Design",
+      "Embedded Systems",
+      "Hardware Engineering",
+      "Signal Processing"
+    ],
+    "useful_certifications": [
+      "IPC Certified IPC Designer (CID)",
+      "Altium Certified PCB Designer",
+      "Cadence OrCAD Certification",
+      "PCB design certification",
+      "Electronics design certification",
+      "Google Data Analytics"
+    ],
+    "beginner_learning_requirements": [
+      "Analog & digital electronics fundamentals",
+      "Component selection (transistors, op-amps, regulators)",
+      "Schematic capture and breadboard prototyping",
+      "PCB design principles"
+    ],
+    "related_alternative_careers": [
+      "Embedded Systems Engineer",
+      "VLSI Design Engineer",
+      "IoT Engineer",
+      "Robotics Engineer"
+    ],
+    "career_development_opportunities": [
+      "Principal Hardware Architect",
+      "Director of Hardware Engineering",
+      "VP of Device Engineering"
+    ],
+    "dataset_sample_size": 170
+  },
+  "Embedded Systems Engineer": {
+    "career_name": "Embedded Systems Engineer",
+    "career_description": "Develops firmware, device drivers, and real-time software operating directly on microcontrollers, ARM processors, and IoT hardware.",
+    "required_technical_skills": [
+      "Embedded C",
+      "C++",
+      "RTOS",
+      "Microcontrollers",
+      "ARM Cortex",
+      "UART/SPI/I2C Protocols",
+      "Device Drivers",
+      "Hardware Debugging",
+      "Mathematics",
+      "Angular",
+      "MATLAB",
+      "Embedded Systems",
+      "Sensors and Actuators",
+      "Circuit Design",
+      "IoT",
+      "Firmware",
+      "Arduino/ESP32",
+      "C, Embedded C",
+      "C"
+    ],
+    "recommended_programming_languages": [
+      "C",
+      "C++",
+      "Embedded C",
+      "Python",
+      "Assembly"
+    ],
+    "relevant_interest_areas": [
+      "Electronics",
+      "Hardware Engineering",
+      "Robotics & Autonomous Systems",
+      "Internet of Things",
+      "Embedded Systems",
+      "Cloud Security",
+      "Advanced Studies",
+      "Business Intelligence",
+      "Embedded Systems and IoT",
+      "Electronics and Circuit Design",
+      "Robotics and Automation"
+    ],
+    "relevant_academic_backgrounds": [
+      "Electronics and Communication",
+      "Computer Science and Engineering",
+      "Electrical Engineering",
+      "Mechatronics Engineering",
+      "Electrical and Electronics",
+      "Mechanical Engineering",
+      "Instrumentation Engineering"
+    ],
+    "relevant_specializations": [
+      "Embedded Systems",
+      "Hardware Engineering",
+      "Computer Architecture",
+      "Internet of Things",
+      "IoT",
+      "Microcontrollers",
+      "VLSI"
+    ],
+    "useful_certifications": [
+      "ARM Certified Engineer",
+      "Embedded Linux Development (Linux Foundation)",
+      "FreeRTOS Practitioner Certificate",
+      "ARM certification",
+      "Embedded systems certification",
+      "Computer vision certification"
+    ],
+    "beginner_learning_requirements": [
+      "C programming with pointers and memory management",
+      "Microcontroller architecture (registers, timers, interrupts)",
+      "Serial protocols (UART, SPI, I2C)",
+      "Debugging with logic analyzers"
+    ],
+    "related_alternative_careers": [
+      "IoT Engineer",
+      "Robotics Engineer",
+      "Electronics Design Engineer",
+      "VLSI Design Engineer"
+    ],
+    "career_development_opportunities": [
+      "Chief Embedded Firmware Architect",
+      "Director of IoT Systems",
+      "VP of Hardware & Firmware Engineering"
+    ],
+    "dataset_sample_size": 153
+  },
+  "Environmental Engineer": {
+    "career_name": "Environmental Engineer",
+    "career_description": "Applies engineering principles to protect ecosystems, design wastewater treatment, assess environmental impact, and manage emissions.",
+    "required_technical_skills": [
+      "GIS",
+      "Environmental Impact Assessment (EIA)",
+      "Water Treatment Design",
+      "Air Quality Modeling",
+      "Waste Management",
+      "Environmental Regulations",
+      "LLM APIs",
+      "Environmental Modelling",
+      "Water Quality Analysis",
+      "MATLAB",
+      "Molecular Biology"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "MATLAB",
+      "R",
+      "Scala",
+      "SQL"
+    ],
+    "relevant_interest_areas": [
+      "Clean Technology",
+      "Sustainable Design",
+      "Applied Research",
+      "Public Health",
+      "Water Resources",
+      "Environmental Sustainability",
+      "Robotics & Automation",
+      "Networking"
+    ],
+    "relevant_academic_backgrounds": [
+      "Civil Engineering",
+      "Environmental Engineering",
+      "Chemical Engineering",
+      "Biotechnology",
+      "Agricultural Engineering",
+      "Electronics Engineering"
+    ],
+    "relevant_specializations": [
+      "Environmental Technology",
+      "Sustainability",
+      "Water Resources",
+      "Geotechnical Engineering"
+    ],
+    "useful_certifications": [
+      "LEED AP (Building Design + Construction)",
+      "ISO 14001 Environmental Management Auditor",
+      "GIS Professional (GISP)",
+      "Environmental management certification",
+      "GIS certification",
+      "Generative AI certification"
+    ],
+    "beginner_learning_requirements": [
+      "Ecology and environmental chemistry",
+      "Hydrology and hydraulics basics",
+      "Environmental regulatory frameworks",
+      "GIS mapping fundamentals"
+    ],
+    "related_alternative_careers": [
+      "Civil Structural Engineer",
+      "Chemical Process Engineer",
+      "Biotechnology Researcher",
+      "Higher Studies"
+    ],
+    "career_development_opportunities": [
+      "Chief Sustainability Officer",
+      "Environmental Advisory Partner",
+      "Director of Environmental Health & Safety"
+    ],
+    "dataset_sample_size": 107
+  },
+  "Frontend Developer": {
+    "career_name": "Frontend Developer",
+    "career_description": "Builds responsive, high-performance, and visually polished web user interfaces using modern JavaScript frameworks and design systems.",
+    "required_technical_skills": [
+      "React",
+      "JavaScript",
+      "TypeScript",
+      "TailwindCSS",
+      "HTML5/CSS3",
+      "Next.js",
+      "Redux/Zustand",
+      "Web Performance",
+      "Accessibility (a11y)",
+      "Microcontrollers",
+      "HTML/CSS",
+      "PostgreSQL",
+      "OpenCV"
+    ],
+    "recommended_programming_languages": [
+      "JavaScript",
+      "TypeScript",
+      "HTML",
+      "CSS",
+      "HTML/CSS",
+      "Python"
+    ],
+    "relevant_interest_areas": [
+      "User Experience",
+      "Software Development",
+      "Design Systems",
+      "Web Technologies",
+      "Product Design",
+      "Web Development",
+      "Applied Research",
+      "Core Manufacturing"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Artificial Intelligence and Data Science",
+      "Electronics and Communication",
+      "Electrical Engineering"
+    ],
+    "relevant_specializations": [
+      "Web Technologies",
+      "User Experience",
+      "Software Engineering"
+    ],
+    "useful_certifications": [
+      "Meta Front-End Developer Professional Certificate",
+      "Google UX Design Certificate",
+      "Frontend Masters Certified Engineer",
+      "UI/UX certification",
+      "Frontend development certification",
+      "IoT certification"
+    ],
+    "beginner_learning_requirements": [
+      "Semantic HTML and modern CSS flexbox/grid",
+      "JavaScript ES6+ fundamentals (promises, DOM manipulation)",
+      "React functional components and hooks",
+      "Responsive layouts"
+    ],
+    "related_alternative_careers": [
+      "Full Stack Developer",
+      "Backend Developer",
+      "Mobile Application Developer",
+      "Software Development Engineer"
+    ],
+    "career_development_opportunities": [
+      "Lead UI/UX Architect",
+      "Design Systems Lead",
+      "VP of Frontend Engineering"
+    ],
+    "dataset_sample_size": 129
+  },
+  "Full Stack Developer": {
+    "career_name": "Full Stack Developer",
+    "career_description": "Builds end-to-end web applications, handling UI components, server-side APIs, database models, and deployment workflows.",
+    "required_technical_skills": [
+      "React",
+      "Node.js",
+      "TypeScript",
+      "PostgreSQL",
+      "MongoDB",
+      "Express",
+      "REST APIs",
+      "TailwindCSS",
+      "Docker",
+      "Authentication",
+      "JavaScript",
+      "Embedded C",
+      "Kubernetes"
+    ],
+    "recommended_programming_languages": [
+      "JavaScript",
+      "TypeScript",
+      "Python",
+      "SQL",
+      "HTML/CSS",
+      "MATLAB"
+    ],
+    "relevant_interest_areas": [
+      "Software Development",
+      "Product Innovation",
+      "Web Technologies",
+      "User Experience",
+      "Web Development",
+      "Healthcare & Biotech",
+      "Artificial Intelligence",
+      "Data Management"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Artificial Intelligence and Data Science",
+      "Electronics and Communication",
+      "Electrical and Electronics",
+      "Mechatronics Engineering"
+    ],
+    "relevant_specializations": [
+      "Software Engineering",
+      "Web Technologies",
+      "Cloud Computing"
+    ],
+    "useful_certifications": [
+      "Full Stack Web Development (Coursera/HKUST)",
+      "AWS Certified Developer - Associate",
+      "Node.js Certified Developer",
+      "Full stack development certification",
+      "Frontend development certification",
+      "TensorFlow Developer"
+    ],
+    "beginner_learning_requirements": [
+      "Client-server HTTP communication",
+      "React frontend state management",
+      "Node.js Express backend routing",
+      "Relational/NoSQL database CRUD operations"
+    ],
+    "related_alternative_careers": [
+      "Backend Developer",
+      "Frontend Developer",
+      "Software Development Engineer",
+      "Mobile Application Developer",
+      "Cloud Engineer"
+    ],
+    "career_development_opportunities": [
+      "Chief Technology Officer (CTO)",
+      "Lead Full Stack Architect",
+      "Head of Engineering"
+    ],
+    "dataset_sample_size": 143
+  },
+  "Higher Studies": {
+    "career_name": "Higher Studies",
+    "career_description": "Pursues advanced postgraduate academic research, Master's, or Ph.D. programs to develop deep theoretical specialization.",
+    "required_technical_skills": [
+      "Literature Review",
+      "Research Methodology",
+      "Academic Writing",
+      "Statistical Analysis",
+      "Experimental Design",
+      "Data Interpretation",
+      "MATLAB",
+      "Mathematics",
+      "Angular",
+      "Python",
+      "Research Methods",
+      "Jenkins"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "R",
+      "MATLAB",
+      "LaTeX",
+      "Embedded C"
+    ],
+    "relevant_interest_areas": [
+      "Applied Research",
+      "Scientific Discovery",
+      "Higher Education",
+      "Deep Specialization",
+      "Advanced Studies",
+      "Scientific Research",
+      "Embedded Systems",
+      "Business Intelligence"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Electronics and Communication",
+      "Mechanical Engineering",
+      "Biotechnology",
+      "Civil Engineering",
+      "Artificial Intelligence and Data Science",
+      "Information Technology",
+      "Chemical Engineering"
+    ],
+    "relevant_specializations": [
+      "Applied Research",
+      "Computer Science",
+      "Artificial Intelligence",
+      "Core Engineering"
+    ],
+    "useful_certifications": [
+      "GRE / GATE Qualification",
+      "Research Ethics Certification",
+      "Published Conference/Journal Papers",
+      "Research methodology certification",
+      "Certified Ethical Hacker",
+      "Kubernetes certification"
+    ],
+    "beginner_learning_requirements": [
+      "Strong academic GPA",
+      "Rigorous research methodology",
+      "Technical paper synthesis",
+      "Statement of Purpose formulation"
+    ],
+    "related_alternative_careers": [
+      "Research Scientist",
+      "Biotechnology Researcher",
+      "Data Scientist"
+    ],
+    "career_development_opportunities": [
+      "University Professor",
+      "Senior Research Fellow",
+      "Industrial R&D Director"
+    ],
+    "dataset_sample_size": 152
+  },
+  "IoT Engineer": {
+    "career_name": "IoT Engineer",
+    "career_description": "Connects smart physical devices to cloud platforms, designing sensor networks, edge processing, and telemetry communication pipelines.",
+    "required_technical_skills": [
+      "MQTT",
+      "ESP32",
+      "Arduino",
+      "Raspberry Pi",
+      "Sensors & Actuators",
+      "Cloud IoT Core",
+      "Wireless Protocols (BLE/Zigbee)",
+      "Edge Computing",
+      "Embedded C",
+      "Business Modeling",
+      "Molecular Biology",
+      "IoT",
+      "Embedded Systems and IoT",
+      "Sensors and Actuators",
+      "Microcontrollers",
+      "Wireless Protocols"
+    ],
+    "recommended_programming_languages": [
+      "C",
+      "C++",
+      "Python",
+      "JavaScript",
+      "Embedded C"
+    ],
+    "relevant_interest_areas": [
+      "Internet of Things",
+      "Electronics",
+      "Hardware Engineering",
+      "Cloud Architecture",
+      "Connected Devices",
+      "IoT",
+      "Embedded Systems",
+      "Environmental Sustainability",
+      "VLSI & Chip Design",
+      "Embedded Systems and IoT",
+      "Electronics and Circuit Design",
+      "Robotics and Automation"
+    ],
+    "relevant_academic_backgrounds": [
+      "Electronics and Communication",
+      "Computer Science and Engineering",
+      "Electrical Engineering",
+      "Mechatronics Engineering",
+      "Electrical and Electronics",
+      "Civil Engineering",
+      "Instrumentation Engineering"
+    ],
+    "relevant_specializations": [
+      "Internet of Things",
+      "Embedded Systems",
+      "Computer Networks",
+      "Hardware Engineering"
+    ],
+    "useful_certifications": [
+      "AWS Certified IoT - Specialty",
+      "Cisco IoT Fundamentals",
+      "Microsoft Certified: Azure IoT Developer Specialty",
+      "Embedded systems certification",
+      "IoT certification",
+      "Laboratory techniques certification"
+    ],
+    "beginner_learning_requirements": [
+      "Microcontroller interfacing (ESP32/Arduino)",
+      "Sensors and ADC conversion",
+      "MQTT and HTTP protocol handling",
+      "Cloud dashboard visualization"
+    ],
+    "related_alternative_careers": [
+      "Embedded Systems Engineer",
+      "Robotics Engineer",
+      "Electronics Design Engineer",
+      "Cloud Engineer"
+    ],
+    "career_development_opportunities": [
+      "Principal IoT Solutions Architect",
+      "Director of Connected Products",
+      "VP of Smart Hardware"
+    ],
+    "dataset_sample_size": 127
+  },
+  "Machine Learning Engineer": {
+    "career_name": "Machine Learning Engineer",
+    "career_description": "Designs, trains, evaluates, and productionalizes scalable machine learning algorithms, ML pipelines, and automated retraining systems.",
+    "required_technical_skills": [
+      "Scikit-learn",
+      "TensorFlow",
+      "PyTorch",
+      "MLflow",
+      "Feature Engineering",
+      "Model Optimization",
+      "Docker",
+      "Data Pipelines",
+      "MLOps",
+      "HTML/CSS",
+      "Python",
+      "Revit"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "SQL",
+      "C++",
+      "JavaScript"
+    ],
+    "relevant_interest_areas": [
+      "Artificial Intelligence",
+      "Data Science",
+      "System Performance",
+      "Applied Research",
+      "Machine Learning",
+      "Computer Vision",
+      "Chemical Processes",
+      "Business Analytics"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Artificial Intelligence and Data Science",
+      "Information Technology",
+      "Mathematics & Computing",
+      "Electronics and Communication",
+      "Electrical and Electronics"
+    ],
+    "relevant_specializations": [
+      "Machine Learning",
+      "Artificial Intelligence",
+      "Deep Learning",
+      "Data Science"
+    ],
+    "useful_certifications": [
+      "AWS Certified Machine Learning - Specialty",
+      "Google Cloud Professional Machine Learning Engineer",
+      "DeepLearning.AI MLOps Specialization",
+      "TensorFlow Developer",
+      "Machine learning certification",
+      "Chemical engineering certification"
+    ],
+    "beginner_learning_requirements": [
+      "Supervised and unsupervised learning algorithms",
+      "Evaluation metrics (precision, recall, ROC-AUC)",
+      "Hyperparameter tuning techniques",
+      "Model serialization & deployment basics"
+    ],
+    "related_alternative_careers": [
+      "AI Engineer",
+      "Data Scientist",
+      "NLP Engineer",
+      "Computer Vision Engineer"
+    ],
+    "career_development_opportunities": [
+      "Head of Machine Learning",
+      "Principal MLOps Architect",
+      "VP of AI Engineering"
+    ],
+    "dataset_sample_size": 166
+  },
+  "Mechanical Design Engineer": {
+    "career_name": "Mechanical Design Engineer",
+    "career_description": "Designs, models, analyzes, and drafts mechanical assemblies, consumer products, tooling, and manufacturing components.",
+    "required_technical_skills": [
+      "SolidWorks",
+      "CATIA",
+      "AutoCAD",
+      "ANSYS",
+      "GD&T",
+      "Finite Element Analysis",
+      "DFM/DFA",
+      "Product Design",
+      "Kali Linux",
+      "GIS",
+      "Mechanical Design",
+      "CAD",
+      "Manufacturing Processes",
+      "CNC Programming",
+      "Material Science",
+      "Thermodynamics"
+    ],
+    "recommended_programming_languages": [
+      "MATLAB",
+      "Python",
+      "Kotlin",
+      "Java"
+    ],
+    "relevant_interest_areas": [
+      "Mechanical Design",
+      "Core Manufacturing",
+      "Product Innovation",
+      "Robotics & Autonomous Systems",
+      "Artificial Intelligence",
+      "Data Management",
+      "Mechanical Design and Manufacturing",
+      "Automotive Technology",
+      "Product Design and User Experience"
+    ],
+    "relevant_academic_backgrounds": [
+      "Mechanical Engineering",
+      "Mechatronics Engineering",
+      "Aerospace Engineering",
+      "Automotive Engineering",
+      "Biotechnology",
+      "Civil Engineering",
+      "Production Engineering"
+    ],
+    "relevant_specializations": [
+      "Mechanical Design",
+      "Core Manufacturing",
+      "Product Design",
+      "Thermal Engineering",
+      "CAD/CAM",
+      "Manufacturing"
+    ],
+    "useful_certifications": [
+      "Certified SolidWorks Professional (CSWP)",
+      "Autodesk Certified Professional: Inventor",
+      "ASME GD&T Certification",
+      "CATIA certification",
+      "SolidWorks certification",
+      "AutoCAD Certified"
+    ],
+    "beginner_learning_requirements": [
+      "Engineering graphics and 3D CAD modeling",
+      "Geometric Dimensioning & Tolerancing (GD&T)",
+      "Stress analysis calculations",
+      "Manufacturing process knowledge (machining, molding)"
+    ],
+    "related_alternative_careers": [
+      "Automotive Engineer",
+      "Robotics Engineer",
+      "Civil Structural Engineer"
+    ],
+    "career_development_opportunities": [
+      "Chief Mechanical Architect",
+      "Director of Product Engineering",
+      "VP of Mechanical R&D"
+    ],
+    "dataset_sample_size": 145
+  },
+  "Mobile Application Developer": {
+    "career_name": "Mobile Application Developer",
+    "career_description": "Designs, develops, and publishes native or cross-platform mobile applications for iOS and Android platforms.",
+    "required_technical_skills": [
+      "React Native",
+      "Flutter",
+      "Kotlin",
+      "Swift",
+      "Mobile UI/UX",
+      "REST API Integration",
+      "State Management",
+      "App Store Deployment",
+      "React",
+      "Java",
+      "Jenkins"
+    ],
+    "recommended_programming_languages": [
+      "JavaScript",
+      "TypeScript",
+      "Dart",
+      "Kotlin",
+      "Swift",
+      "Python",
+      "R"
+    ],
+    "relevant_interest_areas": [
+      "Software Development",
+      "User Experience",
+      "Product Innovation",
+      "Mobile Technologies",
+      "Mobile Development",
+      "Sustainability",
+      "Business Development",
+      "Robotics & Automation"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Artificial Intelligence and Data Science",
+      "Electronics and Communication",
+      "Cybersecurity",
+      "Environmental Engineering"
+    ],
+    "relevant_specializations": [
+      "Mobile Computing",
+      "Software Engineering",
+      "Web Technologies",
+      "User Experience"
+    ],
+    "useful_certifications": [
+      "Google Associate Android Developer",
+      "Meta React Native Specialization",
+      "App Development with Swift Certified",
+      "iOS development certification",
+      "Android developer certification",
+      "Product management certification"
+    ],
+    "beginner_learning_requirements": [
+      "Mobile layout design & touch gestures",
+      "Asynchronous API consumption",
+      "Local storage and caching",
+      "Cross-platform mobile frameworks"
+    ],
+    "related_alternative_careers": [
+      "Frontend Developer",
+      "Full Stack Developer",
+      "Software Development Engineer"
+    ],
+    "career_development_opportunities": [
+      "Principal Mobile Architect",
+      "Head of Mobile Engineering",
+      "VP of Consumer Applications"
+    ],
+    "dataset_sample_size": 138
+  },
+  "NLP Engineer": {
+    "career_name": "NLP Engineer",
+    "career_description": "Develops natural language processing models, tokenizers, transformers, speech recognition, and conversational intelligence agents.",
+    "required_technical_skills": [
+      "Hugging Face",
+      "Transformers",
+      "BERT",
+      "GPT",
+      "Tokenization",
+      "Text Classification",
+      "PyTorch",
+      "SpaCy",
+      "Vector Search",
+      "OpenCV",
+      "Python",
+      "ANSYS",
+      "MongoDB"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "SQL",
+      "Java",
+      "Excel"
+    ],
+    "relevant_interest_areas": [
+      "Artificial Intelligence",
+      "Data Science",
+      "Natural Language Processing",
+      "Applied Research",
+      "Language Technology",
+      "Database Systems",
+      "Business Development"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Artificial Intelligence and Data Science",
+      "Information Technology",
+      "Computational Linguistics",
+      "Cybersecurity",
+      "Aerospace Engineering"
+    ],
+    "relevant_specializations": [
+      "Natural Language Processing",
+      "Artificial Intelligence",
+      "Deep Learning",
+      "Data Science"
+    ],
+    "useful_certifications": [
+      "Natural Language Processing Specialization (DeepLearning.AI)",
+      "Hugging Face Transformers Certificate",
+      "Stanford NLP Course Credential",
+      "Deep learning certification",
+      "NLP certification",
+      "Kubernetes certification"
+    ],
+    "beginner_learning_requirements": [
+      "Text preprocessing (regex, lemmatization, tokenization)",
+      "Word embeddings (Word2Vec, TF-IDF)",
+      "Transformer self-attention mechanisms",
+      "Fine-tuning pre-trained models"
+    ],
+    "related_alternative_careers": [
+      "AI Engineer",
+      "Machine Learning Engineer",
+      "Data Scientist",
+      "Computer Vision Engineer"
+    ],
+    "career_development_opportunities": [
+      "Chief NLP Scientist",
+      "Director of Conversational AI",
+      "Head of Foundation Models"
+    ],
+    "dataset_sample_size": 136
+  },
+  "Network Security Engineer": {
+    "career_name": "Network Security Engineer",
+    "career_description": "Designs, implements, and secures corporate networks, firewalls, VPNs, routing protocols, and perimeter defenses against intrusion.",
+    "required_technical_skills": [
+      "Cisco Routing & Switching",
+      "Firewalls",
+      "VPNs",
+      "Network Segmentation",
+      "IDS/IPS",
+      "Wireshark",
+      "Network Architecture",
+      "Zero Trust",
+      "Cisco",
+      "Networking",
+      "Linux",
+      "Terraform",
+      "TensorFlow"
+    ],
+    "recommended_programming_languages": [
+      "Bash",
+      "Python",
+      "Verilog",
+      "VHDL"
+    ],
+    "relevant_interest_areas": [
+      "Network Security",
+      "Cybersecurity",
+      "Cloud Architecture",
+      "System Performance",
+      "Networking",
+      "Machine Learning",
+      "Power Systems",
+      "Renewable Energy"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Electronics and Communication",
+      "Cybersecurity",
+      "Mechanical Engineering",
+      "Chemical Engineering"
+    ],
+    "relevant_specializations": [
+      "Computer Networks",
+      "Cybersecurity",
+      "Network Architecture",
+      "Information Security"
+    ],
+    "useful_certifications": [
+      "Cisco Certified Network Associate (CCNA)",
+      "Cisco Certified CyberOps",
+      "Palo Alto Networks Certified Network Security Engineer",
+      "Cisco CCNP",
+      "Cisco CCNA",
+      "CompTIA Security+"
+    ],
+    "beginner_learning_requirements": [
+      "Subnetting and IP addressing",
+      "Routing protocols (OSPF, BGP)",
+      "Stateful firewall configuration",
+      "Network traffic monitoring"
+    ],
+    "related_alternative_careers": [
+      "Cybersecurity Analyst",
+      "Security Engineer",
+      "Cloud Engineer",
+      "Penetration Tester"
+    ],
+    "career_development_opportunities": [
+      "Principal Network Architect",
+      "Director of Enterprise Infrastructure",
+      "Chief Information Security Officer"
+    ],
+    "dataset_sample_size": 145
+  },
+  "Penetration Tester": {
+    "career_name": "Penetration Tester",
+    "career_description": "Conducts ethical hacking, vulnerability assessments, exploit development, and security audits to discover weaknesses before malicious actors.",
+    "required_technical_skills": [
+      "Burp Suite",
+      "Metasploit",
+      "Nmap",
+      "Kali Linux",
+      "Web App Penetration Testing",
+      "Network Exploitation",
+      "Privilege Escalation",
+      "OWASP",
+      "Vehicle Dynamics",
+      "AutoCAD",
+      "Python"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "Bash",
+      "JavaScript",
+      "C",
+      "SQL",
+      "C++"
+    ],
+    "relevant_interest_areas": [
+      "Cybersecurity",
+      "Ethical Hacking",
+      "Threat Intelligence",
+      "Digital Forensics",
+      "Robotics & Automation",
+      "Sustainability",
+      "Construction"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Cybersecurity",
+      "Civil Engineering",
+      "Agricultural Engineering"
+    ],
+    "relevant_specializations": [
+      "Cybersecurity",
+      "Ethical Hacking",
+      "Computer Networks",
+      "Information Security"
+    ],
+    "useful_certifications": [
+      "Offensive Security Certified Professional (OSCP)",
+      "Certified Ethical Hacker (CEH)",
+      "eLearnSecurity Junior Penetration Tester (eJPT)",
+      "CompTIA Security+",
+      "OSCP",
+      "Certified Ethical Hacker"
+    ],
+    "beginner_learning_requirements": [
+      "OWASP Top 10 vulnerabilities (SQLi, XSS, CSRF)",
+      "Port scanning and banner grabbing with Nmap",
+      "Burp Suite proxy interception",
+      "Linux privilege escalation basics"
+    ],
+    "related_alternative_careers": [
+      "Cybersecurity Analyst",
+      "Security Engineer",
+      "Network Security Engineer"
+    ],
+    "career_development_opportunities": [
+      "Lead Red Team Operator",
+      "Director of Offensive Security",
+      "Principal Security Consultant"
+    ],
+    "dataset_sample_size": 124
+  },
+  "Research Scientist": {
+    "career_name": "Research Scientist",
+    "career_description": "Leads advanced investigative research, publishes peer-reviewed literature, and develops novel algorithms and experimental technologies.",
+    "required_technical_skills": [
+      "Scientific Methodology",
+      "Literature Synthesis",
+      "Mathematical Modeling",
+      "Statistical Rigor",
+      "Peer Review",
+      "Grant Writing",
+      "Experimental Design",
+      "Research Methods",
+      "MATLAB",
+      "Python",
+      "Tableau",
+      "CATIA",
+      "Circuit Design"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "R",
+      "MATLAB",
+      "LaTeX",
+      "C++",
+      "SQL"
+    ],
+    "relevant_interest_areas": [
+      "Applied Research",
+      "Scientific Discovery",
+      "Artificial Intelligence",
+      "Deep Specialization",
+      "Scientific Research",
+      "Innovation",
+      "Connected Devices"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Artificial Intelligence and Data Science",
+      "Biotechnology",
+      "Electronics and Communication",
+      "Mechanical Engineering"
+    ],
+    "relevant_specializations": [
+      "Applied Research",
+      "Artificial Intelligence",
+      "Computational Sciences",
+      "Core Engineering"
+    ],
+    "useful_certifications": [
+      "Published Research in IEEE/ACM/Nature",
+      "Research Integrity Credential",
+      "Postgraduate Research Fellow",
+      "Relevant domain certification",
+      "Research methodology certification",
+      "Databricks certification"
+    ],
+    "beginner_learning_requirements": [
+      "Rigorous scientific hypothesis testing",
+      "Literature search and critical analysis",
+      "Mathematical proof and computational modeling",
+      "Academic paper formatting in LaTeX"
+    ],
+    "related_alternative_careers": [
+      "Higher Studies",
+      "Data Scientist",
+      "Biotechnology Researcher",
+      "AI Engineer"
+    ],
+    "career_development_opportunities": [
+      "Director of Research Labs",
+      "Chief Science Officer (CSO)",
+      "Distinguished Principal Scientist"
+    ],
+    "dataset_sample_size": 155
+  },
+  "Robotics Engineer": {
+    "career_name": "Robotics Engineer",
+    "career_description": "Designs, models, builds, and programs autonomous robotic systems, actuators, kinematics, path planning, and sensor integration.",
+    "required_technical_skills": [
+      "ROS / ROS 2",
+      "Gazebo Simulation",
+      "Kinematics & Dynamics",
+      "Control Systems",
+      "Sensor Fusion",
+      "Path Planning",
+      "Actuators & Servos",
+      "C++",
+      "MATLAB",
+      "Python",
+      "ROS",
+      "PostgreSQL",
+      "React Native",
+      "Robotics",
+      "Automation",
+      "Industrial Automation",
+      "Sensors and Actuators",
+      "PLC",
+      "PLC & SCADA",
+      "Microcontrollers",
+      "Embedded Systems",
+      "SolidWorks",
+      "CAD",
+      "MATLAB/Simulink",
+      "Mechatronics"
+    ],
+    "recommended_programming_languages": [
+      "C++",
+      "Python",
+      "MATLAB",
+      "JavaScript",
+      "TypeScript"
+    ],
+    "relevant_interest_areas": [
+      "Robotics & Autonomous Systems",
+      "Hardware Engineering",
+      "Electronics",
+      "Mechanical Design",
+      "Autonomous Systems",
+      "Robotics & Automation",
+      "Higher Education",
+      "Connected Devices",
+      "Electric Vehicles",
+      "Robotics and Automation",
+      "Robotics and Autonomous Systems",
+      "Embedded Systems and IoT",
+      "Mechanical Design and Manufacturing"
+    ],
+    "relevant_academic_backgrounds": [
+      "Mechatronics Engineering",
+      "Mechanical Engineering",
+      "Electronics and Communication",
+      "Computer Science and Engineering",
+      "Electrical and Electronics",
+      "Artificial Intelligence and Data Science",
+      "Robotics and Automation",
+      "Instrumentation Engineering",
+      "Electrical Engineering"
+    ],
+    "relevant_specializations": [
+      "Robotics & Autonomous Systems",
+      "Embedded Systems",
+      "Control Systems",
+      "Mechanical Design",
+      "Robotics",
+      "Robotics and Automation",
+      "Automation",
+      "Mechatronics",
+      "Autonomous Systems"
+    ],
+    "useful_certifications": [
+      "ROS Developer Certification (ConstructSim)",
+      "Robotics Specialization (Coursera/UPenn)",
+      "NVIDIA Isaac Robotics Certificate",
+      "Robotics certification",
+      "ROS certification",
+      "Databricks certification"
+    ],
+    "beginner_learning_requirements": [
+      "Robot kinematics (forward & inverse kinematics)",
+      "C++ object-oriented programming",
+      "ROS topics, services, and actions",
+      "Simulation in Gazebo"
+    ],
+    "related_alternative_careers": [
+      "Embedded Systems Engineer",
+      "Mechanical Design Engineer",
+      "IoT Engineer",
+      "Computer Vision Engineer"
+    ],
+    "career_development_opportunities": [
+      "Chief Robotics Architect",
+      "Director of Autonomous Systems",
+      "VP of Robotics Engineering"
+    ],
+    "dataset_sample_size": 144
+  },
+  "Security Engineer": {
+    "career_name": "Security Engineer",
+    "career_description": "Architects, implements, and automates enterprise security controls, cryptographic safeguards, secure coding standards, and cloud defense.",
+    "required_technical_skills": [
+      "Cryptography",
+      "Cloud Security",
+      "DevSecOps",
+      "Zero Trust Architecture",
+      "Authentication & Authorization",
+      "Threat Modeling",
+      "SIEM",
+      "Python",
+      "Jenkins",
+      "AWS",
+      "Terraform",
+      "Go",
+      "Linux"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "Go",
+      "Bash",
+      "Terraform",
+      "Embedded C"
+    ],
+    "relevant_interest_areas": [
+      "Cybersecurity",
+      "Cloud Architecture",
+      "Network Security",
+      "Threat Intelligence",
+      "Cloud Security",
+      "Semiconductor Design",
+      "Connected Devices",
+      "Power Systems"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Cybersecurity",
+      "Electronics and Communication",
+      "Civil Engineering",
+      "Mechatronics Engineering"
+    ],
+    "relevant_specializations": [
+      "Cybersecurity",
+      "Cloud Computing",
+      "Software Engineering",
+      "Computer Networks"
+    ],
+    "useful_certifications": [
+      "Certified Information Systems Security Professional (CISSP)",
+      "AWS Certified Security - Specialty",
+      "CompTIA Security+",
+      "AWS Security Specialty",
+      "Certified Ethical Hacker"
+    ],
+    "beginner_learning_requirements": [
+      "Symmetric and asymmetric encryption principles",
+      "Identity and Access Management (OAuth, OpenID, SAML)",
+      "Secure code review practices",
+      "Cloud security groups and VPC configurations"
+    ],
+    "related_alternative_careers": [
+      "Cybersecurity Analyst",
+      "Network Security Engineer",
+      "Penetration Tester",
+      "DevOps Engineer"
+    ],
+    "career_development_opportunities": [
+      "Principal Security Architect",
+      "Director of Information Security",
+      "Chief Information Security Officer (CISO)"
+    ],
+    "dataset_sample_size": 132
+  },
+  "Software Development Engineer": {
+    "career_name": "Software Development Engineer",
+    "career_description": "Solves complex engineering problems by designing, implementing, testing, and optimizing high-scale software applications and systems.",
+    "required_technical_skills": [
+      "Data Structures",
+      "Algorithms",
+      "System Design",
+      "Object-Oriented Design",
+      "Unit Testing",
+      "Git",
+      "Clean Architecture",
+      "Concurrency",
+      "Python",
+      "JavaScript",
+      "Power BI",
+      "C++",
+      "Java",
+      "Excel"
+    ],
+    "recommended_programming_languages": [
+      "Java",
+      "C++",
+      "Python",
+      "Go",
+      "JavaScript",
+      "TypeScript",
+      "SQL"
+    ],
+    "relevant_interest_areas": [
+      "Software Development",
+      "System Performance",
+      "Product Innovation",
+      "Cloud Architecture",
+      "Cloud Computing",
+      "Web Development",
+      "Clean Technology",
+      "Artificial Intelligence"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Artificial Intelligence and Data Science",
+      "Electronics and Communication",
+      "Biotechnology"
+    ],
+    "relevant_specializations": [
+      "Software Engineering",
+      "Computer Science",
+      "Cloud Computing",
+      "Web Technologies"
+    ],
+    "useful_certifications": [
+      "Oracle Certified Professional: Java SE",
+      "AWS Certified Developer - Associate",
+      "Meta Professional Software Developer",
+      "Python certification",
+      "Relevant domain certification",
+      "Oracle Java"
+    ],
+    "beginner_learning_requirements": [
+      "Mastery of fundamental data structures (arrays, trees, graphs, heaps)",
+      "Time and space complexity analysis (Big-O)",
+      "Object-oriented design patterns",
+      "Unit test authoring and debugging"
+    ],
+    "related_alternative_careers": [
+      "Backend Developer",
+      "Full Stack Developer",
+      "Frontend Developer",
+      "Cloud Engineer",
+      "Mobile Application Developer"
+    ],
+    "career_development_opportunities": [
+      "Staff Software Engineer",
+      "Principal Systems Architect",
+      "VP of Engineering"
+    ],
+    "dataset_sample_size": 134
+  },
+  "Startup Founder": {
+    "career_name": "Startup Founder",
+    "career_description": "Identifies high-value market problems, builds early-stage MVP products, leads multidisciplinary teams, and drives business venture growth.",
+    "required_technical_skills": [
+      "Product Management",
+      "MVP Prototyping",
+      "Customer Discovery",
+      "Business Strategy",
+      "Fundraising",
+      "Go-To-Market",
+      "Leadership",
+      "Product Design",
+      "JavaScript",
+      "Python",
+      "Automotive Systems",
+      "OpenCV",
+      "Business Modeling"
+    ],
+    "recommended_programming_languages": [
+      "Python",
+      "JavaScript",
+      "SQL",
+      "TypeScript",
+      "Dart"
+    ],
+    "relevant_interest_areas": [
+      "Product Innovation",
+      "Strategic Management",
+      "Software Development",
+      "Market Trends",
+      "Entrepreneurship",
+      "Business Development",
+      "IoT",
+      "Environmental Sustainability"
+    ],
+    "relevant_academic_backgrounds": [
+      "Computer Science and Engineering",
+      "Information Technology",
+      "Artificial Intelligence and Data Science",
+      "Mechanical Engineering",
+      "Electronics and Communication"
+    ],
+    "relevant_specializations": [
+      "Product Innovation",
+      "Software Engineering",
+      "Business Analytics",
+      "Applied Research"
+    ],
+    "useful_certifications": [
+      "Y Combinator Startup School",
+      "Stanford Technology Ventures Certificate",
+      "Product Management Specialization",
+      "Entrepreneurship certification",
+      "Product management certification",
+      "Data science certification"
+    ],
+    "beginner_learning_requirements": [
+      "Rapid prototyping & MVP development",
+      "Customer interviews & problem validation",
+      "Lean startup methodology",
+      "Unit economics and pitch deck creation"
+    ],
+    "related_alternative_careers": [
+      "Software Development Engineer",
+      "Full Stack Developer",
+      "Data Scientist",
+      "AI Engineer"
+    ],
+    "career_development_opportunities": [
+      "Chief Executive Officer (CEO)",
+      "Serial Venture Founder",
+      "Managing General Partner"
+    ],
+    "dataset_sample_size": 133
+  },
+  "VLSI Design Engineer": {
+    "career_name": "VLSI Design Engineer",
+    "career_description": "Designs, models, verifies, and tapes out high-density integrated circuits (ICs), microprocessors, ASICs, and FPGA systems.",
+    "required_technical_skills": [
+      "Verilog",
+      "SystemVerilog",
+      "VHDL",
+      "Static Timing Analysis (STA)",
+      "Cadence Virtuoso",
+      "Synopsys Design Compiler",
+      "ASIC Design",
+      "FPGA",
+      "Digital Electronics",
+      "ETABS",
+      "Circuit Design",
+      "Terraform"
+    ],
+    "recommended_programming_languages": [
+      "Verilog",
+      "SystemVerilog",
+      "VHDL",
+      "Python",
+      "C",
+      "Tcl",
+      "Java"
+    ],
+    "relevant_interest_areas": [
+      "Electronics",
+      "Hardware Engineering",
+      "System Performance",
+      "Applied Research",
+      "VLSI & Chip Design",
+      "Semiconductor Design",
+      "Core Manufacturing",
+      "Networking",
+      "Chemical Processes"
+    ],
+    "relevant_academic_backgrounds": [
+      "Electronics and Communication",
+      "Electrical and Electronics Engineering",
+      "Microelectronics",
+      "Electronics Engineering",
+      "Electrical and Electronics",
+      "Chemical Engineering",
+      "Civil Engineering"
+    ],
+    "relevant_specializations": [
+      "VLSI Design",
+      "Hardware Engineering",
+      "Electronics Design",
+      "Computer Architecture"
+    ],
+    "useful_certifications": [
+      "Cadence Certified SystemVerilog Specialist",
+      "Synopsys IC Design Credential",
+      "Xilinx FPGA Certified Professional",
+      "FPGA design certification",
+      "VLSI certification",
+      "AWS Data Engineer"
+    ],
+    "beginner_learning_requirements": [
+      "Digital logic design (multiplexers, flip-flops, FSMs)",
+      "Verilog HDL coding and testbenches",
+      "Setup and hold timing concepts",
+      "FPGA implementation basics"
+    ],
+    "related_alternative_careers": [
+      "Electronics Design Engineer",
+      "Embedded Systems Engineer",
+      "Robotics Engineer"
+    ],
+    "career_development_opportunities": [
+      "Principal Silicon Architect",
+      "Director of VLSI Design",
+      "VP of Semiconductor Engineering"
+    ],
+    "dataset_sample_size": 147
+  }
+}
