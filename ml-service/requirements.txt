@@ -7,3 +7,5 @@ numpy
 pandas
 pypdf
 requests
+huggingface_hub>=0.28.0
+

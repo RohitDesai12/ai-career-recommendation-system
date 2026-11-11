@@ -110,7 +110,11 @@ The Career Compass ML service is powered by the **V8 HistGradientBoosting Pipeli
    | Key | Value | Description |
    | :--- | :--- | :--- |
    | `GROQ_API_KEY` | *Your Groq API key* | Used for LLM-based resume extraction and classification |
-   | `V8_MODEL_URL` | *(optional)* | Hugging Face or R2 URL to download `career_model_v8.pkl` if hosted externally |
+   | `HF_REPO_ID` | `rohitdesai205/compass` | Private Hugging Face repository containing model artifacts |
+   | `HF_MODEL_FILENAME` | `career_model_v8.pkl` | Model filename in Hugging Face repository |
+   | `HF_METADATA_FILENAME` | `career_model_v8_metadata.json` | Metadata filename in Hugging Face repository |
+   | `HF_TOKEN` | *hf_...* | Hugging Face Access Token with read permissions |
+   | `USE_LOCAL_V8_MODEL` | `false` | Set to true only in local dev to force local file loading |
    | `RESUME_MODEL_URL` | *(optional)* | Hugging Face or R2 URL to download `resume_model.pkl` if hosted externally |
 5. Click **Create Web Service**.
 6. Once deployed, copy the ML service URL (e.g., `https://career-compass-ml.onrender.com`) and paste it as `ML_SERVICE_URL` in your backend Render service.
@@ -208,7 +212,11 @@ curl https://<your-backend>.onrender.com/api/ml/model-status
 | Variable | Value | Description |
 | :--- | :--- | :--- |
 | `GROQ_API_KEY` | *gsk_...* | Groq API key for resume parsing & LLM classification |
-| `V8_MODEL_URL` | *(optional)* | External download URL for `career_model_v8.pkl` |
-| `RESUME_MODEL_URL` | *(optional)* | External download URL for `resume_model.pkl` |
+| `HF_REPO_ID` | `rohitdesai205/compass` | Private Hugging Face repository containing model artifacts |
+| `HF_MODEL_FILENAME` | `career_model_v8.pkl` | Model filename in Hugging Face repository |
+| `HF_METADATA_FILENAME` | `career_model_v8_metadata.json` | Metadata filename in Hugging Face repository |
+| `HF_TOKEN` | *hf_...* | Hugging Face Access Token with read permissions |
+| `USE_LOCAL_V8_MODEL` | `false` | Set to true only in local dev to force local file loading |
+| `RESUME_MODEL_URL` | *(optional)* | Hugging Face or R2 URL to download `resume_model.pkl` if hosted externally |
 | `MODEL_DOWNLOAD_TIMEOUT`| `300` | Download timeout in seconds |
 

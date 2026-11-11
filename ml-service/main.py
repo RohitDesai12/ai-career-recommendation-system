@@ -26,33 +26,41 @@ GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
 from model_manager import (
     ensure_model_file,
-    V8_MODEL_URL,
+    load_v8_model,
+    load_v8_metadata,
+    is_v8_available,
+    get_v8_status,
+    is_local_v8_mode,
+    HF_REPO_ID,
+    USE_LOCAL_V8_MODEL,
     RESUME_MODEL_URL,
+    V8_MODEL_URL
 )
 
 # V8 Intelligent Career Recommendation & Ranking Engine (The Sole Recommendation Engine)
 try:
     from v8 import (
         rank_careers_v8,
-        is_v8_available,
         predict_v8,
-        get_all_careers,
-        load_v8_model,
-        load_v8_metadata
+        get_all_careers
     )
 except ImportError:
     import sys
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     from v8 import (
         rank_careers_v8,
-        is_v8_available,
         predict_v8,
-        get_all_careers,
-        load_v8_model,
-        load_v8_metadata
+        get_all_careers
     )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Initialize V8 Model & Metadata on module load
+try:
+    load_v8_model()
+    load_v8_metadata()
+except Exception as e:
+    print("Warning: Could not initialize V8 model at module load:", e)
 
 # Load Resume ML models (Preserving complete Resume Analyzer functionality)
 try:
@@ -79,28 +87,38 @@ except Exception as e:
     career_keywords_map = {}
     resume_size_bytes = 0
 
-# Model Status Telemetry
-MODEL_STATUS = {
-    "career_engine": {
-        "engine": "v8",
-        "model_name": "Career Compass V8 - HistGradientBoosting",
-        "available": is_v8_available(),
-        "classes_count": len(get_all_careers()) if is_v8_available() else 35,
-        "features_count": 20,
-        "mode": "trained_pipeline" if is_v8_available() else "unavailable"
-    },
-    "resume_model": {
-        "loaded": resume_model is not None,
-        "file_present": resume_model is not None,
-        "file_size_bytes": resume_size_bytes
-    },
-    "environment": {
-        "active_recommendation_engine": "v8",
-        "v8_model_url_configured": bool(V8_MODEL_URL),
-        "resume_model_url_configured": bool(RESUME_MODEL_URL),
-        "groq_configured": bool(GROQ_API_KEY)
+
+def get_current_model_status():
+    """Builds real-time model telemetry dictionary without exposing credentials."""
+    v8_stat = get_v8_status()
+    return {
+        "career_engine": {
+            "engine": "v8",
+            "model_name": v8_stat.get("model_name", "Career Compass V8 - HistGradientBoosting"),
+            "available": v8_stat.get("available", False),
+            "classes_count": v8_stat.get("classes_count", 35),
+            "features_count": v8_stat.get("features_count", 20),
+            "mode": v8_stat.get("mode", "unavailable"),
+            "hf_repo_id": v8_stat.get("hf_repo_id"),
+            "predict_proba_available": v8_stat.get("predict_proba_available", False)
+        },
+        "resume_model": {
+            "loaded": resume_model is not None,
+            "file_present": resume_model is not None,
+            "file_size_bytes": resume_size_bytes
+        },
+        "environment": {
+            "active_recommendation_engine": "v8",
+            "hf_configured": bool(HF_REPO_ID),
+            "use_local_v8_model": is_local_v8_mode(),
+            "resume_model_url_configured": bool(RESUME_MODEL_URL),
+            "groq_configured": bool(GROQ_API_KEY)
+        }
     }
-}
+
+
+# Backwards compatibility reference
+MODEL_STATUS = get_current_model_status()
 
 app = FastAPI(title="AI Career Recommendation API — V8 Engine")
 
@@ -112,6 +130,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.on_event("startup")
+def startup_event():
+    """Application startup: ensure V8 model and metadata are loaded and validated once."""
+    try:
+        m = load_v8_model()
+        if m is not None:
+            status = get_v8_status()
+            print(f"[Startup]: Career Compass V8 Model active (mode: {status.get('mode')}, classes: {status.get('classes_count')})")
+        else:
+            print("[Startup Warning]: V8 Model could not be loaded at startup.")
+    except Exception as e:
+        print("[Startup Warning]: V8 Model startup loading failed:", e)
+
+
 @app.get("/")
 def read_root():
     return {
@@ -122,18 +155,21 @@ def read_root():
         "features_count": 20
     }
 
+
 @app.get("/health")
 def health_check():
+    status = get_current_model_status()
     return {
-        "status": "healthy",
+        "status": "healthy" if is_v8_available() else "degraded",
         "service": "career-compass-ml",
         "active_engine": "v8",
-        "models": MODEL_STATUS
+        "models": status
     }
+
 
 @app.get("/api/model-status")
 def get_model_status():
-    return MODEL_STATUS
+    return get_current_model_status()
 
 @app.post("/api/assess")
 def assess_aptitude(data: dict):

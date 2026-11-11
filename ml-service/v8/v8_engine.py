@@ -4,6 +4,7 @@ Loads the trained HistGradientBoosting pipeline and runs inference across all 35
 """
 
 import os
+import sys
 import json
 import logging
 from pathlib import Path
@@ -17,11 +18,26 @@ logger = logging.getLogger("v8.engine")
 # Construct reliable absolute paths relative to this module
 _MODULE_DIR = Path(__file__).resolve().parent
 _ML_SERVICE_DIR = _MODULE_DIR.parent
+if str(_ML_SERVICE_DIR) not in sys.path:
+    sys.path.insert(0, str(_ML_SERVICE_DIR))
+
+try:
+    from model_manager import (
+        load_v8_model as mm_load_v8_model,
+        load_v8_metadata as mm_load_v8_metadata,
+        is_v8_available as mm_is_v8_available,
+        get_v8_status as mm_get_v8_status
+    )
+except ImportError:
+    mm_load_v8_model = None
+    mm_load_v8_metadata = None
+    mm_is_v8_available = None
+    mm_get_v8_status = None
 
 V8_MODEL_PATH = _ML_SERVICE_DIR / "models" / "v8" / "career_model_v8.pkl"
 V8_META_PATH = _ML_SERVICE_DIR / "models" / "v8" / "career_model_v8_metadata.json"
 
-# In-memory singleton cache
+# In-memory singleton cache (fallback)
 _V8_MODEL = None
 _V8_METADATA = None
 
@@ -50,7 +66,13 @@ FEATURE_COLUMNS = [
 
 
 def load_v8_metadata() -> Dict[str, Any]:
-    """Loads and caches the V8 model metadata JSON."""
+    """Loads and caches the V8 model metadata JSON via model_manager."""
+    if mm_load_v8_metadata is not None:
+        try:
+            return mm_load_v8_metadata()
+        except Exception as e:
+            logger.warning(f"Error loading V8 metadata via model_manager: {e}. Trying local fallback...")
+
     global _V8_METADATA
     if _V8_METADATA is not None:
         return _V8_METADATA
@@ -64,12 +86,18 @@ def load_v8_metadata() -> Dict[str, Any]:
             _V8_METADATA = json.load(f)
         return _V8_METADATA
     except Exception as e:
-        logger.error(f"Error loading V8 metadata: {e}")
+        logger.error(f"Error loading V8 metadata from fallback path: {e}")
         return {}
 
 
 def load_v8_model():
-    """Loads and caches the V8 scikit-learn Pipeline singleton."""
+    """Loads and caches the V8 scikit-learn Pipeline singleton via model_manager."""
+    if mm_load_v8_model is not None:
+        try:
+            return mm_load_v8_model()
+        except Exception as e:
+            logger.warning(f"Error loading V8 model via model_manager: {e}. Trying local fallback...")
+
     global _V8_MODEL
     if _V8_MODEL is not None:
         return _V8_MODEL
@@ -79,17 +107,19 @@ def load_v8_model():
         return None
 
     try:
-        logger.info(f"Loading V8 model from: {V8_MODEL_PATH} ({V8_MODEL_PATH.stat().st_size} bytes)")
+        logger.info(f"Loading V8 model from fallback path: {V8_MODEL_PATH} ({V8_MODEL_PATH.stat().st_size} bytes)")
         _V8_MODEL = joblib.load(V8_MODEL_PATH)
         logger.info(f"Successfully loaded V8 model: {type(_V8_MODEL).__name__} with {len(_V8_MODEL.classes_)} classes.")
         return _V8_MODEL
     except Exception as e:
-        logger.error(f"Failed to load V8 model pickle: {e}")
+        logger.error(f"Failed to load V8 model pickle from fallback path: {e}")
         return None
 
 
 def is_v8_available() -> bool:
     """Checks whether the V8 model is available and loaded."""
+    if mm_is_v8_available is not None:
+        return mm_is_v8_available()
     m = load_v8_model()
     return m is not None
 

@@ -107,3 +107,4 @@ def run_endpoint_tests():
 
 if __name__ == "__main__":
     sys.exit(run_endpoint_tests())
+
