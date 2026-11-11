@@ -31,7 +31,13 @@ from model_manager import (
     is_v8_available,
     get_v8_status,
     is_local_v8_mode,
+    load_resume_analyzer_artifacts,
+    get_resume_model_status,
+    is_resume_model_available,
     HF_REPO_ID,
+    HF_RESUME_MODEL_FILENAME,
+    HF_RESUME_ENCODERS_FILENAME,
+    HF_RESUME_META_FILENAME,
     USE_LOCAL_V8_MODEL,
     RESUME_MODEL_URL,
     V8_MODEL_URL
@@ -62,23 +68,12 @@ try:
 except Exception as e:
     print("Warning: Could not initialize V8 model at module load:", e)
 
-# Load Resume ML models (Preserving complete Resume Analyzer functionality)
+# Load Resume ML models via Hugging Face / Local loader
 try:
-    r_available, r_path = ensure_model_file('resume_model.pkl', RESUME_MODEL_URL)
-    if r_available:
-        resume_model = joblib.load(r_path)
-        resume_size_bytes = os.path.getsize(r_path)
-    else:
-        resume_model = None
-        resume_size_bytes = 0
-
-    r_enc_path = os.path.join(BASE_DIR, 'resume_encoders.pkl')
-    resume_encoders = joblib.load(r_enc_path) if os.path.exists(r_enc_path) else {}
-
-    with open(os.path.join(BASE_DIR, 'resume_model_meta.json'), 'r', encoding='utf-8') as f:
-        resume_meta = json.load(f)
+    resume_model, resume_encoders, resume_meta, _resume_info = load_resume_analyzer_artifacts()
     resume_features = resume_meta.get('features', [])
     career_keywords_map = resume_meta.get('career_keywords', {})
+    resume_size_bytes = _resume_info.get('size_bytes', 0)
 except Exception as e:
     print("Warning: Could not load Resume ML models:", e)
     resume_model = None
@@ -91,6 +86,7 @@ except Exception as e:
 def get_current_model_status():
     """Builds real-time model telemetry dictionary without exposing credentials."""
     v8_stat = get_v8_status()
+    resume_stat = get_resume_model_status()
     return {
         "career_engine": {
             "engine": "v8",
@@ -102,11 +98,7 @@ def get_current_model_status():
             "hf_repo_id": v8_stat.get("hf_repo_id"),
             "predict_proba_available": v8_stat.get("predict_proba_available", False)
         },
-        "resume_model": {
-            "loaded": resume_model is not None,
-            "file_present": resume_model is not None,
-            "file_size_bytes": resume_size_bytes
-        },
+        "resume_model": resume_stat,
         "environment": {
             "active_recommendation_engine": "v8",
             "hf_configured": bool(HF_REPO_ID),
@@ -133,7 +125,8 @@ app.add_middleware(
 
 @app.on_event("startup")
 def startup_event():
-    """Application startup: ensure V8 model and metadata are loaded and validated once."""
+    """Application startup: ensure V8 model and Resume Analyzer artifacts are loaded and validated once."""
+    global resume_model, resume_encoders, resume_meta, resume_features, career_keywords_map, resume_size_bytes
     try:
         m = load_v8_model()
         if m is not None:
@@ -143,6 +136,19 @@ def startup_event():
             print("[Startup Warning]: V8 Model could not be loaded at startup.")
     except Exception as e:
         print("[Startup Warning]: V8 Model startup loading failed:", e)
+
+    try:
+        r_m, r_enc, r_meta, r_info = load_resume_analyzer_artifacts()
+        resume_model = r_m
+        resume_encoders = r_enc
+        resume_meta = r_meta
+        resume_features = r_meta.get('features', [])
+        career_keywords_map = r_meta.get('career_keywords', {})
+        resume_size_bytes = r_info.get('size_bytes', 0)
+        r_status = get_resume_model_status()
+        print(f"[Startup]: Resume Analyzer active (storage: {r_status.get('storage')}, size: {r_status.get('file_size_bytes')} bytes)")
+    except Exception as e:
+        print("[Startup Warning]: Resume Analyzer startup loading failed:", e)
 
 
 @app.get("/")
@@ -163,7 +169,9 @@ def health_check():
         "status": "healthy" if is_v8_available() else "degraded",
         "service": "career-compass-ml",
         "active_engine": "v8",
-        "models": status
+        "models": status,
+        "resume_model": status.get("resume_model"),
+        "career_engine": status.get("career_engine")
     }
 
 

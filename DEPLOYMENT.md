@@ -113,6 +113,9 @@ The Career Compass ML service is powered by the **V8 HistGradientBoosting Pipeli
    | `HF_REPO_ID` | `rohitdesai205/compass` | Private Hugging Face repository containing model artifacts |
    | `HF_MODEL_FILENAME` | `career_model_v8.pkl` | Model filename in Hugging Face repository |
    | `HF_METADATA_FILENAME` | `career_model_v8_metadata.json` | Metadata filename in Hugging Face repository |
+   | `HF_RESUME_MODEL_FILENAME` | `resume_model.pkl` | Resume classifier filename in Hugging Face repository |
+   | `HF_RESUME_ENCODERS_FILENAME` | `resume_encoders.pkl` | Resume encoders filename in Hugging Face repository |
+   | `HF_RESUME_META_FILENAME` | `resume_model_meta.json` | Resume metadata filename in Hugging Face repository |
    | `HF_TOKEN` | *hf_...* | Hugging Face Access Token with read permissions |
    | `USE_LOCAL_V8_MODEL` | `false` | Set to true only in local dev to force local file loading |
    | `RESUME_MODEL_URL` | *(optional)* | Hugging Face or R2 URL to download `resume_model.pkl` if hosted externally |
@@ -176,7 +179,12 @@ Expected response:
     },
     "resume_model": {
       "loaded": true,
-      "file_present": true
+      "file_present": true,
+      "file_size_bytes": 935912,
+      "storage": "huggingface",
+      "repository": "rohitdesai205/compass",
+      "encoders_loaded": true,
+      "metadata_loaded": true
     }
   }
 }
@@ -215,6 +223,9 @@ curl https://<your-backend>.onrender.com/api/ml/model-status
 | `HF_REPO_ID` | `rohitdesai205/compass` | Private Hugging Face repository containing model artifacts |
 | `HF_MODEL_FILENAME` | `career_model_v8.pkl` | Model filename in Hugging Face repository |
 | `HF_METADATA_FILENAME` | `career_model_v8_metadata.json` | Metadata filename in Hugging Face repository |
+| `HF_RESUME_MODEL_FILENAME` | `resume_model.pkl` | Resume classifier filename in Hugging Face repository |
+| `HF_RESUME_ENCODERS_FILENAME` | `resume_encoders.pkl` | Resume encoders filename in Hugging Face repository |
+| `HF_RESUME_META_FILENAME` | `resume_model_meta.json` | Resume metadata filename in Hugging Face repository |
 | `HF_TOKEN` | *hf_...* | Hugging Face Access Token with read permissions |
 | `USE_LOCAL_V8_MODEL` | `false` | Set to true only in local dev to force local file loading |
 | `RESUME_MODEL_URL` | *(optional)* | Hugging Face or R2 URL to download `resume_model.pkl` if hosted externally |

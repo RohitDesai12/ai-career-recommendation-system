@@ -59,6 +59,11 @@ HF_MODEL_FILENAME = os.environ.get("HF_MODEL_FILENAME", "career_model_v8.pkl").s
 HF_METADATA_FILENAME = os.environ.get("HF_METADATA_FILENAME", "career_model_v8_metadata.json").strip()
 HF_TOKEN = os.environ.get("HF_TOKEN", "").strip() or None
 
+# Resume Analyzer Hugging Face Configuration
+HF_RESUME_MODEL_FILENAME = os.environ.get("HF_RESUME_MODEL_FILENAME", "resume_model.pkl").strip()
+HF_RESUME_ENCODERS_FILENAME = os.environ.get("HF_RESUME_ENCODERS_FILENAME", "resume_encoders.pkl").strip()
+HF_RESUME_META_FILENAME = os.environ.get("HF_RESUME_META_FILENAME", "resume_model_meta.json").strip()
+
 # Local development override helper
 def is_local_v8_mode() -> bool:
     """Checks whether local V8 model mode is requested via environment variable."""
@@ -117,7 +122,7 @@ def _sanitize_message(message: str) -> str:
     return sanitized
 
 
-def download_v8_from_hf(repo_id: str, filename: str, token: Optional[str] = None, force_download: bool = False) -> str:
+def download_hf_artifact(repo_id: str, filename: str, token: Optional[str] = None, force_download: bool = False) -> str:
     """
     Downloads or retrieves from cache the specified file from a private Hugging Face repository.
     Uses official huggingface_hub library.
@@ -181,6 +186,10 @@ def download_v8_from_hf(repo_id: str, filename: str, token: Optional[str] = None
             raise RuntimeError(
                 f"Failed to download '{filename}' from Hugging Face repository '{repo_id}': {safe_err}"
             ) from None
+
+
+# Backward-compatible alias for existing V8 code
+download_v8_from_hf = download_hf_artifact
 
 
 def ensure_v8_files() -> Tuple[str, str, str]:
@@ -425,3 +434,166 @@ def ensure_model_file(filename: str, remote_url: Optional[str] = None) -> Tuple[
             return True, local_path
 
     return False, local_path
+
+
+# ==============================================================================
+# Resume Analyzer Hugging Face & Artifact Management
+# ==============================================================================
+
+# In-memory singletons for Resume Analyzer
+_RESUME_MODEL = None
+_RESUME_ENCODERS = None
+_RESUME_META = None
+_RESUME_SOURCE_INFO: Dict[str, Any] = {}
+
+
+def ensure_resume_analyzer_files() -> Tuple[str, str, str, str]:
+    """
+    Resolves the paths to the Resume Analyzer model, encoders, and metadata.
+    Returns: (model_path, encoders_path, metadata_path, storage_mode)
+
+    Modes:
+      - 'local': Uses local files in ml-service/ (when USE_LOCAL_V8_MODEL=true)
+      - 'huggingface': Resolves from private Hugging Face repository using caching and auth
+    """
+    local_model_path = BASE_DIR / HF_RESUME_MODEL_FILENAME
+    local_enc_path = BASE_DIR / HF_RESUME_ENCODERS_FILENAME
+    local_meta_path = BASE_DIR / HF_RESUME_META_FILENAME
+
+    if is_local_v8_mode():
+        if not local_model_path.exists() or local_model_path.stat().st_size == 0:
+            raise FileNotFoundError(
+                f"Local resume model requested (USE_LOCAL_V8_MODEL=true) but file not found at: {local_model_path}."
+            )
+        if not local_enc_path.exists() or local_enc_path.stat().st_size == 0:
+            raise FileNotFoundError(
+                f"Local resume encoders requested (USE_LOCAL_V8_MODEL=true) but file not found at: {local_enc_path}."
+            )
+        if not local_meta_path.exists() or local_meta_path.stat().st_size == 0:
+            raise FileNotFoundError(
+                f"Local resume metadata requested (USE_LOCAL_V8_MODEL=true) but file not found at: {local_meta_path}."
+            )
+        logger.info(f"Loaded local Resume Analyzer artifacts from: {BASE_DIR}")
+        return str(local_model_path), str(local_enc_path), str(local_meta_path), "local"
+
+    # Production / Hugging Face Mode
+    logger.info(f"Resolving Resume Analyzer artifacts from Hugging Face Hub: {HF_REPO_ID}")
+    try:
+        model_path = download_hf_artifact(HF_REPO_ID, HF_RESUME_MODEL_FILENAME, token=HF_TOKEN)
+        enc_path = download_hf_artifact(HF_REPO_ID, HF_RESUME_ENCODERS_FILENAME, token=HF_TOKEN)
+        meta_path = download_hf_artifact(HF_REPO_ID, HF_RESUME_META_FILENAME, token=HF_TOKEN)
+        return str(model_path), str(enc_path), str(meta_path), "huggingface"
+    except Exception as e:
+        # Fallback to local files if present in workspace and HF resolution fails
+        if local_model_path.exists() and local_enc_path.exists() and local_meta_path.exists():
+            safe_err = _sanitize_message(str(e))
+            logger.warning(f"Hugging Face resolution failed ({safe_err}). Falling back to local resume artifacts in {BASE_DIR}.")
+            return str(local_model_path), str(local_enc_path), str(local_meta_path), "local"
+        raise
+
+
+def load_resume_analyzer_artifacts(force_reload: bool = False) -> Tuple[Any, Any, Dict[str, Any], Dict[str, Any]]:
+    """
+    Loads, validates, and caches the Resume Analyzer artifacts:
+      1. resume_model (scikit-learn classifier)
+      2. resume_encoders (dict of label encoders)
+      3. resume_meta (metadata dict containing 'features' and 'career_keywords')
+      4. resume_source_info (dict containing storage, repository, file_size_bytes)
+
+    Reuses the in-memory singletons across requests.
+    """
+    global _RESUME_MODEL, _RESUME_ENCODERS, _RESUME_META, _RESUME_SOURCE_INFO
+    if _RESUME_MODEL is not None and _RESUME_ENCODERS is not None and _RESUME_META is not None and not force_reload:
+        return _RESUME_MODEL, _RESUME_ENCODERS, _RESUME_META, _RESUME_SOURCE_INFO
+
+    model_path, enc_path, meta_path, mode = ensure_resume_analyzer_files()
+
+    try:
+        logger.info(f"Loading Resume Analyzer artifacts (mode: {mode}, model: {model_path})")
+
+        # Verify files exist and are non-empty
+        for label, path_str in [("model", model_path), ("encoders", enc_path), ("metadata", meta_path)]:
+            if not os.path.exists(path_str) or os.path.getsize(path_str) == 0:
+                raise ValueError(f"Resume {label} file at '{path_str}' does not exist or is empty.")
+
+        model = joblib.load(model_path)
+        encoders = joblib.load(enc_path)
+        with open(meta_path, "r", encoding="utf-8") as f:
+            metadata = json.load(f)
+
+        # Integrity validations
+        if model is None:
+            raise ValueError("Resume model object is None after loading.")
+        if not isinstance(encoders, dict) or not encoders:
+            raise ValueError("Resume encoders artifact is not a valid non-empty dictionary.")
+        if not isinstance(metadata, dict) or not metadata:
+            raise ValueError("Resume metadata artifact is not a valid non-empty dictionary.")
+        if "features" not in metadata or "career_keywords" not in metadata:
+            raise ValueError("Resume metadata missing required keys ('features' and/or 'career_keywords').")
+
+        file_size = os.path.getsize(model_path) if os.path.exists(model_path) else 0
+
+        _RESUME_SOURCE_INFO = {
+            "mode": mode,
+            "model_path": model_path,
+            "encoders_path": enc_path,
+            "metadata_path": meta_path,
+            "size_bytes": file_size,
+            "hf_repo_id": HF_REPO_ID if mode == "huggingface" else None
+        }
+        _RESUME_MODEL = model
+        _RESUME_ENCODERS = encoders
+        _RESUME_META = metadata
+
+        logger.info(
+            f"Resume Analyzer Artifacts Validated Successfully: mode={mode}, "
+            f"size={file_size} bytes, features={len(metadata.get('features', []))}, "
+            f"encoders={len(encoders)}"
+        )
+        return _RESUME_MODEL, _RESUME_ENCODERS, _RESUME_META, _RESUME_SOURCE_INFO
+    except Exception as e:
+        safe_err = _sanitize_message(str(e))
+        logger.error(f"Failed to load Resume Analyzer artifacts: {safe_err}")
+        _RESUME_MODEL = None
+        _RESUME_ENCODERS = None
+        _RESUME_META = None
+        _RESUME_SOURCE_INFO = {}
+        raise RuntimeError(f"Failed to load Resume Analyzer artifacts: {safe_err}") from None
+
+
+def is_resume_model_available() -> bool:
+    """Checks whether the Resume Analyzer artifacts are loaded and ready."""
+    try:
+        if _RESUME_MODEL is None:
+            load_resume_analyzer_artifacts()
+        return _RESUME_MODEL is not None
+    except Exception:
+        return False
+
+
+def get_resume_model_status() -> Dict[str, Any]:
+    """Returns telemetry and health status for the Resume Analyzer model."""
+    is_loaded = _RESUME_MODEL is not None
+    mode = _RESUME_SOURCE_INFO.get("mode")
+    if not mode:
+        mode = "local" if is_local_v8_mode() else "huggingface"
+
+    return {
+        "loaded": is_loaded,
+        "file_present": is_loaded or bool(_RESUME_SOURCE_INFO.get("model_path") and os.path.exists(_RESUME_SOURCE_INFO.get("model_path", ""))),
+        "file_size_bytes": _RESUME_SOURCE_INFO.get("size_bytes", 0),
+        "storage": mode,
+        "repository": HF_REPO_ID if mode == "huggingface" else None,
+        "encoders_loaded": _RESUME_ENCODERS is not None,
+        "metadata_loaded": _RESUME_META is not None
+    }
+
+
+def reset_resume_cache():
+    """Resets the in-memory singleton cache for Resume Analyzer (used primarily in automated testing)."""
+    global _RESUME_MODEL, _RESUME_ENCODERS, _RESUME_META, _RESUME_SOURCE_INFO
+    _RESUME_MODEL = None
+    _RESUME_ENCODERS = None
+    _RESUME_META = None
+    _RESUME_SOURCE_INFO = {}
+
