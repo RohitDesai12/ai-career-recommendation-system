@@ -136,9 +136,10 @@ async function runTrustLegalSuite() {
 
         // Login as admin
         const jwt = require('jsonwebtoken');
+        const { getJwtSecret } = require('./config/jwt');
         const adminToken = jwt.sign(
             { user: { id: adminUser._id.toString(), role: 'admin' } },
-            process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production',
+            getJwtSecret(),
             { expiresIn: '1h' }
         );
 

@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "Career Compass Backend API",
   "main": "server.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
-    "test": "node test_production_readiness.js",
+    "test": "node test_backend_production_config.js",
+    "test:e2e": "node test_production_readiness.js",
     "start": "node server.js",
     "create-admin": "node scripts/createAdmin.js"
   },

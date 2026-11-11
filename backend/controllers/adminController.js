@@ -10,6 +10,7 @@ const Report = require('../models/Report');
 const JobAlert = require('../models/JobAlert');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const { getMlServiceUrl } = require('../config/mlConfig');
 
 // Helper to log admin actions
 async function recordAudit(adminId, adminName, action, target, targetType, details) {
@@ -870,36 +871,126 @@ exports.getAuditLogs = async (req, res) => {
 // @route   GET /api/admin/system-health
 // @access  Private (Admin)
 exports.getSystemHealth = async (req, res) => {
+    const healthCheckStart = Date.now();
     try {
+        // 1. Database Health & Real Latency
         const dbState = mongoose.connection.readyState;
-        const dbStatus = dbState === 1 ? 'Connected (Operational)' : (dbState === 2 ? 'Connecting' : 'Disconnected');
+        let dbStatus = 'Unavailable';
+        let dbLatency = 'N/A';
+        let dbHost = 'MongoDB Atlas';
 
-        // Check ML Service availability
-        let mlStatus = 'Operational';
-        let mlLatency = '14ms';
+        if (mongoose.connection && mongoose.connection.host) {
+            dbHost = mongoose.connection.host;
+        }
+
+        if (dbState === 1) {
+            dbStatus = 'Connected (Operational)';
+            try {
+                const dbPingStart = Date.now();
+                if (mongoose.connection.db && mongoose.connection.db.admin) {
+                    await mongoose.connection.db.admin().ping();
+                    dbLatency = `${Date.now() - dbPingStart}ms`;
+                }
+            } catch (pingErr) {
+                dbStatus = 'Degraded';
+                dbLatency = 'N/A';
+            }
+        } else if (dbState === 2) {
+            dbStatus = 'Connecting';
+        } else if (dbState === 3) {
+            dbStatus = 'Disconnecting';
+        } else {
+            dbStatus = 'Unavailable';
+        }
+
+        // 2. ML FastAPI Service Health & Real Latency
+        const mlBaseUrl = getMlServiceUrl();
+        let mlStatus = 'Unavailable';
+        let mlLatency = 'N/A';
+        let mlHost = undefined;
+        let mlPort = undefined;
+        let resumeModelLoaded = false;
+
         try {
-            const start = Date.now();
-            const mlRes = await fetch('http://localhost:8000/docs', { signal: AbortSignal.timeout(1500) });
-            mlLatency = `${Date.now() - start}ms`;
-            mlStatus = mlRes.ok ? 'Operational' : 'Degraded';
+            const parsed = new URL(mlBaseUrl);
+            mlHost = parsed.hostname;
+            if (parsed.port) {
+                mlPort = parseInt(parsed.port, 10);
+            }
         } catch {
-            mlStatus = 'Standby / Offline';
+            mlHost = mlBaseUrl;
+        }
+
+        try {
+            const mlStart = Date.now();
+            const mlRes = await fetch(`${mlBaseUrl}/health`, {
+                signal: AbortSignal.timeout(5000)
+            });
+            const elapsed = Date.now() - mlStart;
+            mlLatency = `${elapsed}ms`;
+
+            if (mlRes.ok) {
+                const mlData = await mlRes.json().catch(() => null);
+                const isHealthy = mlData && (mlData.status === 'healthy' || mlData.status === 'ok' || mlData.status === 'Operational');
+                mlStatus = isHealthy ? 'Operational' : 'Degraded';
+                if (mlData && mlData.resume_model && mlData.resume_model.loaded) {
+                    resumeModelLoaded = true;
+                }
+            } else {
+                mlStatus = 'Degraded';
+            }
+        } catch (fetchErr) {
+            mlStatus = 'Unavailable';
             mlLatency = 'N/A';
+        }
+
+        // 3. ATS Resume Classifier Status
+        let atsStatus = 'Unavailable';
+        if (mlStatus === 'Operational') {
+            atsStatus = resumeModelLoaded ? 'Operational' : 'Degraded (Model Standby)';
+        } else if (mlStatus === 'Degraded') {
+            atsStatus = 'Degraded';
+        } else {
+            atsStatus = 'Unavailable';
+        }
+        const atsLatency = mlStatus === 'Operational' ? mlLatency : 'N/A';
+
+        // 4. Background Notification & Alerts Worker
+        let workerStatus = 'Standby';
+        try {
+            const schedulerService = require('../services/job-ingestion/schedulerService');
+            if (schedulerService && (schedulerService.timerId || schedulerService.isRunning)) {
+                workerStatus = 'Operational';
+            }
+        } catch {
+            workerStatus = 'Standby';
+        }
+
+        // 5. Backend Core API
+        const backendPort = parseInt(process.env.PORT, 10) || 5000;
+        const backendLatency = `${Math.max(1, Date.now() - healthCheckStart)}ms`;
+
+        // 6. Overall Platform Status
+        let overallStatus = 'Operational';
+        if (dbState !== 1) {
+            overallStatus = 'Unavailable';
+        } else if (mlStatus === 'Degraded' || mlStatus === 'Unavailable') {
+            overallStatus = 'Degraded';
         }
 
         const memoryUsage = process.memoryUsage();
         const uptimeSeconds = Math.round(process.uptime());
 
         res.json({
-            status: 'Operational',
+            status: overallStatus,
             timestamp: new Date().toISOString(),
             uptime: `${Math.floor(uptimeSeconds / 3600)}h ${Math.floor((uptimeSeconds % 3600) / 60)}m`,
             services: [
-                { name: 'Core Backend API', status: 'Operational', port: 5000, latency: '4ms' },
-                { name: 'MongoDB Database', status: dbStatus, host: '127.0.0.1:27017', latency: '2ms' },
-                { name: 'AI & ML FastAPI Service', status: mlStatus, port: 8000, latency: mlLatency },
-                { name: 'ATS Resume Classifier', status: 'Operational', latency: '12ms' },
-                { name: 'Notification & Alerts Worker', status: 'Operational', latency: '1ms' }
+                { name: 'Core Backend API', status: 'Operational', port: backendPort, latency: backendLatency },
+                { name: 'MongoDB Database', status: dbStatus, host: dbHost, latency: dbLatency },
+                { name: 'AI & ML FastAPI Service', status: mlStatus, port: mlPort, host: mlHost, latency: mlLatency },
+                { name: 'ATS Resume Classifier', status: atsStatus, latency: atsLatency },
+                { name: 'Notification & Alerts Worker', status: workerStatus, latency: 'N/A' }
             ],
             metrics: {
                 heapUsedMB: Math.round(memoryUsage.heapUsed / 1024 / 1024),

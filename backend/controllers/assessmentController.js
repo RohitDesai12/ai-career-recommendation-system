@@ -2,9 +2,7 @@ const AssessmentAttempt = require('../models/AssessmentAttempt');
 const Profile = require('../models/Profile');
 const StudentActivity = require('../models/StudentActivity');
 const axios = require('axios');
-
-const rawMlUrl = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000';
-const ML_SERVICE_URL = rawMlUrl.replace('localhost', '127.0.0.1');
+const { getMlServiceUrl } = require('../config/mlConfig');
 
 // Comprehensive platform career definitions with ideal dimension footprints
 const CAREER_DEFINITIONS = [
@@ -631,7 +629,7 @@ exports.submitAssessment = async (req, res) => {
 
         // 1. Primary: Execute real V8 model inference and 6-factor ranking via ML Service
         try {
-            const mlRes = await axios.post(`${ML_SERVICE_URL}/api/recommend/v8`, constructedV8Profile, { timeout: 10000 });
+            const mlRes = await axios.post(`${getMlServiceUrl()}/api/recommend/v8`, constructedV8Profile, { timeout: 10000 });
             if (mlRes.data && mlRes.data.status === 'success' && Array.isArray(mlRes.data.top_recommendations)) {
                 v8ResponseData = mlRes.data;
                 recommendedCareers = mlRes.data.top_recommendations.map(c => ({

@@ -5,6 +5,22 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 require('dotenv').config();
 
+// Validate critical environment configuration in production
+if (process.env.NODE_ENV === 'production') {
+    const { getJwtSecret } = require('./config/jwt');
+    try {
+        getJwtSecret();
+    } catch (secErr) {
+        console.error('FATAL PRODUCTION CONFIGURATION ERROR:', secErr.message);
+        process.exit(1);
+    }
+
+    if (!process.env.MONGO_URI || process.env.MONGO_URI.trim() === '') {
+        console.error('FATAL PRODUCTION CONFIGURATION ERROR: MONGO_URI must be configured in production!');
+        process.exit(1);
+    }
+}
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 

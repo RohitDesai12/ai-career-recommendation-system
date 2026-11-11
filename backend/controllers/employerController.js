@@ -11,6 +11,7 @@ const StudentActivity = require('../models/StudentActivity');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const { getJwtSecret } = require('../config/jwt');
 
 // @desc    Register new Employer Account
 // @route   POST /api/employer/register
@@ -69,7 +70,7 @@ exports.registerEmployer = async (req, res) => {
 
         jwt.sign(
             payload,
-            process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production',
+            getJwtSecret(),
             { expiresIn: '7d' },
             (err, token) => {
                 if (err) throw err;
@@ -133,7 +134,7 @@ exports.loginEmployer = async (req, res) => {
 
         jwt.sign(
             payload,
-            process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production',
+            getJwtSecret(),
             { expiresIn: '7d' },
             (err, token) => {
                 if (err) throw err;
@@ -411,7 +412,8 @@ exports.applyForJob = async (req, res) => {
             }
             if (token) {
                 try {
-                    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production');
+                    const secret = getJwtSecret();
+                    const decoded = jwt.verify(token, secret);
                     const u = decoded.user || decoded;
                     if (u && u.id) candidateUserId = u.id;
                 } catch (e) {}

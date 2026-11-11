@@ -3,6 +3,7 @@ const Profile = require('../models/Profile');
 const PrivacyConsent = require('../models/PrivacyConsent');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { getJwtSecret } = require('../config/jwt');
 
 const getCookieOptions = () => ({
     httpOnly: true,
@@ -84,7 +85,7 @@ exports.registerUser = async (req, res) => {
 
         jwt.sign(
             payload,
-            process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production',
+            getJwtSecret(),
             { expiresIn: '7d' },
             (err, token) => {
                 if (err) throw err;
@@ -151,7 +152,7 @@ exports.loginUser = async (req, res) => {
 
         jwt.sign(
             payload,
-            process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production',
+            getJwtSecret(),
             { expiresIn: '7d' },
             (err, token) => {
                 if (err) throw err;

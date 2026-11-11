@@ -9,6 +9,7 @@ const { calculateJobMatch } = require('../services/matchingEngine');
 const { CURATED_COMPANIES } = require('../data/curatedCompanies');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const { getJwtSecret } = require('../config/jwt');
 
 // In-memory cache for high-frequency public reads (TTL: 60s)
 const memoryCache = {
@@ -27,7 +28,8 @@ async function getStudentProfileFromReq(req) {
         const authHeader = req.headers.authorization;
         if (authHeader && authHeader.startsWith('Bearer ')) {
             const token = authHeader.split(' ')[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production');
+            const secret = getJwtSecret();
+            const decoded = jwt.verify(token, secret);
             if (decoded && decoded.user && decoded.user.id) {
                 const profile = await Profile.findOne({ user: decoded.user.id });
                 return profile;

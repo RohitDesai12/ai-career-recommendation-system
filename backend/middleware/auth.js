@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { getJwtSecret } = require('../config/jwt');
 
 module.exports = function (req, res, next) {
     // 1. Check HTTP-only cookie
@@ -26,10 +27,15 @@ module.exports = function (req, res, next) {
 
     // Verify token
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production');
+        const secret = getJwtSecret();
+        const decoded = jwt.verify(token, secret);
         req.user = decoded.user || decoded;
         next();
     } catch (err) {
+        if (err.message && err.message.startsWith('FATAL SECURITY ERROR')) {
+            console.error('[AuthMiddleware] Security configuration failure:', err.message);
+            return res.status(500).json({ msg: 'Authentication configuration error' });
+        }
         res.status(401).json({ msg: 'Token is not valid' });
     }
 };

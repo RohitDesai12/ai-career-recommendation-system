@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const adminAuth = require('../middleware/adminAuth');
+const { getJwtSecret } = require('../config/jwt');
 const {
     submitContactRequest,
     recordConsent,
@@ -26,7 +27,8 @@ const optionalAuth = (req, res, next) => {
     if (token) {
         try {
             const jwt = require('jsonwebtoken');
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production');
+            const secret = getJwtSecret();
+            const decoded = jwt.verify(token, secret);
             req.user = decoded.user || decoded;
         } catch (e) {
             // Ignore token error for optional auth

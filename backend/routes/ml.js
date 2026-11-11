@@ -3,8 +3,9 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const axios = require('axios');
 const multer = require('multer');
-
 const jwt = require('jsonwebtoken');
+const { getJwtSecret } = require('../config/jwt');
+const { getMlServiceUrl } = require('../config/mlConfig');
 
 const optionalAuth = (req, res, next) => {
     let token = req.header('x-auth-token');
@@ -19,7 +20,8 @@ const optionalAuth = (req, res, next) => {
 
     if (token) {
         try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production');
+            const secret = getJwtSecret();
+            const decoded = jwt.verify(token, secret);
             req.user = decoded.user || decoded;
         } catch (err) {
             // Proceed without blocking if token is invalid/expired
@@ -28,9 +30,6 @@ const optionalAuth = (req, res, next) => {
     next();
 };
 
-const rawUrl = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000';
-const ML_SERVICE_URL = rawUrl.replace('localhost', '127.0.0.1');
-
 const upload = multer();
 
 // @desc    Check ML service health and model status
@@ -38,11 +37,16 @@ const upload = multer();
 // @access  Public
 router.get('/model-status', async (req, res) => {
     try {
-        const response = await axios.get(`${ML_SERVICE_URL}/health`, { timeout: 5000 });
+        const response = await axios.get(`${getMlServiceUrl()}/health`, { timeout: 5000 });
         res.json(response.data);
     } catch (err) {
         res.status(503).json({
             status: 'unavailable',
+            message: 'ML Service offline or unreachable',
+            error: err.message
+        });
+    }
+});
             message: 'ML Service offline or unreachable',
             error: err.message
         });
@@ -54,7 +58,7 @@ router.get('/model-status', async (req, res) => {
 // @access  Public / Optional Auth
 router.post('/assess', optionalAuth, async (req, res) => {
     try {
-        const response = await axios.post(`${ML_SERVICE_URL}/api/assess`, req.body);
+        const response = await axios.post(`${getMlServiceUrl()}/api/assess`, req.body);
         res.json(response.data);
     } catch (err) {
         console.error('Error contacting ML service', err.message);
@@ -67,7 +71,7 @@ router.post('/assess', optionalAuth, async (req, res) => {
 // @access  Public / Optional Auth
 router.post('/recommend', optionalAuth, async (req, res) => {
     try {
-        const response = await axios.post(`${ML_SERVICE_URL}/api/recommend`, req.body);
+        const response = await axios.post(`${getMlServiceUrl()}/api/recommend`, req.body);
         res.json(response.data);
     } catch (err) {
         console.error('Error contacting ML service', err.message);
@@ -80,7 +84,7 @@ router.post('/recommend', optionalAuth, async (req, res) => {
 // @access  Public / Optional Auth
 router.post('/recommend/v8', optionalAuth, async (req, res) => {
     try {
-        const response = await axios.post(`${ML_SERVICE_URL}/api/recommend/v8`, req.body);
+        const response = await axios.post(`${getMlServiceUrl()}/api/recommend/v8`, req.body);
         res.json(response.data);
     } catch (err) {
         console.error('Error contacting ML service for V8 ranking', err.message);
@@ -106,7 +110,7 @@ router.post('/analyze-resume', optionalAuth, upload.single('file'), async (req, 
         formData.append('branch', branch || '');
         formData.append('jobRole', jobRole || '');
 
-        const response = await axios.post(`${ML_SERVICE_URL}/api/analyze-resume`, formData, {
+        const response = await axios.post(`${getMlServiceUrl()}/api/analyze-resume`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },

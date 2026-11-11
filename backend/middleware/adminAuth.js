@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { getJwtSecret } = require('../config/jwt');
 
 module.exports = async function (req, res, next) {
     let token = req.header('x-auth-token');
@@ -18,7 +19,8 @@ module.exports = async function (req, res, next) {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkey_change_in_production');
+        const secret = getJwtSecret();
+        const decoded = jwt.verify(token, secret);
         const userObj = decoded.user || decoded;
 
         // Verify in DB for security
@@ -40,6 +42,10 @@ module.exports = async function (req, res, next) {
 
         next();
     } catch (err) {
+        if (err.message && err.message.startsWith('FATAL SECURITY ERROR')) {
+            console.error('[AdminAuthMiddleware] Security configuration failure:', err.message);
+            return res.status(500).json({ msg: 'Authentication configuration error' });
+        }
         return res.status(401).json({ msg: 'Token is invalid or expired' });
     }
 };
