@@ -185,7 +185,9 @@ def recommend_career_v8(data: dict):
     """
     try:
         top_n = int(data.get("top_n", 5))
-        return rank_careers_v8(data, top_n=top_n)
+        assessment_id = data.get("assessment_id") or data.get("assessmentId")
+        profile = data.get("profile") or data.get("student_profile") or data
+        return rank_careers_v8(profile, top_n=top_n, assessment_id=assessment_id)
     except Exception as e:
         logger_err = str(e)
         print("V8 recommendation error:", logger_err)
@@ -206,7 +208,9 @@ def recommend_career(data: dict):
     """
     try:
         top_n = int(data.get("top_n", 5))
-        v8_result = rank_careers_v8(data, top_n=top_n)
+        assessment_id = data.get("assessment_id") or data.get("assessmentId")
+        profile = data.get("profile") or data.get("student_profile") or data
+        v8_result = rank_careers_v8(profile, top_n=top_n, assessment_id=assessment_id)
 
         # Populate backwards-compatible top-level properties
         primary = v8_result.get("primary_career", {})

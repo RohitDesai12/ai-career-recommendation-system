@@ -66,6 +66,13 @@ class CompatibilityScorer:
             - strongest_factors (list)
             - completeness_pct (float)
         """
+        # Unpack nested profile if wrapped in 'profile' or 'student_profile'
+        if isinstance(student_profile, dict):
+            if "profile" in student_profile and isinstance(student_profile["profile"], dict):
+                student_profile = student_profile["profile"]
+            elif "student_profile" in student_profile and isinstance(student_profile["student_profile"], dict):
+                student_profile = student_profile["student_profile"]
+
         career_meta = get_career_metadata(career_name)
         if not career_meta:
             logger.warning(f"No metadata found for career: {career_name}")
@@ -309,9 +316,14 @@ class CompatibilityScorer:
         else:
             active_weights = {k: round(1.0 / len(self.weights), 4) for k in self.weights}
 
-        # Calculate final weighted compatibility score
-        final_score = sum(raw_scores[k] * active_weights[k] for k in self.weights)
-        final_score = round(min(100.0, max(0.0, final_score)), 2)
+        # Calculate individual weighted contributions
+        weighted_contributions = {
+            k: round(raw_scores[k] * active_weights[k], 4)
+            for k in self.weights
+        }
+
+        # Calculate final weighted compatibility score as the sum of weighted contributions
+        final_score = round(min(100.0, max(0.0, sum(weighted_contributions.values()))), 2)
 
         # Identify strongest compatibility factors
         sorted_components = sorted(
@@ -340,7 +352,9 @@ class CompatibilityScorer:
             "career_name": career_name,
             "final_compatibility_score": final_score,
             "component_scores": raw_scores,
+            "compatibility_breakdown": raw_scores,
             "active_weights": active_weights,
+            "weighted_contributions": weighted_contributions,
             "matched_skills": matched_skills,
             "missing_skills": missing_skills,
             "strongest_factors": strongest_factors,

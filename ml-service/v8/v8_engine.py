@@ -129,6 +129,13 @@ def prepare_input_dataframe(student_profile: Dict[str, Any]) -> pd.DataFrame:
     Sanitizes student profile input into a 1-row pandas DataFrame matching
     the exact 20 feature columns required by the V8 Pipeline.
     """
+    # Unpack nested profile if wrapped in 'profile' or 'student_profile'
+    if isinstance(student_profile, dict):
+        if "profile" in student_profile and isinstance(student_profile["profile"], dict):
+            student_profile = student_profile["profile"]
+        elif "student_profile" in student_profile and isinstance(student_profile["student_profile"], dict):
+            student_profile = student_profile["student_profile"]
+
     row = {}
     for col in FEATURE_COLUMNS:
         val = student_profile.get(col)

@@ -26,13 +26,32 @@ class CareerRanker:
     def rank_careers(
         self,
         student_profile: Dict[str, Any],
-        top_n: int = 5
+        top_n: int = 5,
+        assessment_id: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Executes the full V8 ranking workflow:
           Student Profile -> V8 ML Prediction -> 35 Career Evaluations ->
           Compatibility Scoring -> Final Ranking -> Explanations & Skill Gaps.
         """
+        # 0. Unpack nested profile if wrapped in 'profile' or 'student_profile'
+        if isinstance(student_profile, dict):
+            if not assessment_id:
+                assessment_id = student_profile.get("assessment_id") or student_profile.get("assessmentId")
+            if "top_n" in student_profile and top_n == 5:
+                try:
+                    top_n = int(student_profile["top_n"])
+                except Exception:
+                    pass
+            if "profile" in student_profile and isinstance(student_profile["profile"], dict):
+                student_profile = student_profile["profile"]
+            elif "student_profile" in student_profile and isinstance(student_profile["student_profile"], dict):
+                student_profile = student_profile["student_profile"]
+
+        if not assessment_id:
+            import uuid
+            assessment_id = f"asmt_{uuid.uuid4().hex[:12]}"
+
         # 1. Obtain V8 ML Predictions
         v8_result = predict_v8(student_profile)
         class_probs = v8_result.get("class_probabilities", {})
@@ -74,7 +93,9 @@ class CareerRanker:
                 "compatibility_score": scoring_res["final_compatibility_score"],
                 "v8_model_score": round(ml_prob, 2),
                 "component_scores": scoring_res["component_scores"],
+                "compatibility_breakdown": scoring_res["component_scores"],
                 "active_weights": scoring_res["active_weights"],
+                "weighted_contributions": scoring_res.get("weighted_contributions", {}),
                 "strongest_factors": scoring_res["strongest_factors"],
                 "why_recommended": explanation_res["why_recommended"],
                 "matching_skills": explanation_res["matching_skills"],
@@ -108,6 +129,7 @@ class CareerRanker:
 
         return {
             "status": "success",
+            "assessment_id": assessment_id,
             "engine": "v8",
             "model_name": "Career Compass V8 - HistGradientBoosting",
             "v8_ml_top_prediction": v8_result.get("predicted_career"),
@@ -133,7 +155,11 @@ class CareerRanker:
 default_ranker = CareerRanker()
 
 
-def rank_careers_v8(student_profile: Dict[str, Any], top_n: int = 5) -> Dict[str, Any]:
+def rank_careers_v8(
+    student_profile: Dict[str, Any],
+    top_n: int = 5,
+    assessment_id: Optional[str] = None
+) -> Dict[str, Any]:
     """Convenience helper to rank careers using the default V8 ranker singleton."""
-    return default_ranker.rank_careers(student_profile=student_profile, top_n=top_n)
+    return default_ranker.rank_careers(student_profile=student_profile, top_n=top_n, assessment_id=assessment_id)
 
