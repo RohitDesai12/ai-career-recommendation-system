@@ -8,7 +8,7 @@ const { getJwtSecret } = require('../config/jwt');
 const getCookieOptions = () => ({
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     path: '/'
 });
@@ -129,7 +129,8 @@ exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        let user = await User.findOne({ email });
+        const cleanEmail = (email || '').trim().toLowerCase();
+        let user = await User.findOne({ email: { $regex: new RegExp(`^${cleanEmail.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') } });
         if (!user) {
             return res.status(400).json({ msg: 'Invalid Credentials' });
         }

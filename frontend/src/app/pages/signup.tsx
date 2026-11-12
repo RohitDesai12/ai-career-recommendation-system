@@ -29,8 +29,8 @@ export function Signup() {
 
     try {
       const res = await axios.post("http://localhost:5000/api/auth/register", {
-        name: studentName,
-        email: studentEmail,
+        name: studentName.trim(),
+        email: studentEmail.trim().toLowerCase(),
         password: studentPassword,
         role: "student",
         termsAccepted: true,
@@ -41,7 +41,8 @@ export function Signup() {
       login(token, user || { id: "1", name: studentName, email: studentEmail, role: "student" });
       navigate("/dashboard");
     } catch (err: any) {
-      setError(err.response?.data?.msg || "Registration failed. Please check your credentials.");
+      console.error("Registration error:", err);
+      setError(err.response?.data?.msg || err.message || "Registration failed. Please check your credentials.");
     } finally {
       setLoading(false);
     }

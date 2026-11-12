@@ -58,12 +58,22 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS
 
 app.use(cors({
     origin: function (origin, callback) {
-        const normalizedOrigin = origin ? origin.replace(/\/+$/, '') : null;
-        if (!origin || allowedOrigins.includes(normalizedOrigin) || process.env.NODE_ENV !== 'production') {
-            callback(null, true);
-        } else {
-            callback(new Error('Blocked by CORS policy'));
+        if (!origin || process.env.NODE_ENV !== 'production') {
+            return callback(null, true);
         }
+        const normalized = origin.trim().replace(/\/+$/, '');
+
+        // Match against allowed origins or any Vercel deployment (*.vercel.app)
+        if (
+            allowedOrigins.includes(normalized) ||
+            normalized.endsWith('.vercel.app') ||
+            allowedOrigins.some(o => o.includes('vercel.app'))
+        ) {
+            return callback(null, true);
+        }
+
+        console.warn(`[CORS] Blocked request from origin: ${origin}`);
+        callback(new Error(`Blocked by CORS policy: origin ${origin} is not allowed`));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

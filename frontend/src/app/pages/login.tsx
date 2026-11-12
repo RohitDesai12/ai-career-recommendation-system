@@ -30,7 +30,7 @@ export function Login() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", { email, password });
+      const res = await axios.post("http://localhost:5000/api/auth/login", { email: email.trim(), password });
       const { token, user } = res.data;
       const loggedInUser = user || { id: "1", name: email.split("@")[0], email, role: "student" };
       login(token, loggedInUser);
@@ -41,7 +41,8 @@ export function Login() {
         navigate("/dashboard");
       }
     } catch (err: any) {
-      setError(err.response?.data?.msg || "Invalid credentials");
+      console.error("Login error:", err);
+      setError(err.response?.data?.msg || err.message || "Invalid credentials");
     } finally {
       setLoading(false);
     }

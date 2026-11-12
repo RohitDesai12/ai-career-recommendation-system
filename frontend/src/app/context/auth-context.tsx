@@ -25,11 +25,22 @@ axios.defaults.withCredentials = true;
 // Configure axios global interceptor immediately on module evaluation
 axios.interceptors.request.use(
   (config) => {
-    // Dynamically remap hardcoded localhost:5000 to API_BASE_URL
+    // Resolve target backend URL with production fallback
+    const targetBase =
+      API_BASE_URL ||
+      (typeof window !== "undefined" &&
+      window.location.hostname !== "localhost" &&
+      window.location.hostname !== "127.0.0.1"
+        ? "https://career-compass-backend-jvwf.onrender.com"
+        : "http://localhost:5000");
+
+    // Dynamically remap hardcoded localhost:5000 or relative /api to backend URL
     if (config.url && config.url.startsWith("http://localhost:5000")) {
-      config.url = config.url.replace("http://localhost:5000", API_BASE_URL);
+      config.url = config.url.replace("http://localhost:5000", targetBase);
     } else if (config.url && config.url.startsWith("http://127.0.0.1:5000")) {
-      config.url = config.url.replace("http://127.0.0.1:5000", API_BASE_URL);
+      config.url = config.url.replace("http://127.0.0.1:5000", targetBase);
+    } else if (config.url && config.url.startsWith("/api") && targetBase) {
+      config.url = `${targetBase}${config.url}`;
     }
 
     const token = localStorage.getItem("token");
