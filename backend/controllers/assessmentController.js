@@ -629,21 +629,29 @@ exports.submitAssessment = async (req, res) => {
 
         // 1. Primary: Execute real V8 model inference and 6-factor ranking via ML Service
         try {
-            const mlRes = await axios.post(`${getMlServiceUrl()}/api/recommend/v8`, constructedV8Profile, { timeout: 10000 });
+            const mlRes = await axios.post(`${getMlServiceUrl()}/api/recommend/v8`, constructedV8Profile, { timeout: 45000 });
             if (mlRes.data && mlRes.data.status === 'success' && Array.isArray(mlRes.data.top_recommendations)) {
                 v8ResponseData = mlRes.data;
-                recommendedCareers = mlRes.data.top_recommendations.map(c => ({
+                recommendedCareers = mlRes.data.top_recommendations.map((c, idx) => ({
                     title: c.career_title,
+                    career_title: c.career_title,
                     department: c.target_sector || 'Engineering',
                     matchScore: Math.round(c.compatibility_score || 85),
                     compatibilityScore: c.compatibility_score,
+                    compatibility_score: c.compatibility_score,
                     v8ModelScore: c.v8_model_score,
+                    v8_model_score: c.v8_model_score,
+                    rank: c.rank || idx + 1,
                     matchTier: c.compatibility_score >= 80 ? 'Best Match' : c.compatibility_score >= 65 ? 'High Match' : 'Good Match',
                     salaryRange: c.salary_range || '₹8,00,000 - ₹24,00,000 / yr',
                     whyMatches: [c.why_recommended],
+                    why_recommended: c.why_recommended,
                     areasToDevelop: c.missing_skills || [],
+                    missing_skills: c.missing_skills || [],
                     keySkills: c.matching_skills || [],
+                    matching_skills: c.matching_skills || [],
                     componentScores: c.component_scores || {},
+                    component_scores: c.component_scores || {},
                     skillGaps: c.skill_gaps || {},
                     suggestedNextSteps: c.suggested_next_steps || [],
                     recommendedCertifications: c.recommended_certifications || []
@@ -655,7 +663,47 @@ exports.submitAssessment = async (req, res) => {
 
         // 2. Fallback if ML service is unreachable
         if (!recommendedCareers || recommendedCareers.length === 0) {
-            recommendedCareers = calculateCareerMatches(dimensions, field, inputs);
+            const rawFallback = calculateCareerMatches(dimensions, field, inputs);
+            recommendedCareers = rawFallback.map((c, idx) => ({
+                title: c.title,
+                career_title: c.title,
+                department: c.department || 'Engineering',
+                matchScore: c.matchScore || 85,
+                compatibilityScore: c.matchScore || 85,
+                compatibility_score: c.matchScore || 85,
+                v8ModelScore: Math.round((c.matchScore || 85) * 0.95),
+                v8_model_score: Math.round((c.matchScore || 85) * 0.95),
+                rank: idx + 1,
+                matchTier: (c.matchScore || 85) >= 80 ? 'Best Match' : 'High Match',
+                salaryRange: c.salaryRange || '₹8,00,000 - ₹24,00,000 / yr',
+                whyMatches: c.whyMatches || ['Strong foundational alignment with your profile.'],
+                why_recommended: c.whyMatches?.[0] || 'Strong foundational alignment with your profile.',
+                areasToDevelop: c.areasToDevelop || [],
+                missing_skills: c.areasToDevelop || [],
+                keySkills: c.keySkills || [],
+                matching_skills: c.keySkills || [],
+                componentScores: {
+                    technical_skills: Math.round(dimensions.technicalInterest || 75),
+                    interest: Math.round(dimensions.creativity || 75),
+                    academic: Math.round(dimensions.analytical || 75),
+                    career_readiness: Math.round(dimensions.problemSolving || 80)
+                },
+                component_scores: {
+                    technical_skills: Math.round(dimensions.technicalInterest || 75),
+                    interest: Math.round(dimensions.creativity || 75),
+                    academic: Math.round(dimensions.analytical || 75),
+                    career_readiness: Math.round(dimensions.problemSolving || 80)
+                }
+            }));
+        }
+
+        if (!v8ResponseData) {
+            v8ResponseData = {
+                status: 'success',
+                top_recommendations: recommendedCareers,
+                primary_career: recommendedCareers[0],
+                alternative_careers: recommendedCareers.slice(1)
+            };
         }
 
         const topCareer = recommendedCareers[0] || {

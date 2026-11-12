@@ -79,7 +79,7 @@ router.post('/recommend', optionalAuth, async (req, res) => {
 // @access  Public / Optional Auth
 router.post('/recommend/v8', optionalAuth, async (req, res) => {
     try {
-        const response = await axios.post(`${getMlServiceUrl()}/api/recommend/v8`, req.body);
+        const response = await axios.post(`${getMlServiceUrl()}/api/recommend/v8`, req.body, { timeout: 45000 });
         res.json(response.data);
     } catch (err) {
         console.error('Error contacting ML service for V8 ranking', err.message);
@@ -105,16 +105,26 @@ router.post('/analyze-resume', optionalAuth, upload.single('file'), async (req, 
         formData.append('branch', branch || '');
         formData.append('jobRole', jobRole || '');
 
-        const response = await axios.post(`${getMlServiceUrl()}/api/analyze-resume`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            timeout: 30000
+        const mlUrl = `${getMlServiceUrl()}/api/analyze-resume`;
+        const mlRes = await fetch(mlUrl, {
+            method: 'POST',
+            body: formData,
+            signal: AbortSignal.timeout(45000)
         });
-        res.json(response.data);
+
+        if (!mlRes.ok) {
+            const errData = await mlRes.json().catch(() => ({}));
+            return res.status(mlRes.status).json({
+                error: 'ML Service Error',
+                details: errData.detail || errData.message || `ML Service returned status ${mlRes.status}`
+            });
+        }
+
+        const data = await mlRes.json();
+        res.json(data);
     } catch (err) {
-        console.error('Error contacting ML service during resume analysis:', err.response?.data || err.message);
-        res.status(500).json({ error: 'ML Service Error', details: err.response?.data?.detail || err.message });
+        console.error('Error contacting ML service during resume analysis:', err.message);
+        res.status(500).json({ error: 'ML Service Error', details: err.message });
     }
 });
 

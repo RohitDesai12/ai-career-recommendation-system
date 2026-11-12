@@ -6,7 +6,15 @@
  */
 
 function getMlServiceUrl() {
-    const rawUrl = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000';
+    let rawUrl = process.env.ML_SERVICE_URL;
+    if (!rawUrl || rawUrl.trim() === '') {
+        rawUrl = process.env.NODE_ENV === 'production'
+            ? 'https://career-compass-ml-q4f2.onrender.com'
+            : 'http://127.0.0.1:8000';
+    } else if (process.env.NODE_ENV === 'production' && (rawUrl.includes('localhost') || rawUrl.includes('127.0.0.1'))) {
+        rawUrl = 'https://career-compass-ml-q4f2.onrender.com';
+    }
+
     let url = rawUrl.trim().replace(/\/+$/, '');
     if (url.includes('localhost')) {
         url = url.replace('localhost', '127.0.0.1');

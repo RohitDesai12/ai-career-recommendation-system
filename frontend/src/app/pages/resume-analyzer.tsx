@@ -121,7 +121,6 @@ export function ResumeAnalyzer() {
       const token = localStorage.getItem("token");
       const res = await axios.post("http://localhost:5000/api/ml/analyze-resume", formData, {
         headers: { 
-          "Content-Type": "multipart/form-data",
           ...(token ? { "x-auth-token": token } : {})
         }
       });
@@ -182,7 +181,6 @@ export function ResumeAnalyzer() {
       const token = localStorage.getItem("token");
       const res = await axios.post("http://localhost:5000/api/ml/analyze-resume", formData, {
         headers: { 
-          "Content-Type": "multipart/form-data",
           ...(token ? { "x-auth-token": token } : {})
         }
       });
