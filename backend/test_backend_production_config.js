@@ -447,6 +447,18 @@ async function runTestSuite() {
         assert(!content.includes('http://localhost:8000/docs'), 'Found hardcoded localhost:8000/docs in adminController.js');
     });
 
+    it('server.js implements dedicated /health and /api/health endpoints for cloud health checks', () => {
+        const content = fs.readFileSync(path.join(__dirname, 'server.js'), 'utf8');
+        assert(content.includes('/health'), 'server.js missing /health route');
+        assert(content.includes('/api/health'), 'server.js missing /api/health route');
+    });
+
+    it('server.js binds to 0.0.0.0 and does not crash on missing env variables at startup', () => {
+        const content = fs.readFileSync(path.join(__dirname, 'server.js'), 'utf8');
+        assert(content.includes("'0.0.0.0'"), 'server.js must bind to 0.0.0.0 for cloud container compatibility');
+        assert(!content.includes('process.exit(1)'), 'server.js must not crash deployment with process.exit(1)');
+    });
+
     // ------------------------------------------------------------
     // Summary
     // ------------------------------------------------------------

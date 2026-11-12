@@ -50,22 +50,23 @@ This guide provides instructions for deploying Career Compass across free hostin
    - **Name**: `career-compass-backend`
    - **Region**: Closest to your users (e.g., Singapore / Frankfurt / Oregon)
    - **Branch**: `main`
-   - **Root Directory**: `backend`
+   - **Root Directory**: `backend` (or leave blank; the repository root package.json automatically redirects to backend)
    - **Runtime**: `Node`
    - **Build Command**: `npm install`
    - **Start Command**: `node server.js`
+   - **Health Check Path**: `/health`
    - **Instance Type**: `Free`
 5. Under **Environment Variables**, add:
    | Key | Value |
    | :--- | :--- |
-   | `PORT` | `5000` |
    | `NODE_ENV` | `production` |
-   | `MONGO_URI` | *Your MongoDB Atlas connection string from Step 1* |
-   | `JWT_SECRET` | *A secure random string (e.g. generated via `openssl rand -hex 32`)* |
+   | `MONGO_URI` | `mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/career_compass?retryWrites=true&w=majority` |
+   | `JWT_SECRET` | *A secure random string (e.g. `career_compass_prod_secret_2026_x99` or generated via `openssl rand -hex 32`). Must NOT be default.* |
    | `GROQ_API_KEY` | *Your Groq API Key* |
    | `ALLOWED_ORIGINS` | `http://localhost:5173,https://<your-frontend-domain>.vercel.app` |
-   | `ML_SERVICE_URL` | *Your ML service URL (or leave empty to use built-in fallback)* |
-6. Click **Create Web Service**. Once deployed, copy the backend URL (e.g., `https://career-compass-backend.onrender.com`).
+   | `ML_SERVICE_URL` | `https://career-compass-ml-q4f2.onrender.com` |
+   | `PORT` | *Optional (Render automatically assigns port 10000)* |
+6. Click **Create Web Service**. Once deployed, copy the backend URL (e.g., `https://career-compass-backend-jvwf.onrender.com`).
 
 ---
 

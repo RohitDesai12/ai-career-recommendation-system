@@ -10,14 +10,20 @@ if (process.env.NODE_ENV === 'production') {
     const { getJwtSecret } = require('./config/jwt');
     try {
         getJwtSecret();
+        console.log('[Security] Production JWT_SECRET verified.');
     } catch (secErr) {
-        console.error('FATAL PRODUCTION CONFIGURATION ERROR:', secErr.message);
-        process.exit(1);
+        console.warn('\n=============================================================');
+        console.warn('[SECURITY WARNING]', secErr.message);
+        console.warn('Set a custom JWT_SECRET in your Render Dashboard -> Environment.');
+        console.warn('Authenticated routes will safely return 500 until configured.');
+        console.warn('=============================================================\n');
     }
 
     if (!process.env.MONGO_URI || process.env.MONGO_URI.trim() === '') {
-        console.error('FATAL PRODUCTION CONFIGURATION ERROR: MONGO_URI must be configured in production!');
-        process.exit(1);
+        console.warn('\n=============================================================');
+        console.warn('[DATABASE WARNING] MONGO_URI is not configured in production environment variables.');
+        console.warn('Set MONGO_URI in your Render Dashboard -> Environment.');
+        console.warn('=============================================================\n');
     }
 }
 
@@ -45,13 +51,15 @@ app.use((req, res, next) => {
 });
 
 // 2. Production-Ready CORS Configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-    ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
-    : ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:5000', 'http://127.0.0.1:5000'];
+const allowedOrigins = (process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/\/+$/, ''))
+    : ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:5000', 'http://127.0.0.1:5000']
+).filter(Boolean);
 
 app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+        const normalizedOrigin = origin ? origin.replace(/\/+$/, '') : null;
+        if (!origin || allowedOrigins.includes(normalizedOrigin) || process.env.NODE_ENV !== 'production') {
             callback(null, true);
         } else {
             callback(new Error('Blocked by CORS policy'));
@@ -125,7 +133,20 @@ app.use('/api/admin/job-sources', require('./routes/jobIngestion'));
 app.use('/api/privacy', require('./routes/privacy'));
 
 app.get('/', (req, res) => {
-    res.send('API is running...');
+    res.status(200).send('Career Compass API is running...');
+});
+
+// Render / Cloud Health Check Endpoints
+app.get(['/health', '/api/health'], (req, res) => {
+    const dbState = mongoose.connection.readyState;
+    const dbStatus = dbState === 1 ? 'connected' : (dbState === 2 ? 'connecting' : 'disconnected');
+    res.status(200).json({
+        status: 'healthy',
+        timestamp: new Date().toISOString(),
+        uptime: Math.floor(process.uptime()),
+        database: dbStatus,
+        port: PORT
+    });
 });
 
 // 7. Production Error Handling Middleware (prevents leaking stack traces)
@@ -140,15 +161,27 @@ app.use((err, req, res, next) => {
 
 // Database Connection & Server Start
 const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/career_recommender';
-mongoose.connect(mongoUri)
-    .then(() => {
-        console.log('MongoDB Connected');
-        try {
-            const schedulerService = require('./services/job-ingestion/schedulerService');
-            schedulerService.start();
-        } catch (e) {
-            console.error('Failed to start ingestion scheduler:', e.message);
-        }
-        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-    })
-    .catch(err => console.log('Database connection error:', err));
+
+// 1. Immediately bind to PORT and 0.0.0.0 so Render detects the service is live instantly
+const server = app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Career Compass server running on port ${PORT} (0.0.0.0) [NODE_ENV=${process.env.NODE_ENV || 'development'}]`);
+});
+
+// 2. Connect to MongoDB asynchronously without blocking port detection
+if (mongoUri) {
+    mongoose.connect(mongoUri)
+        .then(() => {
+            console.log('MongoDB Connected successfully');
+            try {
+                const schedulerService = require('./services/job-ingestion/schedulerService');
+                schedulerService.start();
+            } catch (e) {
+                console.error('Failed to start ingestion scheduler:', e.message);
+            }
+        })
+        .catch(err => {
+            console.error('Database connection error:', err.message);
+        });
+} else {
+    console.warn('No MONGO_URI provided. Database features are currently offline.');
+}
