@@ -47,11 +47,6 @@ router.get('/model-status', async (req, res) => {
         });
     }
 });
-            message: 'ML Service offline or unreachable',
-            error: err.message
-        });
-    }
-});
 
 // @desc    Forward assessment to ML service
 // @route   POST /api/ml/assess
